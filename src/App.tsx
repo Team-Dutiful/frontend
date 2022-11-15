@@ -4,6 +4,7 @@ import Auth from "./pages/auth/auth";
 import Calendar from "./pages/calendar/calendar";
 import Group from "./pages/group/group";
 import Settings from "./pages/settings/settings";
+import ProfileSetting from "./pages/settings/profileSetting";
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
 				<Route path="settings" element={<Settings />} />
+				<Route path="settings/profile" element={<ProfileSetting />} />
 			</Routes>
 		</>
 	);
