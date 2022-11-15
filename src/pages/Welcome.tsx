@@ -7,7 +7,7 @@ const Welcome = () => {
 
 	useEffect(() => {
 		setTimeout(() => {
-			navigate("/auth");
+			navigate("/login");
 		}, 1000);
 	}, []);
 
