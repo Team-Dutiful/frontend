@@ -1,10 +1,14 @@
 import styled from "styled-components";
+import profileImg from "../../assets/images/profileImg.png";
+import FootNavigation from "../../components/footNavigation";
 
 const Settings = () => {
 	return (
 		<SettingsContainer>
 			<Profile>
-				<ProfileImg></ProfileImg>
+				<ProfileImgContainer>
+					<ProfileImg src={profileImg}></ProfileImg>
+				</ProfileImgContainer>
 				<ProfileInfo>
 					<ProfileName>조용우</ProfileName>
 					<ProfileEmail>yongwoo_cho@tmax.co.kr</ProfileEmail>
@@ -15,6 +19,7 @@ const Settings = () => {
 				<SettingButton>계정 설정</SettingButton>
 				<LogoutButton>로그아웃</LogoutButton>
 			</ButtonSection>
+			<FootNavigation></FootNavigation>
 		</SettingsContainer>
 	);
 };
@@ -29,30 +34,28 @@ const SettingsContainer = styled.div`
 `;
 
 const Profile = styled.div`
-	height: 309px;
 	width: 360px;
-	background-color: #e86464;
 	margin-bottom: 64px;
+`;
+
+const ProfileImgContainer = styled.div`
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	background-color: #e86464;
 `;
 
 const ProfileImg = styled.img`
 	box-sizing: border-box;
-	position: absolute;
 	width: 115.18px;
 	height: 110px;
-	left: 122px;
-	top: 71px;
-	border: 1px solid #d3d3d3;
 	border-radius: 50px;
+	margin-top: 72px;
 `;
 
 const ProfileInfo = styled.div`
-	position: absolute;
-	width: 230px;
-	height: 51px;
-	left: 65px;
-	top: 200px;
-
+	width: 100%;
+	height: 110px;
 	font-weight: 500;
 	line-height: 15px;
 	text-align: center;
@@ -60,9 +63,12 @@ const ProfileInfo = styled.div`
 	color: #ffffff;
 	display: flex;
 	flex-direction: column;
+	background-color: #e86464;
+	border-radius: 0 0 50% 50%;
 `;
 
 const ProfileName = styled.span`
+	margin-top: 10px;
 	font-size: 20px;
 	margin-bottom: 10px;
 `;
