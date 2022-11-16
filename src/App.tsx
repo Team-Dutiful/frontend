@@ -25,7 +25,7 @@ const App = () => {
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
 				<Route path="settings" element={<Settings />} />
-				<Route path="settings/profile" element={<ProfileSetting />} />
+				<Route path="profile" element={<ProfileSetting />} />
 			</Routes>
 		</>
 	);
