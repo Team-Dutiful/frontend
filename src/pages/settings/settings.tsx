@@ -1,17 +1,13 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
 import profileImg from "../../assets/images/profileImg.png";
 import FootNavigation from "../../components/footNavigation";
 
 const Settings = () => {
-	const [selected, setSelected] = useState("profile");
 	const navigate = useNavigate();
 
-	const handleClick = (selected: string) => {
-		setSelected(selected);
-		navigate(`/${selected}`);
+	const handleClick = (pageUrl: string) => {
+		navigate(`/setting/${pageUrl}`);
 	};
 
 	return (
@@ -33,10 +29,16 @@ const Settings = () => {
 				>
 					프로필 설정
 				</SettingButton>
-				<SettingButton>계정 설정</SettingButton>
+				<SettingButton
+					onClick={() => {
+						handleClick("account");
+					}}
+				>
+					계정 설정
+				</SettingButton>
 				<LogoutButton>로그아웃</LogoutButton>
 			</ButtonSection>
-			<FootNavigation></FootNavigation>
+			<FootNavigation />
 		</SettingsContainer>
 	);
 };
