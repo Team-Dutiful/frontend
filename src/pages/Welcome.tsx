@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import Logo from "../components/appLogo";
+import TeamLogo from "../components/teamLogo";
 
 const Welcome = () => {
 	const navigate = useNavigate();
@@ -14,26 +16,27 @@ const Welcome = () => {
 	return (
 		<WelcomeContainer>
 			<WelComeLogo>
-				<WelcomeTitle>Dutiful</WelcomeTitle>
-				<WelcomeSubTitle>교대 근무 관리 어플</WelcomeSubTitle>
+				<Logo />
+				<WelcomeTitle>교대 근무 관리 어플</WelcomeTitle>
 			</WelComeLogo>
-			<TeamLogo>@ToStar</TeamLogo>
+			<TeamLogo />
 		</WelcomeContainer>
 	);
 };
 
 export default Welcome;
 
-const WelcomeContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+const WelcomeContainer = styled.main`
 	position: relative;
 	height: calc(var(--vh, 1vh) * 100);
 `;
 
-const WelComeLogo = styled.div`
+const WelComeLogo = styled.section`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -43,21 +46,7 @@ const WelComeLogo = styled.div`
 `;
 
 const WelcomeTitle = styled.div`
-	font-family: "Inika";
-	font-size: 1.5rem;
-	color: #ff8181;
-`;
-
-const WelcomeSubTitle = styled.div`
 	font-family: "IBM Plex Sans Thai";
 	font-size: 1rem;
 	color: #848484;
-`;
-
-const TeamLogo = styled.p`
-	position: absolute;
-	bottom: 2rem;
-	font-family: "Inika";
-	font-style: normal;
-	font-size: 1rem;
 `;

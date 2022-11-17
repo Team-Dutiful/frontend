@@ -1,31 +1,72 @@
 import styled from "styled-components";
+import Logo from "../../components/appLogo";
+import TeamLogo from "../../components/teamLogo";
+import { ReactComponent as KakoIcon } from "../../assets/icons/auth_kakao.svg";
+import { ReactComponent as NaverIcon } from "../../assets/icons/auth_naver.svg";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+	const navigate = useNavigate();
+
 	return (
 		<LoginContainer>
-			<Logo>Dutiful</Logo>
-			<TeamLogo>@ToStar</TeamLogo>
-			<LoginTypograph>로그인</LoginTypograph>
-			<LoginInput placeholder="아이디를 입력해주세요." />
-			<LoginInput placeholder="비밀번호를 입력해주세요." />
-			<LoginButton onClick={() => console.log()}>확인</LoginButton>
-			<LoginTextButton>회원가입</LoginTextButton>
-			<LoginTextButton>아이디 / 비밀번호 찾기</LoginTextButton>
-			<LoginTypograph>간편 로그인</LoginTypograph>
-			<CustomButton backgroundColor="#f9e000">카카오톡으로 로그인</CustomButton>
-			<CustomButton backgroundColor="#00C73C">네이버로 로그인</CustomButton>
+			<LoginSection>
+				<Logo fontSize="2rem" />
+				<LoginBox style={{ marginTop: "3rem" }}>
+					<LoginTypograph>로그인</LoginTypograph>
+					<LoginInputButtonGroup>
+						<LoginInput placeholder="아이디를 입력해주세요." />
+						<LoginInput placeholder="비밀번호를 입력해주세요." type="password" />
+					</LoginInputButtonGroup>
+					<LoginButton onClick={() => console.log()}>확인</LoginButton>
+					<LoginTextButtonGroup>
+						<LoginTextButton onClick={() => navigate("/signup")}>회원가입</LoginTextButton>
+						<LoginTextButton>아이디 / 비밀번호 찾기</LoginTextButton>
+					</LoginTextButtonGroup>
+				</LoginBox>
+				<LoginBox style={{ marginTop: "2rem" }}>
+					<LoginTypograph>간편 로그인</LoginTypograph>
+					<CustomButton backgroundColor="#f9e000">
+						<KakoIcon width="14px" height="14px" />
+						카카오톡으로 로그인
+					</CustomButton>
+					<CustomButton color="#fff" backgroundColor="#00C73C">
+						<NaverIcon width="10px" height="10px" />
+						네이버로 로그인
+					</CustomButton>
+				</LoginBox>
+			</LoginSection>
+			<TeamLogo />
 		</LoginContainer>
 	);
 };
 
 export default Login;
 
-const LoginContainer = styled.div`
+const LoginContainer = styled.main`
+	position: relative;
+	text-align: center;
+	height: calc(var(--vh, 1vh) * 100);
+`;
+
+const LoginSection = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+`;
+
+const LoginBox = styled.section`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	height: calc(var(--vh, 1vh) * 100);
+	gap: 1rem;
+`;
+
+const LoginInputButtonGroup = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 `;
 
 const LoginInput = styled.input`
@@ -53,16 +94,27 @@ const LoginButton = styled.button`
 	font-size: 1rem;
 `;
 
+const LoginTextButtonGroup = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+`;
+
 const LoginTextButton = styled.button`
 	font-family: "Inter";
 	font-weight: 400;
 	font-size: 1rem;
 
 	border: none;
-	outlie: none;
+	outline: none;
 	background-color: transparent;
 
 	color: #a5a5a5;
+
+	&:active {
+		color: yellow;
+		background-color: yellow;
+	}
 `;
 
 const LoginTypograph = styled.p`
@@ -72,25 +124,18 @@ const LoginTypograph = styled.p`
 	color: #474747;
 `;
 
-const Logo = styled.div`
-	font-family: "Inika";
-	font-size: 2rem;
-	color: #ff8181;
-`;
+const CustomButton = styled.button<{ backgroundColor: string; color?: string }>`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	line-height: 1px;
 
-const TeamLogo = styled.p`
-	position: absolute;
-	bottom: 2rem;
-	font-family: "Inika";
-	font-style: normal;
-	font-size: 1rem;
-`;
-
-const CustomButton = styled.button<{ backgroundColor: string }>`
 	width: 15rem;
 	height: 2.5rem;
 	border: none;
 	border-radius: 8px;
+	color: ${(props) => props.color};
 	background-color: ${(props) => props.backgroundColor};
 	outline: none;
 `;
