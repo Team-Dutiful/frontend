@@ -26,6 +26,10 @@ const SettingContainer = styled.div`
 		position: absolute;
 		left: 8px;
 	}
+
+	button {
+		cursor: pointer;
+	}
 `;
 
 const Logo = styled.div`

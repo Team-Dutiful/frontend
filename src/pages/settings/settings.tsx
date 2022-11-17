@@ -103,6 +103,7 @@ const ButtonSection = styled.section`
 	gap: 21px;
 
 	button {
+		cursor: pointer;
 		border: 1px solid #e86464;
 		border-radius: 5px;
 		width: 220px;

@@ -27,4 +27,8 @@ const FootNavigationContainer = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	box-sizing: border-box;
+
+	svg {
+		cursor: pointer;
+	}
 `;
