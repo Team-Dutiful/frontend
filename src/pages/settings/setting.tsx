@@ -21,7 +21,7 @@ const SettingContainer = styled.div`
 	height: 100vh;
 	width: 360px;
 
-	svg {
+	> svg {
 		cursor: pointer;
 		position: absolute;
 		left: 8px;
