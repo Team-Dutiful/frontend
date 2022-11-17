@@ -3,6 +3,7 @@ import GlobalStyled from "./GlobalStyled";
 import Auth from "./pages/auth/auth";
 import Calendar from "./pages/calendar/calendar";
 import Group from "./pages/group/group";
+import GroupSetting from "./pages/group/groupSetting";
 import Settings from "./pages/settings/settings";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
 				<Route path="auth" element={<Auth />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
+				<Route path="group-setting" element={<GroupSetting />} />
 				<Route path="settings" element={<Settings />} />
 			</Routes>
 		</>

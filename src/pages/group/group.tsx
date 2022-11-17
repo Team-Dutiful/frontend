@@ -63,6 +63,7 @@ const Title = styled.h1`
 
 	margin: 70px 0px 18px 0px;
 `;
+
 const GroupBox = styled.div`
 	background-color: #ffffff;
 	position: relative;
