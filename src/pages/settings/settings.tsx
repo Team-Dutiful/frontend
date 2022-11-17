@@ -6,7 +6,7 @@ import FootNavigation from "../../components/footNavigation";
 const Settings = () => {
 	const navigate = useNavigate();
 
-	const handleClick = (pageUrl: string) => {
+	const handleChangeUrl = (pageUrl: string) => {
 		navigate(`/setting/${pageUrl}`);
 	};
 
@@ -24,14 +24,14 @@ const Settings = () => {
 			<ButtonSection>
 				<SettingButton
 					onClick={() => {
-						handleClick("profile");
+						handleChangeUrl("profile");
 					}}
 				>
 					프로필 설정
 				</SettingButton>
 				<SettingButton
 					onClick={() => {
-						handleClick("account");
+						handleChangeUrl("account");
 					}}
 				>
 					계정 설정

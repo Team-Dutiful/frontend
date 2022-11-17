@@ -1,11 +1,17 @@
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_icon.svg";
 
 const Setting = () => {
+	const navigate = useNavigate();
+
+	const handleGoBackPage = () => {
+		navigate(-1);
+	};
+
 	return (
 		<SettingContainer>
-			<BackIcon />
+			<BackIcon onClick={handleGoBackPage} />
 			<Logo>Dutiful</Logo>
 			<Outlet />
 		</SettingContainer>

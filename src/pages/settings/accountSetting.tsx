@@ -1,13 +1,32 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import FootNavigation from "../../components/footNavigation";
 
 const AccountSetting = () => {
+	const navigate = useNavigate();
+
+	const handleChangeUrl = (pageUrl: string) => {
+		navigate(`/setting/${pageUrl}`);
+	};
+
 	return (
 		<AccountSettingContainer>
 			<AccountSpan>계정 설정</AccountSpan>
 			<ButtonSection>
-				<EmailChangeButton>이메일 변경</EmailChangeButton>
-				<PwdChangeButton>비밀번호 변경</PwdChangeButton>
+				<EmailChangeButton
+					onClick={() => {
+						handleChangeUrl("email");
+					}}
+				>
+					이메일 변경
+				</EmailChangeButton>
+				<PwdChangeButton
+					onClick={() => {
+						handleChangeUrl("password");
+					}}
+				>
+					비밀번호 변경
+				</PwdChangeButton>
 			</ButtonSection>
 			<FootNavigation />
 		</AccountSettingContainer>
