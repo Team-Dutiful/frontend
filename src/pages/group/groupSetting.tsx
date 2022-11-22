@@ -32,8 +32,10 @@ const GroupSetting = () => {
 			{isOpen && (
 				<>
 					<SketchPicker color={colorHexCode} onChange={handleSelectColor} />
-					<ColorOkayButton onClick={handleCloseColorPicker}>확인</ColorOkayButton>
-					<ColorCancelButton>취소</ColorCancelButton>
+					<ColorButtonBox>
+						<ColorOkayButton onClick={handleCloseColorPicker}>확인</ColorOkayButton>
+						<ColorCancelButton onClick={handleCloseColorPicker}>취소</ColorCancelButton>
+					</ColorButtonBox>
 				</>
 			)}
 
@@ -87,19 +89,25 @@ const ColorBox = styled.div`
 	background-color: ${(props) => props.color};
 `;
 
-const ColorOkayButton = styled.button`
-	background-color: #e86464;
-	height: 50px;
-	width: 50px;
-	border: 0px;
+const ColorButtonBox = styled.div`
+	display: flex;
+	gap: 16px;
+	margin-top: 10px;
+
+	button {
+		background-color: #e86464;
+		color: white;
+		font-weight: bold;
+		height: 30px;
+		width: 70px;
+		border: 0px;
+		border-radius: 5px;
+	}
 `;
 
-const ColorCancelButton = styled.button`
-	background-color: #e86464;
-	height: 50px;
-	width: 50px;
-	border: 0px;
-`;
+const ColorOkayButton = styled.button``;
+
+const ColorCancelButton = styled.button``;
 
 const GroupSettingOkayButton = styled.button`
 	background-color: #e86464;
