@@ -16,12 +16,15 @@ const Login = () => {
 					<LoginTypograph>로그인</LoginTypograph>
 					<LoginInputButtonGroup>
 						<LoginInput placeholder="아이디를 입력해주세요." />
-						<LoginInput placeholder="비밀번호를 입력해주세요." type="password" />
+						<LoginInput placeholder="비밀번호를 입력해주세요." type="password" autoComplete="on" />
 					</LoginInputButtonGroup>
 					<LoginButton onClick={() => console.log()}>확인</LoginButton>
 					<LoginTextButtonGroup>
 						<LoginTextButton onClick={() => navigate("/signup")}>회원가입</LoginTextButton>
-						<LoginTextButton>아이디 / 비밀번호 찾기</LoginTextButton>
+						<div>
+							<LoginTextButton onClick={() => navigate("/find-id")}>아이디 </LoginTextButton>/
+							<LoginTextButton onClick={() => navigate("/find-password")}>비밀번호 찾기</LoginTextButton>
+						</div>
 					</LoginTextButtonGroup>
 				</LoginBox>
 				<LoginBox style={{ marginTop: "2rem" }}>
@@ -63,7 +66,7 @@ const LoginBox = styled.section`
 	gap: 1rem;
 `;
 
-const LoginInputButtonGroup = styled.div`
+const LoginInputButtonGroup = styled.form`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -98,6 +101,7 @@ const LoginTextButtonGroup = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
+	color: #a5a5a5;
 `;
 
 const LoginTextButton = styled.button`

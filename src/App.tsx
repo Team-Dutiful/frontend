@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalStyled from "./GlobalStyled";
+import FindId from "./pages/auth/findId";
+import FindPassword from "./pages/auth/findPassword";
 import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Calendar from "./pages/calendar/calendar";
@@ -25,6 +27,8 @@ const App = () => {
 				<Route path="/" element={<Welcome />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<SignUp />} />
+				<Route path="/find-id" element={<FindId />} />
+				<Route path="/find-password" element={<FindPassword />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
 				<Route path="settings" element={<Settings />} />

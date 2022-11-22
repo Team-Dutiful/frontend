@@ -2,37 +2,102 @@ import styled from "styled-components";
 import TeamLogo from "../../components/teamLogo";
 import { ReactComponent as PreviousIcon } from "../../assets/icons/auth_previous.svg";
 import { useNavigate } from "react-router-dom";
+import SignUpInput from "../../components/auth/signupInput";
+import { useState } from "react";
+import PreviousButton from "../../components/auth/previousButton";
 
 const SignUp = () => {
 	const navigate = useNavigate();
+	const [user, setUser] = useState({
+		id: "",
+		password: "",
+		checkPassword: "",
+		name: "",
+		email: "",
+		code: "",
+	});
+	const [isSend, setIsSend] = useState(false);
+	const [checkCode, setCheckCode] = useState(false);
+
+	const handleChangeUserInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { id, value } = event.target;
+		setUser({
+			...user,
+			[id]: value,
+		});
+	};
 
 	return (
 		<SignUpContainer>
-			<PreviousButton onClick={() => navigate("/login")}>
-				<PreviousIcon width="16px" height="16px" />
-			</PreviousButton>
+			<PreviousButton onClick={() => navigate("/login")} />
 			<SignUpSection>
 				<SignUpTypograpy>회원가입</SignUpTypograpy>
-				<div style={{ width: "70%", textAlign: "center" }}>
-					<SignUpInput label="아이디" />
-					<SignUpInput label="비밀번호" />
-					<SignUpInput label="비밀번호 확인" />
-					<p style={{ fontSize: "14px", color: "#E86464", lineHeight: "1px", marginBottom: "16px" }}>
-						비밀번호를 다시 확인해주세요
-					</p>
-					<SignUpInput label="이름" />
-					<div style={{ display: "flex", alignItems: "center" }}>
-						<SignUpInput label="이메일" buttonLabel="전송" onClick={() => console.log("이메일 전송")} />
-					</div>
-					<p style={{ fontSize: "14px", color: "#848484", lineHeight: "2px", marginBottom: "16px" }}>
-						인증코드가 전송되었습니다.
-					</p>
-					<SignUpInput label="인증코드" buttonLabel="확인" onClick={() => console.log("확인")} />
-					<p style={{ fontSize: "14px", color: "#848484", lineHeight: "2px", marginBottom: "16px" }}>
-						이메일 인증이 완료되었습니다.
-					</p>
-				</div>
-				<SignUpButton onClick={() => console.log("가입하기")}>가입</SignUpButton>
+				<SignUpForm>
+					<SignUpInput id="id" label="아이디" autoComplete="userid" value={user.id} onChange={handleChangeUserInfo} />
+					<SignUpInput
+						id="password"
+						label="비밀번호"
+						type="password"
+						autoComplete="new-password"
+						value={user.password}
+						onChange={handleChangeUserInfo}
+					/>
+					<>
+						<SignUpInput
+							id="checkPassword"
+							label="비밀번호 확인"
+							type="password"
+							autoComplete="new-password"
+							value={user.checkPassword}
+							onChange={handleChangeUserInfo}
+						/>
+						<SignUpInputBottomText color={user.password === user.checkPassword ? "#74d277" : "#e86464"}>
+							{user.password === ""
+								? null
+								: user.password === user.checkPassword
+								? "비밀번호가 일치합니다."
+								: "비밀번호를 다시 확인해주세요."}
+						</SignUpInputBottomText>
+					</>
+					<SignUpInput
+						id="name"
+						label="이름"
+						autoComplete="username"
+						value={user.name}
+						onChange={handleChangeUserInfo}
+					/>
+					<>
+						<SignUpInput
+							id="email"
+							label="이메일"
+							buttonLabel="전송"
+							onClick={(event) => {
+								event.preventDefault();
+								setIsSend(true);
+							}}
+							value={user.email}
+							onChange={handleChangeUserInfo}
+						/>
+						{isSend ? <SignUpInputBottomText color="#848484">인증코드가 전송되었습니다.</SignUpInputBottomText> : null}
+					</>
+					<>
+						<SignUpInput
+							id="code"
+							label="인증코드"
+							buttonLabel="확인"
+							onClick={(event) => {
+								event.preventDefault();
+								setCheckCode(true);
+							}}
+							value={user.code}
+							onChange={handleChangeUserInfo}
+						/>
+						{checkCode ? (
+							<SignUpInputBottomText color="#848484">이메일 인증이 완료되었습니다.</SignUpInputBottomText>
+						) : null}
+					</>
+				</SignUpForm>
+				<SignUpButton onClick={() => console.log(user)}>가입</SignUpButton>
 			</SignUpSection>
 			<TeamLogo />
 		</SignUpContainer>
@@ -46,16 +111,6 @@ const SignUpContainer = styled.main`
 	height: calc(var(--vh, 1vh) * 100);
 `;
 
-const PreviousButton = styled.button`
-	position: absolute;
-	top: 0.5rem;
-	left: 0.5rem;
-	border: none;
-	outline: none;
-	background-color: transparent;
-	transform: rotate(-90deg);
-`;
-
 const SignUpSection = styled.section`
 	position: relative;
 	top: 35%;
@@ -64,6 +119,14 @@ const SignUpSection = styled.section`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+`;
+
+const SignUpForm = styled.form`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 70%;
+	gap: 16px;
 `;
 
 const SignUpTypograpy = styled.p`
@@ -90,46 +153,9 @@ const SignUpButton = styled.button`
 	font-size: 1rem;
 `;
 
-interface SignUpInputProps {
-	label: string;
-	buttonLabel?: string;
-	onClick?: () => void;
-}
-
-const SignUpInput = ({ label, buttonLabel, onClick }: SignUpInputProps) => {
-	return (
-		<SignUpInputContainer>
-			<Label>{label}</Label>
-			<div style={{ display: "flex", gap: "3px" }}>
-				<Input />
-				{buttonLabel === undefined ? null : (
-					<button style={{ width: "50px", fontSize: "12px" }} onClick={onClick}>
-						{buttonLabel}
-					</button>
-				)}
-			</div>
-		</SignUpInputContainer>
-	);
-};
-
-const SignUpInputContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	text-align: start;
-	width: 100%;
-	gap: 4px;
-	margin-bottom: 1rem;
-`;
-
-const Label = styled.p`
-	font-size: 1rem;
-	color: #7a7a7a;
-`;
-
-const Input = styled.input`
-	padding: 0;
-	width: 100%;
-	height: 2rem;
-	background: #ffffff;
-	border: 0.8px solid #a6a6a6;
+const SignUpInputBottomText = styled.p<{ color: string }>`
+	height: 0.5rem;
+	font-size: 14px;
+	color: ${(props) => props.color};
+	line-height: 2px;
 `;
