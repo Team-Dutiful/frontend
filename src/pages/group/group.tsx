@@ -1,10 +1,23 @@
+import { useState } from "react";
 import styled from "styled-components";
+import FootNavigation from "../../components/footNavigation";
+import GroupModal from "../../components/groupModal";
+import ModalPortal from "../../components/modalPortal";
 import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_icon.svg";
 import { ReactComponent as GroupMenuIcon } from "../../assets/icons/group_menu_icon.svg";
 import { ReactComponent as GroupPeopleIcon } from "../../assets/icons/group_people_icon.svg";
-import FootNavigation from "../../components/footNavigation";
 
 const Group = () => {
+	const [modalOpen, setModalOpen] = useState(false);
+	const [modalTitle, setModalTitle] = useState("신생아실 간호사 모임");
+	const handleOpenModal = () => {
+		setModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setModalOpen(false);
+	};
+
 	return (
 		<GroupContainer>
 			<AddIconBox>
@@ -15,7 +28,7 @@ const Group = () => {
 				<ColorBox></ColorBox>
 				<GroupTitle>신생아실 간호사 모임</GroupTitle>
 				<IconBox>
-					<GroupMenuIcon />
+					<GroupMenuIcon onClick={handleOpenModal} />
 				</IconBox>
 				<PeopleIconBox>
 					<GroupPeopleIcon />
@@ -34,6 +47,11 @@ const Group = () => {
 				</PeopleIconBox>
 			</LeaderGroupBox>
 			<FootNavigation></FootNavigation>
+			{modalOpen && (
+				<ModalPortal>
+					<GroupModal title={modalTitle} isLeader={true} onClose={handleCloseModal} />
+				</ModalPortal>
+			)}
 		</GroupContainer>
 	);
 };
