@@ -9,7 +9,7 @@ import { ReactComponent as GroupPeopleIcon } from "../../assets/icons/group_peop
 
 const Group = () => {
 	const [modalOpen, setModalOpen] = useState(false);
-
+	const [modalTitle, setModalTitle] = useState("신생아실 간호사 모임");
 	const handleOpenModal = () => {
 		setModalOpen(true);
 	};
@@ -49,7 +49,7 @@ const Group = () => {
 			<FootNavigation></FootNavigation>
 			{modalOpen && (
 				<ModalPortal>
-					<GroupModal />
+					<GroupModal title={modalTitle} isLeader={true} onClose={handleCloseModal} />
 				</ModalPortal>
 			)}
 		</GroupContainer>
