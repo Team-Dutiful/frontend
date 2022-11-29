@@ -3,11 +3,67 @@ import styled from "styled-components";
 import FootNavigation from "../../components/footNavigation";
 import GroupModal from "../../components/groupModal";
 import ModalPortal from "../../components/modalPortal";
+import GroupBox from "../../components/groupBox";
 import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_icon.svg";
-import { ReactComponent as GroupMenuIcon } from "../../assets/icons/group_menu_icon.svg";
-import { ReactComponent as GroupPeopleIcon } from "../../assets/icons/group_people_icon.svg";
 
 const Group = () => {
+	const curUserId = 1;
+
+	const groups = [
+		{
+			group_id: 1,
+			name: "update group",
+			color: "#000000",
+			leader_id: 1,
+			members: [
+				{
+					member_id: 1,
+					name: "김철수",
+				},
+				{
+					member_id: 2,
+					name: "김철수",
+				},
+				{
+					member_id: 2,
+					name: "김철수",
+				},
+			],
+		},
+		{
+			group_id: 1,
+			name: "hi group",
+			color: "#000000",
+			leader_id: 2,
+			members: [
+				{
+					member_id: 1,
+					name: "김철수",
+				},
+				{
+					member_id: 2,
+					name: "김철수",
+				},
+			],
+		},
+		{
+			group_id: 1,
+			name: "update group",
+			color: "#000000",
+			leader_id: 3,
+			members: [
+				{
+					member_id: 1,
+					name: "김철수",
+				},
+				{
+					member_id: 2,
+					name: "김철수",
+				},
+			],
+		},
+	];
+
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalTitle, setModalTitle] = useState("신생아실 간호사 모임");
 	const handleOpenModal = () => {
@@ -24,34 +80,26 @@ const Group = () => {
 				<GroupAddIcon />
 			</AddIconBox>
 			<Title>나의 그룹</Title>
-			<GroupBox>
-				<ColorBox></ColorBox>
-				<GroupTitle>신생아실 간호사 모임</GroupTitle>
-				<IconBox>
-					<GroupMenuIcon onClick={handleOpenModal} />
-				</IconBox>
-				<PeopleIconBox>
-					<GroupPeopleIcon />
-					<GroupPeopleCount>999</GroupPeopleCount>
-				</PeopleIconBox>
-			</GroupBox>
-			<LeaderGroupBox>
-				<ColorBox></ColorBox>
-				<GroupTitle>신생아실 간호사 모임</GroupTitle>
-				<IconBox>
-					<GroupMenuIcon />
-				</IconBox>
-				<PeopleIconBox>
-					<GroupPeopleIcon />
-					<GroupPeopleCount>999</GroupPeopleCount>
-				</PeopleIconBox>
-			</LeaderGroupBox>
+			{groups.map(({ leader_id, color, name, members }) => {
+				return (
+					<>
+						<GroupBox
+							isLeader={curUserId == leader_id}
+							color={color}
+							title={name}
+							memberCount={members.length}
+							handleOpenModal={handleOpenModal}
+						/>
+						{modalOpen && (
+							<ModalPortal>
+								<GroupModal title={name} isLeader={curUserId === leader_id} onClose={handleCloseModal} />
+							</ModalPortal>
+						)}
+					</>
+				);
+			})}
+
 			<FootNavigation></FootNavigation>
-			{modalOpen && (
-				<ModalPortal>
-					<GroupModal title={modalTitle} isLeader={true} onClose={handleCloseModal} />
-				</ModalPortal>
-			)}
 		</GroupContainer>
 	);
 };
@@ -82,19 +130,6 @@ const Title = styled.h1`
 	margin: 70px 0px 18px 0px;
 `;
 
-const GroupBox = styled.div`
-	background-color: #ffffff;
-	position: relative;
-	display: flex;
-	align-items: center;
-	height: 90px;
-	width: 320px;
-	border: 1px solid #d3d3d3;
-	box-sizing: border-box;
-	box-shadow: 1px 3px 1px rgba(154, 154, 154, 0.25);
-	padding: 0 20px;
-	margin: 15px;
-`;
 const LeaderGroupBox = styled.div`
 	background-color: #ffc5c5;
 	position: relative;
@@ -107,14 +142,6 @@ const LeaderGroupBox = styled.div`
 	box-shadow: 1px 3px 1px rgba(154, 154, 154, 0.25);
 	padding: 0 20px;
 	margin: 15px;
-`;
-
-const ColorBox = styled.div`
-	background-color: red;
-	height: 30px;
-	width: 30px;
-	border-radius: 50%;
-	margin: 5px;
 `;
 
 const GroupTitle = styled.div`
