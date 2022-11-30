@@ -1,16 +1,28 @@
 import styled from "styled-components";
+import GroupModal from "../components/groupModal";
+import ModalPortal from "../components/modalPortal";
 import { ReactComponent as GroupMenuIcon } from "../assets/icons/group_menu_icon.svg";
 import { ReactComponent as GroupPeopleIcon } from "../assets/icons/group_people_icon.svg";
+import { useState } from "react";
 
 interface GroupBoxProps {
 	isLeader: boolean;
 	color: string;
 	title: string;
 	memberCount: number;
-	handleOpenModal: () => void;
 }
 
-const GroupBox = ({ isLeader, color, title, memberCount, handleOpenModal }: GroupBoxProps) => {
+const GroupBox = ({ isLeader, color, title, memberCount }: GroupBoxProps) => {
+	const [modalOpen, setModalOpen] = useState(false);
+
+	const handleOpenModal = () => {
+		setModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setModalOpen(false);
+	};
+
 	return (
 		<GroupBoxContainer isLeader={isLeader}>
 			<ColorBox color={color}></ColorBox>
@@ -22,6 +34,11 @@ const GroupBox = ({ isLeader, color, title, memberCount, handleOpenModal }: Grou
 				<GroupPeopleIcon />
 				<GroupPeopleCount>{memberCount}</GroupPeopleCount>
 			</PeopleIconBox>
+			{modalOpen && (
+				<ModalPortal>
+					<GroupModal title={title} isLeader={isLeader} onClose={handleCloseModal} />
+				</ModalPortal>
+			)}
 		</GroupBoxContainer>
 	);
 };
