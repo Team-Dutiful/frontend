@@ -4,7 +4,7 @@ import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.
 import { ReactElement } from "react";
 
 const GroupFilter = () => {
-	const members = ["김다인", "김태호", "임꺽정", "박나영"];
+	const members = ["김다인", "김태호", "박나영", "조용우", "오예환", "원정연", "최준구", "황창섭", "이혜영"];
 
 	/* TO-DO 리팩터링 필요 */
 	function composeMemberBox(members: string[]): React.ReactNode {
@@ -165,9 +165,7 @@ const WorkTitle = styled.title`
 	padding-bottom: 16px;
 `;
 
-const WorkTypeWrapper = styled.div`
-	/* display: flex; */
-`;
+const WorkTypeWrapper = styled.div``;
 
 const WorkTypeBoxWrapper = styled.div`
 	display: flex;
@@ -193,7 +191,7 @@ const WorkTypeBox = styled.div<{ color: string }>`
 
 const GroupFilterOkayButton = styled.button`
 	background-color: #e86464;
-	height: 56px;
+	min-height: 56px;
 	width: 235px;
 	border: 0px;
 
