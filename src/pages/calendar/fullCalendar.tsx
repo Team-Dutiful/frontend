@@ -1,89 +1,44 @@
 import "@fullcalendar/react/dist/vdom";
-import FullCalendar, { DayHeaderContentArg, VerboseFormattingArg } from "@fullcalendar/react";
+import FullCalendar, { DayHeaderContentArg, EventClickArg, VerboseFormattingArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import styled from "styled-components";
+import { EventType, SourceType } from "./calendar";
+import { tempEvents } from "./tempData";
 
-const temp = [
-	{
-		calendar_date_id: 0,
-		year: 2022,
-		month: 11,
-		day: 10,
-		work: {
-			work_id: 0,
-			name: "DAY",
-			color: "#FF9F9F",
-		},
-	},
-	{
-		calendar_date_id: 1,
-		year: 2022,
-		month: 11,
-		day: 21,
-		work: {
-			work_id: 1,
-			name: "NIGHT",
-			color: "#63E2BC",
-		},
-	},
-	{
-		calendar_date_id: 4,
-		year: 2022,
-		month: 11,
-		day: 16,
-		work: {
-			work_id: 1,
-			name: "NIGHT",
-			color: "#63E2BC",
-		},
-	},
-	{
-		calendar_date_id: 2,
-		year: 2022,
-		month: 11,
-		day: 15,
-		work: {
-			work_id: 2,
-			name: "OFF",
-			color: "#9BC9FF",
-		},
-	},
-];
-
-interface EventType {
-	title: string;
-	date: string;
-	color: string;
+interface CustomCalendarProps {
+	setEvent: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
 }
 
-const CustomCalendar = () => {
-	const preprocessData = () => {
+const CustomCalendar = ({ setEvent }: CustomCalendarProps) => {
+	// event data를 fullCalendar event 형식에 맞춰 전처리
+	const formattedEvents = () => {
 		let events: EventType[] = [];
 
-		temp.forEach((data) => {
-			let event: EventType = {
-				title: "",
-				date: "",
-				color: "",
-			};
+		tempEvents.forEach((data) => {
+			let event: EventType = {};
 
+			// fullCalendar 필수 data
 			event.title = data.work.name[0];
 			event.date = `${data.year}-${data.month}-${data.day}`;
 			event.color = data.work.color;
+
+			// custom needed data
+			event.source = { day: data.day, ...data.work };
 			events.push(event);
 		});
 
 		return events;
 	};
 
-	const dayName = (date: DayHeaderContentArg) => {
+	const dayName = (arg: DayHeaderContentArg) => {
 		const weekList = ["일", "월", "화", "수", "목", "금", "토"];
-		return weekList[date.dow];
+		return weekList[arg.dow];
 	};
 
-	const headerTitleFormat = (data: VerboseFormattingArg) => {
-		const year = data.date.year;
-		const month = data.date.month + 1;
+	const headerTitleFormat = (arg: VerboseFormattingArg) => {
+		const year = arg.date.year;
+		const month = arg.date.month + 1;
 
 		const formattedTitle = (
 			<Title>
@@ -95,17 +50,27 @@ const CustomCalendar = () => {
 		return formattedTitle;
 	};
 
+	const handleClickEvent = (arg: EventClickArg) => {
+		setEvent(arg.event._def.extendedProps.source);
+	};
+
+	const handleClickDate = (arg) => {
+		// console.log("date", arg);
+	};
+
 	return (
 		<FullCalendarContainer>
 			<FullCalendar
-				plugins={[dayGridPlugin]}
+				plugins={[dayGridPlugin, interactionPlugin]}
 				initialView="dayGridMonth"
-				events={preprocessData()}
+				events={formattedEvents()}
 				height={"100%"}
-				titleFormat={(data) => headerTitleFormat(data)}
-				headerToolbar={{ start: "", center: `prev title next`, end: "" }}
-				dayHeaderContent={(date) => dayName(date)} // 요일을 한국어로
+				titleFormat={(arg) => headerTitleFormat(arg)}
+				headerToolbar={{ start: "", center: `prev title next`, end: "" }} // <- 2022.11 ->
+				dayHeaderContent={(arg) => dayName(arg)} // 요일을 한국어로
 				fixedWeekCount={false} // true일 경우 항상 6줄
+				eventClick={(arg) => handleClickEvent(arg)}
+				dateClick={(arg) => handleClickDate(arg)}
 			/>
 		</FullCalendarContainer>
 	);
