@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import TeamLogo from "../../components/teamLogo";
-import { ReactComponent as PreviousIcon } from "../../assets/icons/auth_previous.svg";
 import { useNavigate } from "react-router-dom";
 import SignUpInput from "../../components/auth/signupInput";
 import { useState } from "react";
 import PreviousButton from "../../components/auth/previousButton";
+import { sendAuthCodeEmail, signUp } from "../../api/auth";
 
+// TO DO
+// 비밀번호 확인 칠때부터 비밀번호 확인해주세요 경고문 띄우기
+// 비밀번호 5자 미만일 때 경고문 띄우기
+// 가입 완료시 성공 or 실패 모달 띄우고 페이지 넘어가기
 const SignUp = () => {
 	const navigate = useNavigate();
 	const [user, setUser] = useState({
@@ -18,6 +22,7 @@ const SignUp = () => {
 	});
 	const [isSend, setIsSend] = useState(false);
 	const [checkCode, setCheckCode] = useState(false);
+	const [authCode, setAuthCode] = useState("");
 
 	const handleChangeUserInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value } = event.target;
@@ -25,6 +30,39 @@ const SignUp = () => {
 			...user,
 			[id]: value,
 		});
+	};
+
+	const handleClickSendMailButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		event.preventDefault();
+		setIsSend(true);
+		sendAuthCodeEmail(user.email)
+			.then((res) => {
+				setAuthCode(res.data.body.authNum);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const handleClickCheckButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		event.preventDefault();
+		if (user.code === String(authCode)) {
+			setCheckCode(true);
+		}
+	};
+
+	const handleClickSignUpButton = () => {
+		if (checkCode && user.checkPassword === user.password) {
+			const { id, password, name, email } = user;
+			signUp(id, password, name, email)
+				.then((res) => {
+					console.log(res);
+					navigate("/login");
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
 	};
 
 	return (
@@ -71,12 +109,10 @@ const SignUp = () => {
 							id="email"
 							label="이메일"
 							buttonLabel="전송"
-							onClick={(event) => {
-								event.preventDefault();
-								setIsSend(true);
-							}}
+							onClick={handleClickSendMailButton}
 							value={user.email}
 							onChange={handleChangeUserInfo}
+							checkCode={false}
 						/>
 						{isSend ? <SignUpInputBottomText color="#848484">인증코드가 전송되었습니다.</SignUpInputBottomText> : null}
 					</>
@@ -85,19 +121,17 @@ const SignUp = () => {
 							id="code"
 							label="인증코드"
 							buttonLabel="확인"
-							onClick={(event) => {
-								event.preventDefault();
-								setCheckCode(true);
-							}}
+							onClick={handleClickCheckButton}
 							value={user.code}
 							onChange={handleChangeUserInfo}
+							checkCode={checkCode}
 						/>
 						{checkCode ? (
 							<SignUpInputBottomText color="#848484">이메일 인증이 완료되었습니다.</SignUpInputBottomText>
 						) : null}
 					</>
 				</SignUpForm>
-				<SignUpButton onClick={() => console.log(user)}>가입</SignUpButton>
+				<SignUpButton onClick={handleClickSignUpButton}>가입</SignUpButton>
 			</SignUpSection>
 			<TeamLogo />
 		</SignUpContainer>

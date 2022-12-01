@@ -9,18 +9,37 @@ interface SignUpInputProps {
 	buttonLabel?: string;
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
+	checkCode?: boolean;
 }
 
-const SignUpInput = ({ id, type, autoComplete, value, label, buttonLabel, onClick, onChange }: SignUpInputProps) => {
+const SignUpInput = ({
+	id,
+	type,
+	autoComplete,
+	value,
+	label,
+	buttonLabel,
+	onClick,
+	onChange,
+	checkCode,
+}: SignUpInputProps) => {
 	return (
 		<SignUpInputContainer>
 			<Label>{label}</Label>
 			<div style={{ display: "flex", gap: "3px" }}>
-				<Input id={id} type={type} autoComplete={autoComplete} value={value} onChange={onChange} />
+				<Input
+					checkCode={checkCode}
+					id={id}
+					type={type}
+					autoComplete={autoComplete}
+					value={value}
+					onChange={onChange}
+					disabled={checkCode}
+				/>
 				{buttonLabel === undefined ? null : (
-					<button style={{ width: "50px", fontSize: "12px" }} onClick={onClick}>
+					<Button onClick={onClick} checkCode={checkCode} disabled={checkCode}>
 						{buttonLabel}
-					</button>
+					</Button>
 				)}
 			</div>
 		</SignUpInputContainer>
@@ -40,12 +59,22 @@ const Label = styled.p`
 	color: #7a7a7a;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ checkCode?: boolean }>`
 	padding: 0px 4px 0px 4px;
 	width: 100%;
 	height: 2rem;
-	background: #ffffff;
+	background: ${(props) => {
+		return props.checkCode === true ? "#ebebeb" : "#fff";
+	}};
+	color: ${(props) => {
+		return props.checkCode ? "#a9a8a8" : "#000";
+	}};
 	border: 0.8px solid #a6a6a6;
+`;
+
+const Button = styled.button<{ checkCode?: boolean }>`
+	width: 50px;
+	font-size: 12px;
 `;
 
 export default SignUpInput;
