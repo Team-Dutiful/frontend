@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import MemberBox from "../../components/memberBox";
+import { ReactComponent as InviteIcon } from "../../assets/icons/invite_button_icon.svg";
 
 const MemberList = () => {
 	const members = [
@@ -11,6 +12,9 @@ const MemberList = () => {
 
 	return (
 		<MemberListContainer>
+			<InviteIconBox>
+				<InviteIcon />
+			</InviteIconBox>
 			<MemberTitleBox>
 				<MemberListTitle>멤버 목록</MemberListTitle>
 			</MemberTitleBox>
@@ -24,11 +28,12 @@ const MemberList = () => {
 export default MemberList;
 
 const MemberListContainer = styled.div`
+	position: relative;
 	display: flex;
-	align-items: center;
 	flex-direction: column;
 	height: 100vh;
 	width: 360px;
+	align-items: center;
 `;
 
 const MemberTitleBox = styled.div`
@@ -45,4 +50,10 @@ const MemberListTitle = styled.title`
 
 	font-weight: bold;
 	font-family: sans-serif;
+`;
+
+const InviteIconBox = styled.div`
+	position: absolute;
+	top: 15px;
+	right: 18px;
 `;

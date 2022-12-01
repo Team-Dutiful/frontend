@@ -1,8 +1,16 @@
 import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { useCallback, useState, useEffect } from "react";
+import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
+import { useNavigate } from "react-router-dom";
 
-const GroupSetting = () => {
+const GroupEditing = () => {
+	const navigate = useNavigate();
+
+	const handleGoBackPage = () => {
+		navigate(-1);
+	};
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [colorHexCode, setColorHexCode] = useState("#000000");
 
@@ -20,7 +28,8 @@ const GroupSetting = () => {
 
 	return (
 		<GroupSettingContainer>
-			<GroupSettingTitle>새 그룹 생성</GroupSettingTitle>
+			<BackIcon onClick={handleGoBackPage} />
+			<GroupSettingTitle>그룹 편집</GroupSettingTitle>
 			<GroupBox>
 				<GroupName>그룹명</GroupName>
 				<GroupNameInput></GroupNameInput>
@@ -46,7 +55,7 @@ const GroupSetting = () => {
 	);
 };
 
-export default GroupSetting;
+export default GroupEditing;
 
 const GroupSettingContainer = styled.div`
 	position: relative;
@@ -55,6 +64,12 @@ const GroupSettingContainer = styled.div`
 	height: 100vh;
 	width: 360px;
 	align-items: center;
+
+	svg {
+		position: absolute;
+		top: 4px;
+		left: 12px;
+	}
 `;
 
 const GroupSettingTitle = styled.h1`

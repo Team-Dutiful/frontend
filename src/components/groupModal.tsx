@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
+import { useNavigate } from "react-router-dom";
 
 interface GroupModalProps {
 	title: string;
@@ -8,6 +9,11 @@ interface GroupModalProps {
 }
 
 const GroupModal = ({ title, isLeader, onClose }: GroupModalProps) => {
+	const navigate = useNavigate();
+	const handleGoToEditing = () => {
+		navigate("/group/edit");
+	};
+
 	const handleClickModal = (e: { stopPropagation: () => void }) => {
 		e.stopPropagation();
 	};
@@ -20,7 +26,7 @@ const GroupModal = ({ title, isLeader, onClose }: GroupModalProps) => {
 					<ColorBox />
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
-				<GroupButton>그룹 편집하기</GroupButton>
+				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
 				<GroupButton>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>

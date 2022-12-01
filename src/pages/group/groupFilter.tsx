@@ -3,11 +3,36 @@ import { ReactComponent as RefreshIcon } from "../../assets/icons/refresh_button
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
 import { ReactElement } from "react";
 
+interface MemberInterface {
+	member_id: number;
+	name: string;
+}
 const GroupFilter = () => {
-	const members = ["김다인", "김태호", "박나영", "조용우", "오예환", "원정연", "최준구", "황창섭", "이혜영"];
+	const members = [
+		{
+			member_id: 1,
+			name: "김태호",
+		},
+		{
+			member_id: 2,
+			name: "김다인",
+		},
+		{
+			member_id: 3,
+			name: "조용우",
+		},
+		{
+			member_id: 4,
+			name: "박나영",
+		},
+		{
+			member_id: 5,
+			name: "오예환",
+		},
+	];
 
 	/* TO-DO 리팩터링 필요 */
-	function composeMemberBox(members: string[]): React.ReactNode {
+	function composeMemberBox(members: MemberInterface[]): React.ReactNode {
 		const result = [];
 		for (var i = -1; i < members.length; i += 2) {
 			if (i == -1) {
@@ -15,7 +40,7 @@ const GroupFilter = () => {
 					<MemberContainer>
 						<MemberNameBox isExist={true}>전체보기</MemberNameBox>
 						{members[0] ? (
-							<MemberNameBox isExist={true}>{members[0]}</MemberNameBox>
+							<MemberNameBox isExist={true}>{members[0].name}</MemberNameBox>
 						) : (
 							<MemberNameBox isExist={false}></MemberNameBox>
 						)}
@@ -24,9 +49,9 @@ const GroupFilter = () => {
 			} else {
 				result.push(
 					<MemberContainer>
-						<MemberNameBox isExist={true}>{members[i]}</MemberNameBox>
+						<MemberNameBox isExist={true}>{members[i].name}</MemberNameBox>
 						{members[i + 1] ? (
-							<MemberNameBox isExist={true}>{members[i + 1]}</MemberNameBox>
+							<MemberNameBox isExist={true}>{members[i + 1].name}</MemberNameBox>
 						) : (
 							<MemberNameBox isExist={false}></MemberNameBox>
 						)}

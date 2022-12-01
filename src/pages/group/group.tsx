@@ -2,8 +2,14 @@ import styled from "styled-components";
 import FootNavigation from "../../components/footNavigation";
 import GroupBox from "../../components/groupBox";
 import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_icon.svg";
+import { useNavigate } from "react-router-dom";
 
 const Group = () => {
+	const navigate = useNavigate();
+
+	const goToGroupAdding = () => {
+		navigate("/group/add");
+	};
 	const curUserId = 1;
 
 	const groups = [
@@ -64,7 +70,7 @@ const Group = () => {
 	return (
 		<GroupContainer>
 			<AddIconBox>
-				<GroupAddIcon />
+				<GroupAddIcon onClick={goToGroupAdding} />
 			</AddIconBox>
 			<Title>나의 그룹</Title>
 			{groups.map(({ leader_id, color, name, members }, index) => {
@@ -78,7 +84,6 @@ const Group = () => {
 					/>
 				);
 			})}
-
 			<FootNavigation></FootNavigation>
 		</GroupContainer>
 	);
