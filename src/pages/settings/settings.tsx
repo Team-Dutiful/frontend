@@ -1,8 +1,15 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import profileImg from "../../assets/images/profileImg.png";
 import FootNavigation from "../../components/footNavigation";
 
 const Settings = () => {
+	const navigate = useNavigate();
+
+	const handleChangeUrl = (pageUrl: string) => {
+		navigate(`/setting/${pageUrl}`);
+	};
+
 	return (
 		<SettingsContainer>
 			<Profile>
@@ -15,11 +22,23 @@ const Settings = () => {
 				</ProfileInfo>
 			</Profile>
 			<ButtonSection>
-				<SettingButton>프로필 설정</SettingButton>
-				<SettingButton>계정 설정</SettingButton>
+				<SettingButton
+					onClick={() => {
+						handleChangeUrl("profile");
+					}}
+				>
+					프로필 설정
+				</SettingButton>
+				<SettingButton
+					onClick={() => {
+						handleChangeUrl("account");
+					}}
+				>
+					계정 설정
+				</SettingButton>
 				<LogoutButton>로그아웃</LogoutButton>
 			</ButtonSection>
-			<FootNavigation></FootNavigation>
+			<FootNavigation />
 		</SettingsContainer>
 	);
 };
@@ -84,6 +103,7 @@ const ButtonSection = styled.section`
 	gap: 21px;
 
 	button {
+		cursor: pointer;
 		border: 1px solid #e86464;
 		border-radius: 5px;
 		width: 220px;
