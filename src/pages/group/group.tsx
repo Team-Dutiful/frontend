@@ -4,7 +4,6 @@ import GroupBox from "../../components/groupBox";
 import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_icon.svg";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
-import axios from "axios";
 import { getGroups } from "../../api/group/index";
 
 interface MemberProps {

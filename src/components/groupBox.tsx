@@ -50,7 +50,7 @@ const GroupBoxContainer = styled.div<{ isLeader: boolean }>`
 	position: relative;
 	display: flex;
 	align-items: center;
-	height: 90px;
+	min-height: 90px;
 	width: 320px;
 	border: 1px solid #d3d3d3;
 	box-sizing: border-box;

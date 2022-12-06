@@ -1,68 +1,35 @@
 import styled, { StyledComponent } from "styled-components";
 import { ReactComponent as RefreshIcon } from "../../assets/icons/refresh_button_icon.svg";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
-import { ReactElement } from "react";
+import { useCallback, useState, useEffect } from "react";
+import { getMembers } from "../../api/group/index";
 
-interface MemberInterface {
+interface MemberProps {
 	member_id: number;
 	name: string;
 }
 const GroupFilter = () => {
-	const members = [
-		{
-			member_id: 1,
-			name: "김태호",
-		},
-		{
-			member_id: 2,
-			name: "김다인",
-		},
-		{
-			member_id: 3,
-			name: "조용우",
-		},
-		{
-			member_id: 4,
-			name: "박나영",
-		},
-		{
-			member_id: 5,
-			name: "오예환",
-		},
-		{
-			member_id: 6,
-			name: "권순용",
-		},
-	];
+	const [members, setMembers] = useState<MemberProps[]>();
 
-	/* TO-DO 리팩터링 필요 */
-	function composeMemberBox(members: MemberInterface[]): React.ReactNode {
-		return members.map((member, i) => {
-			if (i == 0) {
-				return (
-					<MemberContainer>
-						<MemberNameBox isExist={true}>전체보기</MemberNameBox>
-						{members[0] ? (
-							<MemberNameBox isExist={true}>{member.name}</MemberNameBox>
-						) : (
-							<MemberNameBox isExist={false}></MemberNameBox>
-						)}
-					</MemberContainer>
-				);
-			} else if (i % 2 !== 0 && i > 0) {
-				return (
-					<MemberContainer>
-						<MemberNameBox isExist={true}>{member.name}</MemberNameBox>
-						{members[i + 1] ? (
-							<MemberNameBox isExist={true}>{members[i + 1].name}</MemberNameBox>
-						) : (
-							<MemberNameBox isExist={false}></MemberNameBox>
-						)}
-					</MemberContainer>
-				);
-			}
-		});
-	}
+	const groupId = 1;
+
+	const getMemberInfo = () => {
+		return getMembers(groupId)
+			.then((res) => {
+				console.log(res.data);
+				return res.data.body.members;
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const setMemberData = async () => {
+		const res = await getMemberInfo();
+		setMembers(res);
+	};
+
+	useEffect(() => {
+		setMemberData();
+	}, []);
 
 	return (
 		<GroupFilterContainer>
@@ -75,7 +42,31 @@ const GroupFilter = () => {
 			</GroupFilterTitleBox>
 			<MemberBox>
 				<MemberTitle>멤버</MemberTitle>
-				{composeMemberBox(members)}
+				{members?.map((member, i) => {
+					if (i == 0) {
+						return (
+							<MemberContainer key={member.member_id}>
+								<MemberNameBox isExist={true}>전체보기</MemberNameBox>
+								{members[0] ? (
+									<MemberNameBox isExist={true}>{member.name}</MemberNameBox>
+								) : (
+									<MemberNameBox isExist={false}></MemberNameBox>
+								)}
+							</MemberContainer>
+						);
+					} else if (i % 2 !== 0 && i > 0) {
+						return (
+							<MemberContainer key={member.member_id}>
+								<MemberNameBox isExist={true}>{member.name}</MemberNameBox>
+								{members[i + 1] ? (
+									<MemberNameBox isExist={true}>{members[i + 1].name}</MemberNameBox>
+								) : (
+									<MemberNameBox isExist={false}></MemberNameBox>
+								)}
+							</MemberContainer>
+						);
+					}
+				})}
 			</MemberBox>
 			<WorkBox>
 				<WorkTitle>근무</WorkTitle>

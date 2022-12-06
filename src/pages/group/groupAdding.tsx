@@ -3,14 +3,19 @@ import { ColorResult, SketchPicker } from "react-color";
 import { useCallback, useState, useEffect } from "react";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
 import { useNavigate } from "react-router-dom";
+import { createGroup } from "../../api/group";
 
 const GroupAdding = () => {
 	const navigate = useNavigate();
 	const handleGoBackPage = () => {
 		navigate(-1);
 	};
+	const handleGroupListPage = () => {
+		navigate("/group");
+	};
 
 	const [isOpen, setIsOpen] = useState(false);
+	const [name, setName] = useState("");
 	const [colorHexCode, setColorHexCode] = useState("#000000");
 
 	const handleOpenColorPicker = () => {
@@ -25,13 +30,26 @@ const GroupAdding = () => {
 		setColorHexCode(e.hex);
 	};
 
+	const handleGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setName(e.target.value);
+	};
+
+	const handleCreateGroup = (name: string, color: string) => {
+		createGroup(name, color)
+			.then(() => {
+				alert("그룹 생성 성공!");
+				handleGroupListPage();
+			})
+			.catch((err) => alert("그룹 생성 실패!" + err));
+	};
+
 	return (
 		<GroupSettingContainer>
 			<BackIcon onClick={handleGoBackPage} />
 			<GroupSettingTitle>새 그룹 생성</GroupSettingTitle>
 			<GroupBox>
 				<GroupName>그룹명</GroupName>
-				<GroupNameInput></GroupNameInput>
+				<GroupNameInput required value={name} onChange={handleGroupName}></GroupNameInput>
 			</GroupBox>
 			<GroupBox>
 				<GroupName>그룹 색상</GroupName>
@@ -48,7 +66,7 @@ const GroupAdding = () => {
 			)}
 
 			<GroupSettingOkayButton>
-				<GroupSettinButtonText>확인</GroupSettinButtonText>
+				<GroupSettinButtonText onClick={() => handleCreateGroup(name, colorHexCode)}>확인</GroupSettinButtonText>
 			</GroupSettingOkayButton>
 		</GroupSettingContainer>
 	);
