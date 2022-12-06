@@ -5,6 +5,7 @@ import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_ico
 import { useNavigate } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import axios from "axios";
+import { getGroups } from "../../api/group/index";
 
 interface MemberProps {
 	member_id: number;
@@ -27,16 +28,11 @@ const Group = () => {
 	const goToGroupAdding = () => {
 		navigate("/group/add");
 	};
+
 	const curUserId = 1;
 
-	const getGroups = () => {
-		return axios
-			.get("http://localhost:10101/groups", {
-				headers: {
-					Authorization:
-						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWNhdGlvbiI6ImFhYWFhIiwiaWF0IjoxNjcwMzIxNjIxLCJleHAiOjE2NzA0MDgwMjF9.cM3HsL_G8cKcJQ3dZjOs6LwOy0HzLql_Uvv1sliwwrQ",
-				},
-			})
+	const getGroupInfo = () => {
+		return getGroups()
 			.then((res) => {
 				return res.data.body.groups;
 			})
@@ -44,7 +40,7 @@ const Group = () => {
 	};
 
 	const setGroupData = async () => {
-		const res = await getGroups();
+		const res = await getGroupInfo();
 		setGroups(res);
 	};
 
