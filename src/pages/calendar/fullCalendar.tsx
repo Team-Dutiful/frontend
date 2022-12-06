@@ -1,7 +1,7 @@
 import "@fullcalendar/react/dist/vdom";
 import FullCalendar, { DayHeaderContentArg, EventClickArg, VerboseFormattingArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import styled from "styled-components";
 import { EventType, SourceType } from "./calendar";
 import { tempEvents } from "./tempData";
@@ -54,14 +54,20 @@ const CustomCalendar = ({ setEvent }: CustomCalendarProps) => {
 		setEvent(arg.event._def.extendedProps.source);
 	};
 
-	const handleClickDate = (arg) => {
-		// console.log("date", arg);
+	const handleClickDate = (arg: DateClickArg) => {
+		const sources = arg.view.getCurrentData().eventSources;
+		const key = Object.keys(sources)[0];
+		const events = sources[key].meta;
+		const event = events.filter((event: EventType) => event.date === arg.dateStr)[0]?.source;
+
+		if (event) setEvent(event);
+		else setEvent();
 	};
 
 	return (
 		<FullCalendarContainer>
 			<FullCalendar
-				plugins={[dayGridPlugin, interactionPlugin]}
+				plugins={[dayGridPlugin, interactionPlugin]} // interactionPlugin: dateClick, eventClick 사용을 위한 plugin
 				initialView="dayGridMonth"
 				events={formattedEvents()}
 				height={"100%"}
@@ -148,9 +154,14 @@ const FullCalendarContainer = styled.div`
 	}
 
 	// Event Custom
+	.fc-daygrid-day-events {
+		height: 100%;
+	}
+
 	.fc-daygrid-event-harness {
 		display: flex;
 		justify-content: center;
+		/* padding: auto 0; */
 
 		.fc-daygrid-event {
 			display: flex;
