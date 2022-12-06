@@ -3,8 +3,25 @@ import FootNavigation from "../../components/footNavigation";
 import GroupBox from "../../components/groupBox";
 import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_icon.svg";
 import { useNavigate } from "react-router-dom";
+import { useCallback, useState, useEffect } from "react";
+import axios from "axios";
+
+interface MemberProps {
+	member_id: number;
+	name: string;
+}
+
+interface GroupProps {
+	group_id: number;
+	leader_id: number;
+	color: string;
+	name: string;
+	members: Array<MemberProps>;
+}
 
 const Group = () => {
+	const [groups, setGroups] = useState<GroupProps[]>();
+
 	const navigate = useNavigate();
 
 	const goToGroupAdding = () => {
@@ -12,60 +29,28 @@ const Group = () => {
 	};
 	const curUserId = 1;
 
-	const groups = [
-		{
-			group_id: 1,
-			name: "update group",
-			color: "#000000",
-			leader_id: 1,
-			members: [
-				{
-					member_id: 1,
-					name: "김철수",
+	const getGroups = () => {
+		return axios
+			.get("http://localhost:10101/groups", {
+				headers: {
+					Authorization:
+						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWNhdGlvbiI6ImFhYWFhIiwiaWF0IjoxNjcwMzIxNjIxLCJleHAiOjE2NzA0MDgwMjF9.cM3HsL_G8cKcJQ3dZjOs6LwOy0HzLql_Uvv1sliwwrQ",
 				},
-				{
-					member_id: 2,
-					name: "김철수",
-				},
-				{
-					member_id: 2,
-					name: "김철수",
-				},
-			],
-		},
-		{
-			group_id: 1,
-			name: "hi group",
-			color: "#000000",
-			leader_id: 2,
-			members: [
-				{
-					member_id: 1,
-					name: "김철수",
-				},
-				{
-					member_id: 2,
-					name: "김철수",
-				},
-			],
-		},
-		{
-			group_id: 1,
-			name: "update group",
-			color: "#000000",
-			leader_id: 3,
-			members: [
-				{
-					member_id: 1,
-					name: "김철수",
-				},
-				{
-					member_id: 2,
-					name: "김철수",
-				},
-			],
-		},
-	];
+			})
+			.then((res) => {
+				return res.data.body.groups;
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const temp = async () => {
+		const res = await getGroups();
+		setGroups(res);
+	};
+
+	useEffect(() => {
+		temp();
+	}, []);
 
 	return (
 		<GroupContainer>
@@ -73,11 +58,11 @@ const Group = () => {
 				<GroupAddIcon onClick={goToGroupAdding} />
 			</AddIconBox>
 			<Title>나의 그룹</Title>
-			{groups.map(({ leader_id, color, name, members }, index) => {
+			{groups?.map(({ group_id, leader_id, color, name, members }: GroupProps) => {
 				return (
 					<GroupBox
-						key={index}
-						isLeader={curUserId == leader_id}
+						key={group_id}
+						isLeader={curUserId === leader_id}
 						color={color}
 						title={name}
 						memberCount={members.length}

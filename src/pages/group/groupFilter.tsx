@@ -29,27 +29,30 @@ const GroupFilter = () => {
 			member_id: 5,
 			name: "오예환",
 		},
+		{
+			member_id: 6,
+			name: "권순용",
+		},
 	];
 
 	/* TO-DO 리팩터링 필요 */
 	function composeMemberBox(members: MemberInterface[]): React.ReactNode {
-		const result = [];
-		for (var i = -1; i < members.length; i += 2) {
-			if (i == -1) {
-				result.push(
+		return members.map((member, i) => {
+			if (i == 0) {
+				return (
 					<MemberContainer>
 						<MemberNameBox isExist={true}>전체보기</MemberNameBox>
 						{members[0] ? (
-							<MemberNameBox isExist={true}>{members[0].name}</MemberNameBox>
+							<MemberNameBox isExist={true}>{member.name}</MemberNameBox>
 						) : (
 							<MemberNameBox isExist={false}></MemberNameBox>
 						)}
 					</MemberContainer>
 				);
-			} else {
-				result.push(
+			} else if (i % 2 !== 0 && i > 0) {
+				return (
 					<MemberContainer>
-						<MemberNameBox isExist={true}>{members[i].name}</MemberNameBox>
+						<MemberNameBox isExist={true}>{member.name}</MemberNameBox>
 						{members[i + 1] ? (
 							<MemberNameBox isExist={true}>{members[i + 1].name}</MemberNameBox>
 						) : (
@@ -58,8 +61,7 @@ const GroupFilter = () => {
 					</MemberContainer>
 				);
 			}
-		}
-		return result;
+		});
 	}
 
 	return (
