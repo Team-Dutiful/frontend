@@ -1,13 +1,13 @@
 import axios from "axios";
 
+const API_URL = "http://localhost:8080/auth";
+
 export const sendAuthCodeEmail = (email: string) => {
-	console.log(email);
-	return axios.post("http://localhost:8080/auth/send-code", { email });
+	return axios.post(`${API_URL}/send-code`, { email });
 };
 
 export const signUp = (identification: string, password: string, name: string, email: string) => {
-	console.log(identification, password, name, email);
-	return axios.post("http://localhost:8080/auth/signup", {
+	return axios.post(`${API_URL}/signup`, {
 		identification,
 		password,
 		name,

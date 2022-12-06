@@ -6,10 +6,6 @@ import { useState } from "react";
 import PreviousButton from "../../components/auth/previousButton";
 import { sendAuthCodeEmail, signUp } from "../../api/auth";
 
-// TO DO
-// 비밀번호 확인 칠때부터 비밀번호 확인해주세요 경고문 띄우기
-// 비밀번호 5자 미만일 때 경고문 띄우기
-// 가입 완료시 성공 or 실패 모달 띄우고 페이지 넘어가기
 const SignUp = () => {
 	const navigate = useNavigate();
 	const [user, setUser] = useState({
@@ -57,11 +53,14 @@ const SignUp = () => {
 			signUp(id, password, name, email)
 				.then((res) => {
 					console.log(res);
+					alert("가입이 완료 되었습니다.");
 					navigate("/login");
 				})
 				.catch((error) => {
 					console.log(error);
 				});
+		} else {
+			alert("잘못된 입력 정보가 존재합니다.");
 		}
 	};
 
@@ -72,25 +71,30 @@ const SignUp = () => {
 				<SignUpTypograpy>회원가입</SignUpTypograpy>
 				<SignUpForm>
 					<SignUpInput id="id" label="아이디" autoComplete="userid" value={user.id} onChange={handleChangeUserInfo} />
-					<SignUpInput
-						id="password"
-						label="비밀번호"
-						type="password"
-						autoComplete="new-password"
-						value={user.password}
-						onChange={handleChangeUserInfo}
-					/>
+					<>
+						<SignUpInput
+							id="password"
+							label="패스워드"
+							type="password"
+							autoComplete="new-password"
+							value={user.password}
+							onChange={handleChangeUserInfo}
+						/>
+						{user.password.length < 5 && user.password.length > 1 && (
+							<SignUpInputBottomText color="#e86464">패스워드는 5자 이상 입력해주세요.</SignUpInputBottomText>
+						)}
+					</>
 					<>
 						<SignUpInput
 							id="checkPassword"
-							label="비밀번호 확인"
+							label="패스워드 확인"
 							type="password"
 							autoComplete="new-password"
 							value={user.checkPassword}
 							onChange={handleChangeUserInfo}
 						/>
 						<SignUpInputBottomText color={user.password === user.checkPassword ? "#74d277" : "#e86464"}>
-							{user.password === ""
+							{user.password.length < 5
 								? null
 								: user.password === user.checkPassword
 								? "비밀번호가 일치합니다."
@@ -116,20 +120,22 @@ const SignUp = () => {
 						/>
 						{isSend ? <SignUpInputBottomText color="#848484">인증코드가 전송되었습니다.</SignUpInputBottomText> : null}
 					</>
-					<>
-						<SignUpInput
-							id="code"
-							label="인증코드"
-							buttonLabel="확인"
-							onClick={handleClickCheckButton}
-							value={user.code}
-							onChange={handleChangeUserInfo}
-							checkCode={checkCode}
-						/>
-						{checkCode ? (
-							<SignUpInputBottomText color="#848484">이메일 인증이 완료되었습니다.</SignUpInputBottomText>
-						) : null}
-					</>
+					{isSend && (
+						<>
+							<SignUpInput
+								id="code"
+								label="인증코드"
+								buttonLabel="확인"
+								onClick={handleClickCheckButton}
+								value={user.code}
+								onChange={handleChangeUserInfo}
+								checkCode={checkCode}
+							/>
+							{checkCode ? (
+								<SignUpInputBottomText color="#848484">이메일 인증이 완료되었습니다.</SignUpInputBottomText>
+							) : null}
+						</>
+					)}
 				</SignUpForm>
 				<SignUpButton onClick={handleClickSignUpButton}>가입</SignUpButton>
 			</SignUpSection>
