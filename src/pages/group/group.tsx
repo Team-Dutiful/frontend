@@ -43,13 +43,13 @@ const Group = () => {
 			.catch((err) => console.log(err));
 	};
 
-	const temp = async () => {
+	const setGroupData = async () => {
 		const res = await getGroups();
 		setGroups(res);
 	};
 
 	useEffect(() => {
-		temp();
+		setGroupData();
 	}, []);
 
 	return (
