@@ -2,11 +2,14 @@ import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { useCallback, useState, useEffect } from "react";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { editGroup } from "../../api/group";
 
 const GroupEditing = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const groupId = location.state.groupId;
 
 	const handleGoBackPage = () => {
 		navigate(-1);
@@ -64,7 +67,7 @@ const GroupEditing = () => {
 			)}
 
 			<GroupSettingOkayButton>
-				<GroupSettinButtonText onClick={() => handleEditGroup()}>확인</GroupSettinButtonText>
+				<GroupSettinButtonText onClick={() => handleEditGroup(groupId, name, colorHexCode)}>확인</GroupSettinButtonText>
 			</GroupSettingOkayButton>
 		</GroupSettingContainer>
 	);

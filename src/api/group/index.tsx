@@ -33,7 +33,7 @@ export const createGroup = (name: string, color: string) => {
 };
 
 export const editGroup = (groupId: number, name: string, color: string) => {
-	return axios.post(
+	return axios.put(
 		`${API_URL}/${groupId}`,
 		{ name: name, color: color },
 		{

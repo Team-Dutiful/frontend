@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 interface GroupModalProps {
 	groupId: number;
@@ -11,8 +12,13 @@ interface GroupModalProps {
 
 const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 	const navigate = useNavigate();
+
 	const handleGoToEditing = () => {
-		navigate("/group/edit");
+		navigate("/group/edit", {
+			state: {
+				groupId: groupId,
+			},
+		});
 	};
 
 	const handleClickModal = (e: { stopPropagation: () => void }) => {

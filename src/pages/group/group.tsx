@@ -20,9 +20,9 @@ interface GroupProps {
 }
 
 const Group = () => {
-	const [groups, setGroups] = useState<GroupProps[]>();
-
 	const navigate = useNavigate();
+
+	const [groups, setGroups] = useState<GroupProps[]>();
 
 	const goToGroupAdding = () => {
 		navigate("/group/add");

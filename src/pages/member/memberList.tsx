@@ -3,8 +3,7 @@ import MemberBox from "../../components/memberBox";
 import { ReactComponent as InviteIcon } from "../../assets/icons/invite_button_icon.svg";
 import { useCallback, useState, useEffect } from "react";
 import { getMembers } from "../../api/group/index";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface MemberProps {
 	member_id: number;
