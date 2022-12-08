@@ -25,3 +25,7 @@ export const login = (identification: string, password: string) => {
 		{ withCredentials: true }
 	);
 };
+
+export const findId = (name: string, email: string) => {
+	return axios.post(`${API_URL}/find-id`, { name, email });
+};

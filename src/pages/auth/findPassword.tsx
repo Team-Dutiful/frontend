@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../components/appLogo";
 import PreviousButton from "../../components/auth/previousButton";
-import SignUpInput from "../../components/auth/signupInput";
+import LabelInput from "../../components/auth/labelInput";
 
 const FindPassword = () => {
 	const navigate = useNavigate();
@@ -13,7 +13,7 @@ const FindPassword = () => {
 			<Logo />
 			<FindPasswordTypograpy>비밀번호 찾기</FindPasswordTypograpy>
 			<FindPasswordTForm>
-				<SignUpInput id="email" label="이메일" />
+				<LabelInput id="email" label="이메일" />
 			</FindPasswordTForm>
 			<FindPasswordButton>임시 비밀번호 발급</FindPasswordButton>
 		</FindPasswordContainer>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import TeamLogo from "../../components/teamLogo";
 import { useNavigate } from "react-router-dom";
-import SignUpInput from "../../components/auth/signupInput";
+import LabelInput from "../../components/auth/labelInput";
 import { useState } from "react";
 import PreviousButton from "../../components/auth/previousButton";
 import { sendAuthCodeEmail, signUp } from "../../api/auth";
@@ -70,9 +70,9 @@ const SignUp = () => {
 			<SignUpSection>
 				<SignUpTypograpy>회원가입</SignUpTypograpy>
 				<SignUpForm>
-					<SignUpInput id="id" label="아이디" autoComplete="userid" value={user.id} onChange={handleChangeUserInfo} />
+					<LabelInput id="id" label="아이디" autoComplete="userid" value={user.id} onChange={handleChangeUserInfo} />
 					<>
-						<SignUpInput
+						<LabelInput
 							id="password"
 							label="패스워드"
 							type="password"
@@ -85,7 +85,7 @@ const SignUp = () => {
 						)}
 					</>
 					<>
-						<SignUpInput
+						<LabelInput
 							id="checkPassword"
 							label="패스워드 확인"
 							type="password"
@@ -101,7 +101,7 @@ const SignUp = () => {
 								: "비밀번호를 다시 확인해주세요."}
 						</SignUpInputBottomText>
 					</>
-					<SignUpInput
+					<LabelInput
 						id="name"
 						label="이름"
 						autoComplete="username"
@@ -109,7 +109,7 @@ const SignUp = () => {
 						onChange={handleChangeUserInfo}
 					/>
 					<>
-						<SignUpInput
+						<LabelInput
 							id="email"
 							label="이메일"
 							buttonLabel="전송"
@@ -122,7 +122,7 @@ const SignUp = () => {
 					</>
 					{isSend && (
 						<>
-							<SignUpInput
+							<LabelInput
 								id="code"
 								label="인증코드"
 								buttonLabel="확인"
