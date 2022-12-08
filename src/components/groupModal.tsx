@@ -7,11 +7,12 @@ import { exitGroup, deleteGroup } from "../api/group/index";
 interface GroupModalProps {
 	groupId: number;
 	title: string;
+	color: string;
 	isLeader: boolean;
 	onClose: () => void;
 }
 
-const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
+const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProps) => {
 	const navigate = useNavigate();
 
 	const handleGoToEditing = () => {
@@ -59,7 +60,7 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 			<GroupModalContent isLeader={isLeader} onClick={handleClickModal}>
 				<CloseIcon onClick={onClose} />
 				<GroupHeaderSection>
-					<ColorBox />
+					<ColorBox color={color} />
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
 				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
@@ -121,7 +122,7 @@ const GroupHeaderSection = styled.div`
 `;
 
 const GroupTitle = styled.span`
-	font-family: "Inter";
+	font-family: sans-serif;
 	font-style: normal;
 	font-weight: 700;
 	font-size: 16px;
@@ -131,8 +132,8 @@ const GroupTitle = styled.span`
 	margin-left: 7px;
 `;
 
-const ColorBox = styled.div`
-	background-color: red;
+const ColorBox = styled.div<{ color: string }>`
+	background-color: ${(props) => (props.color ? props.color : "black")};
 	height: 30px;
 	width: 30px;
 	border-radius: 50%;
@@ -141,7 +142,7 @@ const ColorBox = styled.div`
 
 const GroupButton = styled.button`
 	font-family: "Inter";
-	font-style: normal;
+	font-family: sans-serif;
 	font-weight: 500;
 	font-size: 16px;
 	line-height: 19px;

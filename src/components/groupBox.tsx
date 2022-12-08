@@ -48,7 +48,7 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProp
 			</PeopleIconBox>
 			{modalOpen && (
 				<ModalPortal>
-					<GroupModal groupId={groupId} title={title} isLeader={isLeader} onClose={handleCloseModal} />
+					<GroupModal groupId={groupId} title={title} color={color} isLeader={isLeader} onClose={handleCloseModal} />
 				</ModalPortal>
 			)}
 		</GroupBoxContainer>
