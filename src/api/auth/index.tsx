@@ -14,3 +14,14 @@ export const signUp = (identification: string, password: string, name: string, e
 		email,
 	});
 };
+
+export const login = (identification: string, password: string) => {
+	return axios.post(
+		`${API_URL}/login`,
+		{
+			identification,
+			password,
+		},
+		{ withCredentials: true }
+	);
+};
