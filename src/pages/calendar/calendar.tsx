@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import CustomCalendar from "./fullCalendar";
 import Footer from "./footer";
+import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar_function_icon.svg";
+import { ReactComponent as ShareIcon } from "../../assets/icons/calendar_share_icon.svg";
 
 export interface EventType {
 	title?: string;
@@ -25,7 +27,10 @@ const Calendar = () => {
 
 	return (
 		<CalendarContainer>
-			<Header>헤더</Header>
+			<Header>
+				<CalendarIcon className="calendar-icon" />
+				<ShareIcon className="share-icon" />
+			</Header>
 			<CustomCalendar setEvent={setEvent} />
 			<Footer event={event} />
 		</CalendarContainer>
@@ -40,5 +45,21 @@ const CalendarContainer = styled.div`
 `;
 
 const Header = styled.header`
-	height: 10%;
+	height: 60px;
+	display: flex;
+	justify-content: end;
+	padding-right: 32px;
+
+	.calendar-icon {
+		width: 32px;
+		height: 32px;
+		margin-top: 20px;
+	}
+
+	.share-icon {
+		width: 17px;
+		height: 20px;
+		margin-left: 12px;
+		margin-top: 26px;
+	}
 `;
