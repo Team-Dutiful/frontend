@@ -2,14 +2,19 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalStyled from "./GlobalStyled";
 
-import Welcome from "./pages/welcome";
+import Welcome from "./pages/Welcome";
 import FindId from "./pages/auth/findId";
 import FindPassword from "./pages/auth/findPassword";
-import Login from "./pages/auth/login";
+import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/signup";
 import Calendar from "./pages/calendar/calendar";
 import Group from "./pages/group/group";
+import GroupAdding from "./pages/group/groupAdding";
+import GroupEditing from "./pages/group/groupEditing";
+import GroupFilter from "./pages/group/groupFilter";
+
 import Settings from "./pages/settings/settings";
+import MemberList from "./pages/member/memberList";
 import ProfileSetting from "./pages/settings/profileSetting";
 import Setting from "./pages/settings/setting";
 import AccountSetting from "./pages/settings/accountSetting";
@@ -37,7 +42,11 @@ const App = () => {
 				<Route path="/find-password" element={<FindPassword />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
+				<Route path="group/add" element={<GroupAdding />} />
+				<Route path="group/edit" element={<GroupEditing />} />
+				<Route path="group/filter" element={<GroupFilter />} />
 				<Route path="settings" element={<Settings />} />
+				<Route path="members" element={<MemberList />} />
 				<Route path="setting" element={<Setting />}>
 					<Route path="profile" element={<ProfileSetting />} />
 					<Route path="account" element={<AccountSetting />} />
