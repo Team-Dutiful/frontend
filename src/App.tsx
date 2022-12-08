@@ -20,6 +20,7 @@ import Setting from "./pages/settings/setting";
 import AccountSetting from "./pages/settings/accountSetting";
 import PasswordSetting from "./pages/settings/passwordSetting";
 import EmailSetting from "./pages/settings/emailSetting";
+import ChangePassword from "./pages/auth/changePassword";
 
 const App = () => {
 	const setScreenSize = () => {
@@ -40,6 +41,7 @@ const App = () => {
 				<Route path="signup" element={<SignUp />} />
 				<Route path="find-id" element={<FindId />} />
 				<Route path="find-password" element={<FindPassword />} />
+				<Route path="change-password" element={<ChangePassword />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
 				<Route path="group/add" element={<GroupAdding />} />

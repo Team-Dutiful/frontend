@@ -6,8 +6,12 @@ export const sendAuthCodeEmail = (email: string) => {
 	return axios.post(`${API_URL}/send-code`, { email });
 };
 
+export const sendAuthCodeAtFindPassword = (email: string) => {
+	return axios.post(`${API_URL}/find-send-code`, { email });
+};
+
 export const signUp = (identification: string, password: string, name: string, email: string) => {
-	return axios.post(`${API_URL}/signup`, {
+	axios.post(`${API_URL}/signup`, {
 		identification,
 		password,
 		name,
