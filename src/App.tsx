@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalStyled from "./GlobalStyled";
 
-import Welcome from "./pages/Welcome";
+import Welcome from "./pages/welcome";
 import FindId from "./pages/auth/findId";
 import FindPassword from "./pages/auth/findPassword";
-import Login from "./pages/auth/Login";
+import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Calendar from "./pages/calendar/calendar";
 import Group from "./pages/group/group";
