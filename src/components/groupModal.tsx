@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { exitGroup } from "../api/group/index";
+import { exitGroup, deleteGroup } from "../api/group/index";
 
 interface GroupModalProps {
 	groupId: number;
@@ -16,6 +16,14 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 
 	const handleGoToEditing = () => {
 		navigate("/group/edit", {
+			state: {
+				groupId: groupId,
+			},
+		});
+	};
+
+	const handleGoToMemberList = () => {
+		navigate("/members", {
 			state: {
 				groupId: groupId,
 			},
@@ -36,6 +44,16 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 			.catch((err) => alert("그룹 나가기 실패!" + err));
 	};
 
+	const handeGroupDelete = () => {
+		deleteGroup(groupId)
+			.then(() => {
+				alert("그룹 삭제 성공.");
+				onClose();
+				window.location.reload();
+			})
+			.catch((err) => alert("그룹 삭제 실패!" + err));
+	};
+
 	return (
 		<GroupModalContainer onClick={onClose}>
 			<GroupModalContent isLeader={isLeader} onClick={handleClickModal}>
@@ -48,9 +66,9 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 				<GroupButton>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>
-						<GroupButton>리더 변경하기</GroupButton>
+						<GroupButton onClick={handleGoToMemberList}>리더 변경하기</GroupButton>
 						<ButtonBorder />
-						<GroupDeleteButton>그룹 삭제하기</GroupDeleteButton>
+						<GroupDeleteButton onClick={handeGroupDelete}>그룹 삭제하기</GroupDeleteButton>
 					</>
 				) : (
 					<GroupButton onClick={handleGroupExit}>그룹 나가기</GroupButton>

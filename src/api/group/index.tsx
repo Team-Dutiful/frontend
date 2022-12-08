@@ -55,3 +55,25 @@ export const exitGroup = (groupId: number) => {
 		}
 	);
 };
+
+export const deleteGroup = (groupId: number) => {
+	return axios.delete(`${API_URL}/${groupId}`, {
+		headers: {
+			Authorization: TOKEN,
+		},
+	});
+};
+
+export const chagneGroupLeader = (groupId: number, userId: number) => {
+	return axios.put(
+		`${API_URL}/${groupId}/change-leader`,
+		{
+			user_id: userId,
+		},
+		{
+			headers: {
+				Authorization: TOKEN,
+			},
+		}
+	);
+};
