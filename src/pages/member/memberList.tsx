@@ -13,10 +13,9 @@ interface MemberProps {
 
 const MemberList = () => {
 	const location = useLocation();
-	const state = location.state as { groupId: number };
 
 	const [members, setMembers] = useState<MemberProps[]>();
-	const [groupId, setGroupId] = useState(0);
+	const [groupId, setGroupId] = useState(location.state.groupId);
 	const [leaderId, setLeaderId] = useState(0);
 
 	const getMemberList = () => {
@@ -35,7 +34,6 @@ const MemberList = () => {
 
 	useEffect(() => {
 		setMemberData();
-		setGroupId(state.groupId);
 	}, []);
 
 	return (

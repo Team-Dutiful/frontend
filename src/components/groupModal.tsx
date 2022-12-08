@@ -15,14 +15,6 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 		navigate("/group/edit");
 	};
 
-	const handleGoToMemberList = () => {
-		navigate("/members", {
-			state: {
-				groupId: groupId,
-			},
-		});
-	};
-
 	const handleClickModal = (e: { stopPropagation: () => void }) => {
 		e.stopPropagation();
 	};
@@ -36,7 +28,7 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
 				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
-				<GroupButton onClick={handleGoToMemberList}>멤버 초대하기</GroupButton>
+				<GroupButton>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>
 						<GroupButton>리더 변경하기</GroupButton>

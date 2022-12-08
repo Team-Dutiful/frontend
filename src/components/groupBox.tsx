@@ -4,6 +4,7 @@ import ModalPortal from "../components/modalPortal";
 import { ReactComponent as GroupMenuIcon } from "../assets/icons/group_menu_icon.svg";
 import { ReactComponent as GroupPeopleIcon } from "../assets/icons/group_people_icon.svg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GroupBoxProps {
 	groupId: number;
@@ -14,6 +15,8 @@ interface GroupBoxProps {
 }
 
 const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProps) => {
+	const navigate = useNavigate();
+
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const handleOpenModal = () => {
@@ -24,6 +27,14 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProp
 		setModalOpen(false);
 	};
 
+	const handleGoToMemberList = () => {
+		navigate("/members", {
+			state: {
+				groupId: groupId,
+			},
+		});
+	};
+
 	return (
 		<GroupBoxContainer isLeader={isLeader}>
 			<ColorBox color={color}></ColorBox>
@@ -31,7 +42,7 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProp
 			<IconBox>
 				<GroupMenuIcon onClick={handleOpenModal} />
 			</IconBox>
-			<PeopleIconBox>
+			<PeopleIconBox onClick={handleGoToMemberList}>
 				<GroupPeopleIcon />
 				<GroupPeopleCount>{memberCount}</GroupPeopleCount>
 			</PeopleIconBox>
