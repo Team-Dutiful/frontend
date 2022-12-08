@@ -1,14 +1,42 @@
 import styled from "styled-components";
 import MemberBox from "../../components/memberBox";
 import { ReactComponent as InviteIcon } from "../../assets/icons/invite_button_icon.svg";
+import { useCallback, useState, useEffect } from "react";
+import { getMembers } from "../../api/group/index";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
+interface MemberProps {
+	member_id: number;
+	name: string;
+}
 
 const MemberList = () => {
-	const members = [
-		{ name: "김다인", isLeader: true },
-		{ name: "박나영", isLeader: false },
-		{ name: "조용우", isLeader: false },
-		{ name: "오예환", isLeader: false },
-	];
+	const location = useLocation();
+	const state = location.state as { groupId: number };
+
+	const [members, setMembers] = useState<MemberProps[]>();
+	const [groupId, setGroupId] = useState(0);
+	const [leaderId, setLeaderId] = useState(0);
+
+	const getMemberList = () => {
+		return getMembers(groupId)
+			.then((res) => {
+				return res.data.body.group_members;
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const setMemberData = async () => {
+		const res = await getMemberList();
+		setMembers(res.members);
+		setLeaderId(res.leader_id);
+	};
+
+	useEffect(() => {
+		setMemberData();
+		setGroupId(state.groupId);
+	}, []);
 
 	return (
 		<MemberListContainer>
@@ -18,8 +46,8 @@ const MemberList = () => {
 			<MemberTitleBox>
 				<MemberListTitle>멤버 목록</MemberListTitle>
 			</MemberTitleBox>
-			{members.map((member) => {
-				return <MemberBox name={member.name} isLeader={member.isLeader} />;
+			{members?.map(({ member_id, name }: MemberProps) => {
+				return <MemberBox name={name} isLeader={member_id == leaderId} />;
 			})}
 		</MemberListContainer>
 	);

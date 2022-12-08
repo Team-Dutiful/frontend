@@ -6,13 +6,14 @@ import { ReactComponent as GroupPeopleIcon } from "../assets/icons/group_people_
 import { useState } from "react";
 
 interface GroupBoxProps {
+	groupId: number;
 	isLeader: boolean;
 	color: string;
 	title: string;
 	memberCount: number;
 }
 
-const GroupBox = ({ isLeader, color, title, memberCount }: GroupBoxProps) => {
+const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProps) => {
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const handleOpenModal = () => {
@@ -36,7 +37,7 @@ const GroupBox = ({ isLeader, color, title, memberCount }: GroupBoxProps) => {
 			</PeopleIconBox>
 			{modalOpen && (
 				<ModalPortal>
-					<GroupModal title={title} isLeader={isLeader} onClose={handleCloseModal} />
+					<GroupModal groupId={groupId} title={title} isLeader={isLeader} onClose={handleCloseModal} />
 				</ModalPortal>
 			)}
 		</GroupBoxContainer>
@@ -59,8 +60,8 @@ const GroupBoxContainer = styled.div<{ isLeader: boolean }>`
 	margin: 15px;
 `;
 
-const ColorBox = styled.div`
-	background-color: red;
+const ColorBox = styled.div<{ color: string }>`
+	background-color: ${(props) => (props.color ? props.color : "black")};
 	height: 30px;
 	width: 30px;
 	border-radius: 50%;

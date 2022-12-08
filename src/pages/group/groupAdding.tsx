@@ -10,9 +10,6 @@ const GroupAdding = () => {
 	const handleGoBackPage = () => {
 		navigate(-1);
 	};
-	const handleGroupListPage = () => {
-		navigate("/group");
-	};
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [name, setName] = useState("");
@@ -38,7 +35,7 @@ const GroupAdding = () => {
 		createGroup(name, color)
 			.then(() => {
 				alert("그룹 생성 성공!");
-				handleGroupListPage();
+				handleGoBackPage();
 			})
 			.catch((err) => alert("그룹 생성 실패!" + err));
 	};

@@ -3,7 +3,7 @@ import FootNavigation from "../../components/footNavigation";
 import GroupBox from "../../components/groupBox";
 import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_icon.svg";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getGroups } from "../../api/group/index";
 
 interface MemberProps {
@@ -57,6 +57,7 @@ const Group = () => {
 				return (
 					<GroupBox
 						key={group_id}
+						groupId={group_id}
 						isLeader={curUserId === leader_id}
 						color={color}
 						title={name}

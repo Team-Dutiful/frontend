@@ -1,14 +1,44 @@
+import { useState } from "react";
 import styled from "styled-components";
+import CustomCalendar from "./fullCalendar";
+import Footer from "./footer";
+
+export interface EventType {
+	title?: string;
+	name?: string;
+	date?: string;
+	day?: number;
+	color?: string;
+	source?: object;
+}
+
+export interface SourceType {
+	color: string;
+	day: number;
+	name: string;
+	work_id: number;
+	work_time: string;
+}
 
 const Calendar = () => {
-	return <CalendarContainer>Calendar페이지</CalendarContainer>;
+	const [event, setEvent] = useState<SourceType>();
+
+	return (
+		<CalendarContainer>
+			<Header>헤더</Header>
+			<CustomCalendar setEvent={setEvent} />
+			<Footer event={event} />
+		</CalendarContainer>
+	);
 };
 
 export default Calendar;
 
 const CalendarContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	width: 360px;
+	position: relative;
+	height: calc(var(--vh, 1vh) * 100);
+`;
+
+const Header = styled.header`
+	height: 10%;
 `;

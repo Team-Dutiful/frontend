@@ -3,15 +3,24 @@ import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
 import { useNavigate } from "react-router-dom";
 
 interface GroupModalProps {
+	groupId: number;
 	title: string;
 	isLeader: boolean;
 	onClose: () => void;
 }
 
-const GroupModal = ({ title, isLeader, onClose }: GroupModalProps) => {
+const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 	const navigate = useNavigate();
 	const handleGoToEditing = () => {
 		navigate("/group/edit");
+	};
+
+	const handleGoToMemberList = () => {
+		navigate("/members", {
+			state: {
+				groupId: groupId,
+			},
+		});
 	};
 
 	const handleClickModal = (e: { stopPropagation: () => void }) => {
@@ -27,7 +36,7 @@ const GroupModal = ({ title, isLeader, onClose }: GroupModalProps) => {
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
 				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
-				<GroupButton>멤버 초대하기</GroupButton>
+				<GroupButton onClick={handleGoToMemberList}>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>
 						<GroupButton>리더 변경하기</GroupButton>
