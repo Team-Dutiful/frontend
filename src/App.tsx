@@ -36,10 +36,10 @@ const App = () => {
 			<GlobalStyled />
 			<Routes>
 				<Route path="/" element={<Welcome />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/signup" element={<SignUp />} />
-				<Route path="/find-id" element={<FindId />} />
-				<Route path="/find-password" element={<FindPassword />} />
+				<Route path="login" element={<Login />} />
+				<Route path="signup" element={<SignUp />} />
+				<Route path="find-id" element={<FindId />} />
+				<Route path="find-password" element={<FindPassword />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="group" element={<Group />} />
 				<Route path="group/add" element={<GroupAdding />} />
