@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:10101/groups";
 const TOKEN =
-	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWNhdGlvbiI6ImFhYWFhIiwiaWF0IjoxNjcwNDk0MTg1LCJleHAiOjE2NzA1ODA1ODV9.p66xUVXHwdD_TUNd5hIe9u2CMnQZc80gqA27S7Eje6E";
+	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWNhdGlvbiI6ImFhYWFhIiwiaWF0IjoxNjcwNDk3MzQ0LCJleHAiOjE2NzA1ODM3NDR9.F9UNJZUldad1lsPydKou4EZRgj3o9LKbhUlWSqvJ66g";
 
 export const getGroups = () => {
 	return axios.get(`${API_URL}`, {
@@ -36,6 +36,18 @@ export const editGroup = (groupId: number, name: string, color: string) => {
 	return axios.put(
 		`${API_URL}/${groupId}`,
 		{ name: name, color: color },
+		{
+			headers: {
+				Authorization: TOKEN,
+			},
+		}
+	);
+};
+
+export const exitGroup = (groupId: number) => {
+	return axios.post(
+		`${API_URL}/${groupId}/exit`,
+		{},
 		{
 			headers: {
 				Authorization: TOKEN,

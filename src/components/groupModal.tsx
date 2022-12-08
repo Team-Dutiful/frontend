@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { exitGroup } from "../api/group/index";
 
 interface GroupModalProps {
 	groupId: number;
@@ -25,6 +26,16 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 		e.stopPropagation();
 	};
 
+	const handleGroupExit = () => {
+		exitGroup(groupId)
+			.then(() => {
+				alert("그룹 나가기 성공.");
+				onClose();
+				window.location.reload();
+			})
+			.catch((err) => alert("그룹 나가기 실패!" + err));
+	};
+
 	return (
 		<GroupModalContainer onClick={onClose}>
 			<GroupModalContent isLeader={isLeader} onClick={handleClickModal}>
@@ -42,7 +53,7 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 						<GroupDeleteButton>그룹 삭제하기</GroupDeleteButton>
 					</>
 				) : (
-					<GroupButton>그룹 나가기</GroupButton>
+					<GroupButton onClick={handleGroupExit}>그룹 나가기</GroupButton>
 				)}
 			</GroupModalContent>
 		</GroupModalContainer>
