@@ -21,7 +21,7 @@ export const getMembers = (groupId: number) => {
 			withCredentials: true,
 		})
 		.then((res) => {
-			return res.data.body.group_members;
+			return res.data.body.group_members.members;
 		})
 		.catch((err) => {
 			return err;
@@ -30,7 +30,13 @@ export const getMembers = (groupId: number) => {
 
 export const createGroup = (name: string, color: string): any => {
 	return axios
-		.post(`${API_URL}`, { name: name, color: color })
+		.post(
+			`${API_URL}`,
+			{ name: name, color: color },
+			{
+				withCredentials: true,
+			}
+		)
 		.then((res) => {
 			return res.data;
 		})
@@ -40,24 +46,39 @@ export const createGroup = (name: string, color: string): any => {
 };
 
 export const editGroup = (groupId: number, name: string, color: string) => {
-	return axios.put(`${API_URL}/${groupId}`, { name: name, color: color });
+	return axios.put(
+		`${API_URL}/${groupId}`,
+		{ name: name, color: color },
+		{
+			withCredentials: true,
+		}
+	);
 };
 
 export const exitGroup = (groupId: number) => {
-	return axios
-		.post(`${API_URL}/${groupId}/exit`, {})
-		.then(() => {
-			alert("그룹 나가기 성공.");
-		})
-		.catch((err) => alert("그룹 나가기 실패!" + err));
+	return axios.post(
+		`${API_URL}/${groupId}/exit`,
+		{},
+		{
+			withCredentials: true,
+		}
+	);
 };
 
 export const deleteGroup = (groupId: number) => {
-	return axios.delete(`${API_URL}/${groupId}`, {});
+	return axios.delete(`${API_URL}/${groupId}`, {
+		withCredentials: true,
+	});
 };
 
 export const chagneGroupLeader = (groupId: number, userId: number) => {
-	return axios.put(`${API_URL}/${groupId}/change-leader`, {
-		user_id: userId,
-	});
+	return axios.put(
+		`${API_URL}/${groupId}/change-leader`,
+		{
+			user_id: userId,
+		},
+		{
+			withCredentials: true,
+		}
+	);
 };

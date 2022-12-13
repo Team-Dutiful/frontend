@@ -9,23 +9,16 @@ interface MemberProps {
 	name: string;
 }
 const GroupFilter = () => {
-	const [members, setMembers] = useState<MemberProps[]>();
+	const [members, setMembers] = useState<MemberProps[]>([]);
 
-	const groupId = 1;
+	const groupId = 17;
 
-	const getMemberInfo = () => {
-		return getMembers(groupId);
-	};
-
-	const setMemberData = async () => {
-		const res = await getMemberInfo();
-		if (res.status == 200) {
-			setMembers(res.body.members);
-		}
+	const getMemberInfo = async () => {
+		return await getMembers(groupId).then((res) => setMembers(res));
 	};
 
 	useEffect(() => {
-		setMemberData();
+		getMemberInfo();
 	}, []);
 
 	return (
@@ -39,7 +32,7 @@ const GroupFilter = () => {
 			</GroupFilterTitleBox>
 			<MemberBox>
 				<MemberTitle>멤버</MemberTitle>
-				{members?.map((member, i) => {
+				{members.map((member, i) => {
 					if (i == 0) {
 						return (
 							<MemberContainer key={member.member_id}>

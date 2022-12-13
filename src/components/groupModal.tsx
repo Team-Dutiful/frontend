@@ -19,6 +19,8 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 		navigate("/group/edit", {
 			state: {
 				groupId: groupId,
+				color: color,
+				title: title,
 			},
 		});
 	};
@@ -36,9 +38,13 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 	};
 
 	const handleGroupExit = () => {
-		exitGroup(groupId);
-		onClose();
-		window.location.reload();
+		exitGroup(groupId)
+			.then(() => {
+				alert("그룹 수정 성공!");
+				onClose();
+				window.location.reload();
+			})
+			.catch((err) => alert("그룹 수정 실패!" + err));
 	};
 
 	const handeGroupDelete = () => {

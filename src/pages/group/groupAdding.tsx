@@ -32,10 +32,7 @@ const GroupAdding = () => {
 	};
 
 	const handleCreateGroup = (name: string, color: string) => {
-		const res = createGroup(name, color);
-		if (res.status == 200) {
-			handleGoBackPage();
-		}
+		createGroup(name, color).then(() => handleGoBackPage());
 	};
 
 	return (
