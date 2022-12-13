@@ -1,32 +1,23 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { SourceType } from "./calendar";
 import { ReactComponent as PencilIcon } from "../../assets/icons/calendar_pencil_icon.svg";
 import { ReactComponent as TrashbinIcon } from "../../assets/icons/calendar_trashbin_icon.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/icons/calendar_settings_icon.svg";
+import { ActionTypeButton, WorkTypeButton } from "../../components/calendar/workTypeButtons";
 
 interface FooterProps {
 	event?: SourceType;
+	isEditMode: boolean;
+	toggleEditMode: () => void;
 }
 
-const Footer = ({ event }: FooterProps) => {
-	const [isEditMode, setIsEditMode] = useState(false);
-
-	const toggleEditMode = () => {
-		setIsEditMode(!isEditMode);
-	};
-
-	useEffect(() => {
-		if (event) {
-			setIsEditMode(false);
-		} else {
-			setIsEditMode(true);
-		}
-	}, [event]);
+const Footer = ({ event, isEditMode, toggleEditMode }: FooterProps) => {
+	const navigate = useNavigate();
 
 	return (
 		<FooterContainer>
-			{!isEditMode ? (
+			{event && !isEditMode && (
 				<EventBox>
 					<Day color={event?.color}>{event?.day}</Day>
 					<Name>{event?.name}</Name>
@@ -34,14 +25,26 @@ const Footer = ({ event }: FooterProps) => {
 					<PencilIcon onClick={toggleEditMode} />
 					<TrashbinIcon />
 				</EventBox>
-			) : (
+			)}
+			{isEditMode && (
 				<NoEventBox>
-					<Header>
-						<Title>근무 등록</Title>
-						<IconBox>
-							<SettingsIcon />
-						</IconBox>
-					</Header>
+					<Title>근무 등록</Title>
+					<IconBox onClick={() => navigate("/calendar/setting")}>
+						<SettingsIcon />
+					</IconBox>
+					<Buttons>
+						<WorkButtons>
+							<WorkTypeButton type="DAY" />
+							<WorkTypeButton type={"EVE"} />
+							<WorkTypeButton type={"NIGHT"} />
+							<WorkTypeButton type={"OFF"} />
+							<WorkTypeButton type={"ETC"} />
+						</WorkButtons>
+						<ActionButtons>
+							<ActionTypeButton type={"SKIP"} />
+							<ActionTypeButton type={"DELETE"} />
+						</ActionButtons>
+					</Buttons>
 				</NoEventBox>
 			)}
 		</FooterContainer>
@@ -65,21 +68,21 @@ const EventBox = styled.div`
 const NoEventBox = styled.div`
 	position: relative;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
 	padding: 1rem;
 `;
-
-const Header = styled.div``;
 
 const Title = styled.h1`
 	font-size: 20px;
 	font-weight: 700;
+	text-align: center;
+	margin: 8px 0 16px 0;
 `;
 
 const IconBox = styled.div`
 	position: absolute;
-	top: 1rem;
-	right: 1rem;
+	top: 24px;
+	right: 24px;
 `;
 
 const Day = styled.h1`
@@ -94,4 +97,23 @@ const Name = styled.h1`
 const Time = styled.p`
 	font-size: 20px;
 	font-weight: 400;
+`;
+
+const Buttons = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+`;
+
+const WorkButtons = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+`;
+
+const ActionButtons = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 `;
