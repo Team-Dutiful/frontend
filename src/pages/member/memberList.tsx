@@ -18,11 +18,7 @@ const MemberList = () => {
 	const [leaderId, setLeaderId] = useState(0);
 
 	const getMemberList = () => {
-		return getMembers(groupId)
-			.then((res) => {
-				return res.data.body.group_members;
-			})
-			.catch((err) => console.log(err));
+		return getMembers(groupId);
 	};
 
 	const setMemberData = async () => {

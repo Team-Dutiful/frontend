@@ -32,12 +32,10 @@ const GroupAdding = () => {
 	};
 
 	const handleCreateGroup = (name: string, color: string) => {
-		createGroup(name, color)
-			.then(() => {
-				alert("그룹 생성 성공!");
-				handleGoBackPage();
-			})
-			.catch((err) => alert("그룹 생성 실패!" + err));
+		const res = createGroup(name, color);
+		if (res.status == 200) {
+			handleGoBackPage();
+		}
 	};
 
 	return (

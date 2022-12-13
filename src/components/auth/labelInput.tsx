@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-interface SignUpInputProps {
+interface LabelInputtProps {
 	id: string;
 	type?: React.HTMLInputTypeAttribute;
 	autoComplete?: string;
@@ -12,7 +12,7 @@ interface SignUpInputProps {
 	checkCode?: boolean;
 }
 
-const SignUpInput = ({
+const LabelInput = ({
 	id,
 	type,
 	autoComplete,
@@ -22,9 +22,9 @@ const SignUpInput = ({
 	onClick,
 	onChange,
 	checkCode,
-}: SignUpInputProps) => {
+}: LabelInputtProps) => {
 	return (
-		<SignUpInputContainer>
+		<LabelInputContainer>
 			<Label>{label}</Label>
 			<div style={{ display: "flex", gap: "3px" }}>
 				<Input
@@ -42,11 +42,11 @@ const SignUpInput = ({
 					</Button>
 				)}
 			</div>
-		</SignUpInputContainer>
+		</LabelInputContainer>
 	);
 };
 
-const SignUpInputContainer = styled.div`
+const LabelInputContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: start;
@@ -77,4 +77,4 @@ const Button = styled.button<{ checkCode?: boolean }>`
 	font-size: 12px;
 `;
 
-export default SignUpInput;
+export default LabelInput;

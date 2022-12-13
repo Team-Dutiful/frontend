@@ -14,17 +14,14 @@ const GroupFilter = () => {
 	const groupId = 1;
 
 	const getMemberInfo = () => {
-		return getMembers(groupId)
-			.then((res) => {
-				console.log(res.data);
-				return res.data.body.members;
-			})
-			.catch((err) => console.log(err));
+		return getMembers(groupId);
 	};
 
 	const setMemberData = async () => {
 		const res = await getMemberInfo();
-		setMembers(res);
+		if (res.status == 200) {
+			setMembers(res.body.members);
+		}
 	};
 
 	useEffect(() => {

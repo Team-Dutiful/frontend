@@ -36,13 +36,9 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 	};
 
 	const handleGroupExit = () => {
-		exitGroup(groupId)
-			.then(() => {
-				alert("그룹 나가기 성공.");
-				onClose();
-				window.location.reload();
-			})
-			.catch((err) => alert("그룹 나가기 실패!" + err));
+		exitGroup(groupId);
+		onClose();
+		window.location.reload();
 	};
 
 	const handeGroupDelete = () => {

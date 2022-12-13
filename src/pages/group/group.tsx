@@ -22,24 +22,22 @@ interface GroupProps {
 const Group = () => {
 	const navigate = useNavigate();
 
-	const [groups, setGroups] = useState<GroupProps[]>();
+	const [groups, setGroups] = useState<any[]>([]);
 
 	const goToGroupAdding = () => {
 		navigate("/group/add");
 	};
 
-	const curUserId = 1;
+	const curUserId = 4;
 
-	const getGroupInfo = () => {
-		return getGroups()
-			.then((res) => {
-				return res.data.body.groups;
-			})
-			.catch((err) => console.log(err));
+	const getGroupInfo = async () => {
+		console.log("----", await getGroups());
+		return await getGroups();
 	};
 
-	const setGroupData = async () => {
-		const res = await getGroupInfo();
+	const setGroupData = () => {
+		const res = getGroupInfo();
+		console.log("res----", res);
 		setGroups(res);
 	};
 
@@ -53,7 +51,7 @@ const Group = () => {
 				<GroupAddIcon onClick={goToGroupAdding} />
 			</AddIconBox>
 			<Title>나의 그룹</Title>
-			{groups?.map(({ group_id, leader_id, color, name, members }: GroupProps) => {
+			{groups.map(({ group_id, leader_id, color, name, members }: GroupProps) => {
 				return (
 					<GroupBox
 						key={group_id}

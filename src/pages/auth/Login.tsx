@@ -1,12 +1,39 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import Logo from "../../components/appLogo";
 import TeamLogo from "../../components/teamLogo";
 import { ReactComponent as KakoIcon } from "../../assets/icons/auth_kakao.svg";
 import { ReactComponent as NaverIcon } from "../../assets/icons/auth_naver.svg";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/auth";
 
 const Login = () => {
+	const [user, setUser] = useState({
+		id: "",
+		password: "",
+	});
 	const navigate = useNavigate();
+
+	const handleChangeLoginInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { id, value } = event.target;
+		setUser({
+			...user,
+			[id]: value,
+		});
+	};
+
+	const handleClickLoginButton = () => {
+		login(user.id, user.password)
+			.then((res) => {
+				console.log(res);
+				if (res.status === 200) navigate("/group");
+				else if (res.status === 400) alert("로그인 실패!");
+			})
+			.catch((error) => {
+				console.log(error);
+				alert("로그인 실패!");
+			});
+	};
 
 	return (
 		<LoginContainer>
@@ -15,10 +42,16 @@ const Login = () => {
 				<LoginBox style={{ marginTop: "3rem" }}>
 					<LoginTypograph>로그인</LoginTypograph>
 					<LoginInputButtonGroup>
-						<LoginInput placeholder="아이디를 입력해주세요." />
-						<LoginInput placeholder="비밀번호를 입력해주세요." type="password" autoComplete="on" />
+						<LoginInput id="id" placeholder="아이디를 입력해주세요." onChange={handleChangeLoginInfo} />
+						<LoginInput
+							id="password"
+							placeholder="비밀번호를 입력해주세요."
+							type="password"
+							autoComplete="on"
+							onChange={handleChangeLoginInfo}
+						/>
 					</LoginInputButtonGroup>
-					<LoginButton onClick={() => console.log()}>확인</LoginButton>
+					<LoginButton onClick={handleClickLoginButton}>확인</LoginButton>
 					<LoginTextButtonGroup>
 						<LoginTextButton onClick={() => navigate("/signup")}>회원가입</LoginTextButton>
 						<div>
