@@ -49,4 +49,41 @@ export const tempEvents = [
 	},
 ];
 
-export const tempWorkType = [];
+export const tempWorkList = [
+	{
+		id: 0,
+		name: "DAY",
+		color: "#FF9F9F",
+		start_time: "09:00",
+		end_time: "16:00",
+		work_type: "DAY",
+		memo: "메모",
+	},
+	{
+		id: 1,
+		name: "EVE",
+		color: "#FFDF8D",
+		start_time: "17:00",
+		end_time: "21:00",
+		work_type: "EVE",
+		memo: "메모",
+	},
+	{
+		id: 2,
+		name: "NIGHT",
+		color: "#63E2BC",
+		start_time: "09:00",
+		end_time: "16:00",
+		work_type: "DAY",
+		memo: "메모",
+	},
+	{
+		id: 4,
+		name: "OFF",
+		color: "#9BC9FF",
+		start_time: "17:00",
+		end_time: "21:00",
+		work_type: "EVE",
+		memo: "메모",
+	},
+];
