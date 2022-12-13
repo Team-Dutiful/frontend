@@ -1,21 +1,19 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:8080/auth";
+import { instance as axios } from "../config";
 
 export const sendAuthCodeEmail = (email: string) => {
-	return axios.post(`${API_URL}/send-code`, { email });
+	return axios.post(`/auth/send-code`, { email });
 };
 
 export const sendAuthCodeAtFindPassword = (email: string) => {
-	return axios.post(`${API_URL}/find-send-code`, { email });
+	return axios.post(`/auth/find-send-code`, { email });
 };
 
 export const changePasswordByEmail = (email: string, password: string) => {
-	return axios.post(`${API_URL}/change-pwd-from-email`, { email, password });
+	return axios.post(`/auth/change-pwd-from-email`, { email, password });
 };
 
 export const signUp = (identification: string, password: string, name: string, email: string) => {
-	return axios.post(`${API_URL}/signup`, {
+	return axios.post(`/auth/signup`, {
 		identification,
 		password,
 		name,
@@ -25,7 +23,7 @@ export const signUp = (identification: string, password: string, name: string, e
 
 export const login = (identification: string, password: string) => {
 	return axios.post(
-		`${API_URL}/login`,
+		`/auth/login`,
 		{
 			identification,
 			password,
@@ -35,5 +33,5 @@ export const login = (identification: string, password: string) => {
 };
 
 export const findId = (name: string, email: string) => {
-	return axios.post(`${API_URL}/find-id`, { name, email });
+	return axios.post(`/auth/find-id`, { name, email });
 };
