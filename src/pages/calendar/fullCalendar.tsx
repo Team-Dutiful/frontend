@@ -8,9 +8,10 @@ import { tempEvents } from "./tempData";
 
 interface CustomCalendarProps {
 	setEvent: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
+	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CustomCalendar = ({ setEvent }: CustomCalendarProps) => {
+const CustomCalendar = ({ setEvent, setIsEditMode }: CustomCalendarProps) => {
 	// event data를 fullCalendar event 형식에 맞춰 전처리
 	const formattedEvents = () => {
 		let events: EventType[] = [];
@@ -60,8 +61,12 @@ const CustomCalendar = ({ setEvent }: CustomCalendarProps) => {
 		const events = sources[key].meta;
 		const event = events.filter((event: EventType) => event.date === arg.dateStr)[0]?.source;
 
-		if (event) setEvent(event);
-		else setEvent();
+		if (event) {
+			setEvent(event);
+			setIsEditMode(false);
+		} else {
+			setEvent(undefined);
+		}
 	};
 
 	return (
