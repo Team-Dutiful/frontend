@@ -18,24 +18,27 @@ const GroupEditing = () => {
 	};
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [choiceColorCode, setChoiceColorCode] = useState(color);
+	const [choiceColor, setChoiceColor] = useState(color);
+	const [prevColor, setPrevColor] = useState(color);
 	const [name, setName] = useState(title);
 
 	const handleOpenColorPicker = () => {
 		setIsOpen(true);
 	};
 
-	const handleCloseColorPicker = () => {
+	const handleAcceptColorPicker = (color: string) => {
+		setChoiceColor(color);
+		setPrevColor(color);
 		setIsOpen(false);
 	};
 
 	const handleCancleColorPicker = () => {
-		setChoiceColorCode(color);
+		setChoiceColor(prevColor);
 		setIsOpen(false);
 	};
 
 	const handleSelectColor = (e: ColorResult) => {
-		setChoiceColorCode(e.hex);
+		setChoiceColor(e.hex);
 	};
 
 	const handleGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,22 +64,20 @@ const GroupEditing = () => {
 			</GroupBox>
 			<GroupBox>
 				<GroupName>그룹 색상</GroupName>
-				<ColorBox color={choiceColorCode} onClick={handleOpenColorPicker}></ColorBox>
+				<ColorBox color={choiceColor} onClick={handleOpenColorPicker}></ColorBox>
 			</GroupBox>
 			{isOpen && (
 				<>
-					<SketchPicker color={choiceColorCode} onChange={handleSelectColor} />
+					<SketchPicker color={choiceColor} onChange={handleSelectColor} />
 					<ColorButtonBox>
-						<ColorOkayButton onClick={handleCloseColorPicker}>확인</ColorOkayButton>
+						<ColorOkayButton onClick={() => handleAcceptColorPicker(choiceColor)}>확인</ColorOkayButton>
 						<ColorCancelButton onClick={handleCancleColorPicker}>취소</ColorCancelButton>
 					</ColorButtonBox>
 				</>
 			)}
 
 			<GroupSettingOkayButton>
-				<GroupSettinButtonText onClick={() => handleEditGroup(groupId, name, choiceColorCode)}>
-					확인
-				</GroupSettinButtonText>
+				<GroupSettinButtonText onClick={() => handleEditGroup(groupId, name, choiceColor)}>확인</GroupSettinButtonText>
 			</GroupSettingOkayButton>
 		</GroupSettingContainer>
 	);
