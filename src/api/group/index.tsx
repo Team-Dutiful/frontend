@@ -3,12 +3,11 @@ import axios from "axios";
 const API_URL = "http://localhost:10101/groups";
 
 export const getGroups = () => {
-	axios
+	return axios
 		.get(`${API_URL}`, {
 			withCredentials: true,
 		})
 		.then((res) => {
-			console.log(res.data.body.groups);
 			return res.data.body.groups;
 		})
 		.catch((err) => {
@@ -16,11 +15,12 @@ export const getGroups = () => {
 		});
 };
 
-export const getMembers = (groupId: number): any => {
-	axios
-		.get(`${API_URL}/${groupId}/members`)
+export const getMembers = (groupId: number) => {
+	return axios
+		.get(`${API_URL}/${groupId}/members`, {
+			withCredentials: true,
+		})
 		.then((res) => {
-			console.log(res.data);
 			return res.data.body.group_members;
 		})
 		.catch((err) => {
@@ -29,7 +29,7 @@ export const getMembers = (groupId: number): any => {
 };
 
 export const createGroup = (name: string, color: string): any => {
-	axios
+	return axios
 		.post(`${API_URL}`, { name: name, color: color })
 		.then((res) => {
 			return res.data;

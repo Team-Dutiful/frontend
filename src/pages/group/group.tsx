@@ -31,18 +31,11 @@ const Group = () => {
 	const curUserId = 4;
 
 	const getGroupInfo = async () => {
-		console.log("----", await getGroups());
-		return await getGroups();
-	};
-
-	const setGroupData = () => {
-		const res = getGroupInfo();
-		console.log("res----", res);
-		setGroups(res);
+		return await getGroups().then((res) => setGroups(res));
 	};
 
 	useEffect(() => {
-		setGroupData();
+		getGroupInfo();
 	}, []);
 
 	return (
