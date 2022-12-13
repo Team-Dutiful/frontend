@@ -22,14 +22,10 @@ export const signUp = (identification: string, password: string, name: string, e
 };
 
 export const login = (identification: string, password: string) => {
-	return axios.post(
-		`/auth/login`,
-		{
-			identification,
-			password,
-		},
-		{ withCredentials: true }
-	);
+	return axios.post(`/auth/login`, {
+		identification,
+		password,
+	});
 };
 
 export const findId = (name: string, email: string) => {
