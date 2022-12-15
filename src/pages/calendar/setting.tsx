@@ -1,8 +1,12 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { tempWorkList } from "./tempData";
 import { ReactComponent as MoreIcon } from "../../assets/icons/calendar_more_icon.svg";
+import { ReactComponent as CreateWorkIcon } from "../../assets/icons/create_work_icon.svg";
 
 const CalendarSetting = () => {
+	const navigate = useNavigate();
+
 	return (
 		<SettingContainer>
 			<Title>근무 설정</Title>
@@ -20,6 +24,9 @@ const CalendarSetting = () => {
 					</Work>
 				))}
 			</Works>
+			<ButtonContainer>
+				<CreateWorkIcon onClick={() => navigate("/manage")} />
+			</ButtonContainer>
 		</SettingContainer>
 	);
 };
@@ -70,3 +77,13 @@ const WorkName = styled.h5`
 `;
 
 const WorkTime = styled.p``;
+
+const ButtonContainer = styled.div`
+	display: flex;
+	justify-content: end;
+
+	svg {
+		margin-right: 24px;
+		cursor: pointer;
+	}
+`;

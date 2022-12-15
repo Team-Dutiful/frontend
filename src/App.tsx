@@ -9,6 +9,7 @@ import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Calendar from "./pages/calendar/calendar";
 import CalendarSetting from "./pages/calendar/setting";
+import ManageWork from "./pages/calendar/manageWork";
 import Group from "./pages/group/group";
 import GroupAdding from "./pages/group/groupAdding";
 import GroupEditing from "./pages/group/groupEditing";
@@ -43,6 +44,7 @@ const App = () => {
 				<Route path="find-password" element={<FindPassword />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="calendar/setting" element={<CalendarSetting />} />
+				<Route path="calendar/setting/manage" element={<ManageWork />} />
 				<Route path="group" element={<Group />} />
 				<Route path="group/add" element={<GroupAdding />} />
 				<Route path="group/edit" element={<GroupEditing />} />
