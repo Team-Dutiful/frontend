@@ -25,7 +25,7 @@ const CalendarSetting = () => {
 				))}
 			</Works>
 			<ButtonContainer>
-				<CreateWorkIcon onClick={() => navigate("/manage")} />
+				<CreateWorkIcon onClick={() => navigate("/calendar/manage")} />
 			</ButtonContainer>
 		</SettingContainer>
 	);
