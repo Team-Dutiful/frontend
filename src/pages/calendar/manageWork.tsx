@@ -1,13 +1,16 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_icon.svg";
+import { TextField } from "@mui/material";
 
 const ManageWork = () => {
 	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const [colorHexCode, setColorHexCode] = useState("#000000");
+	const [startTime, setStartTime] = useState("09:00");
+	const [endTime, setEndTime] = useState("18:00");
 
 	const handleGoBackPage = () => {
 		navigate(-1);
@@ -23,6 +26,14 @@ const ManageWork = () => {
 
 	const handleSelectColor = (e: ColorResult) => {
 		setColorHexCode(e.hex);
+	};
+
+	const handleChangeStartTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setStartTime(e.target.value);
+	};
+
+	const handleChangeEndTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setEndTime(e.target.value);
 	};
 
 	return (
@@ -42,16 +53,42 @@ const ManageWork = () => {
 			<WorkForm>
 				<div>
 					<span>근무명</span>
-					<input type="text" />
+					<WorkNameInput type="text" />
 				</div>
-				<div>
+				<WorkTime>
 					<span>근무시간</span>
-					<input type="date" />
-				</div>
+					<TextField
+						id="time"
+						label="시작시간"
+						type="time"
+						defaultValue={startTime}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						inputProps={{
+							step: 300, // 5 min
+						}}
+						onChange={(e) => handleChangeStartTime(e)}
+					/>
+					<TextField
+						id="time"
+						label="종료시간"
+						type="time"
+						defaultValue={endTime}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						inputProps={{
+							step: 300, // 5 min
+						}}
+						onChange={(e) => handleChangeEndTime(e)}
+					/>
+				</WorkTime>
 				<div>
 					<span>메모</span>
-					<input type="text" />
+					<WorkMemoInput type="text" />
 				</div>
+				<SubmitButton>확인</SubmitButton>
 			</WorkForm>
 		</ManageWorkContainer>
 	);
@@ -111,8 +148,54 @@ const ColorOkayButton = styled.button``;
 const ColorCancelButton = styled.button``;
 
 const WorkForm = styled.form`
+	width: 268px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
 	div {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 	}
+
+	span {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 19px;
+		color: #7a7a7a;
+		margin-bottom: 4px;
+	}
+`;
+
+const WorkNameInput = styled.input`
+	height: 38px;
+	box-sizing: border-box;
+	margin-bottom: 30px;
+	background: #ffffff;
+	border: 0.8px solid #a6a6a6;
+`;
+
+const WorkMemoInput = styled.input`
+	height: 72px;
+	box-sizing: border-box;
+	background: #ffffff;
+	border: 0.8px solid #a6a6a6;
+`;
+
+const SubmitButton = styled.button`
+	background-color: #e86464;
+	height: 56px;
+	width: 235px;
+	border: 0px;
+	padding: 0;
+	margin-top: 70px;
+	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.25);
+	color: white;
+	font-weight: bold;
+`;
+
+const WorkTime = styled.div`
+	margin-bottom: 30px;
+	gap: 12px;
 `;
