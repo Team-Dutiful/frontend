@@ -21,22 +21,13 @@ const FindId = () => {
 		});
 	};
 
-	const handleClick = () => {
-		console.log(user.name, user.email);
-		findId(user.name, user.email)
-			.then((res) => {
-				console.log(res);
-				if (res.status === 200) {
-					const identification = res.data.body.identification;
-					alert(`${user.name}님의 아이디는 ${identification} 입니다`);
-				} else {
-					alert("존재하지않는 유저");
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-				alert("오류");
-			});
+	const handleClick = async () => {
+		const identification = await findId(user.name, user.email);
+		if (identification) {
+			alert(`${user.name}님의 아이디는 ${identification} 입니다`);
+		} else {
+			alert("존재하지않는 유저");
+		}
 	};
 
 	return (
