@@ -139,6 +139,7 @@ const GroupSettingOkayButton = styled.button`
 	width: 235px;
 	border: 0px;
 
+	cursor: pointer;
 	padding: 0;
 	margin: 70px 0px 0px 0px;
 	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.25);
