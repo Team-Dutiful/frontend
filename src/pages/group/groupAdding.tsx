@@ -129,9 +129,13 @@ const ColorButtonBox = styled.div`
 	}
 `;
 
-const ColorOkayButton = styled.button``;
+const ColorOkayButton = styled.button`
+	cursor: pointer;
+`;
 
-const ColorCancelButton = styled.button``;
+const ColorCancelButton = styled.button`
+	cursor: pointer;
+`;
 
 const GroupSettingOkayButton = styled.button`
 	background-color: #e86464;
