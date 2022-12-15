@@ -20,18 +20,13 @@ const ChangePassword = () => {
 		setCheckPassword(event.target.value);
 	};
 
-	const handleClickChangeButton = () => {
-		changePasswordByEmail(email, password)
-			.then((res) => {
-				if (res.status === 200) navigate("/login");
-				else {
-					alert("뭔가 잘못 됐어");
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-				alert(error);
-			});
+	const handleClickChangeButton = async () => {
+		const userInfo = await changePasswordByEmail(email, password);
+		if (userInfo.identification) {
+			navigate("login");
+		} else {
+			alert("뭔가 잘못 됐어");
+		}
 	};
 
 	return (
