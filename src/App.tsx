@@ -51,7 +51,7 @@ const App = () => {
 				<Route path="oauth/callback/kakao" element={<Kakao />} />
 				<Route path="oauth/callback/naver" element={<Naver />} />
 				<Route path="calendar/setting" element={<CalendarSetting />} />
-				<Route path="calendar/setting/manage" element={<ManageWork />} />
+				<Route path="calendar/manage" element={<ManageWork />} />
 				<Route path="group" element={<Group />} />
 				<Route path="group/calendar" element={<GroupCalendar />} />
 				<Route path="group/add" element={<GroupAdding />} />
