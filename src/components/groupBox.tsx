@@ -40,12 +40,17 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProp
 			<ColorBox color={color}></ColorBox>
 			<GroupTitle>{title}</GroupTitle>
 			<IconBox>
-				<GroupMenuIcon onClick={handleOpenModal} />
+				<IconButton>
+					<GroupMenuIcon onClick={handleOpenModal} />
+				</IconButton>
 			</IconBox>
-			<PeopleIconBox onClick={handleGoToMemberList}>
-				<GroupPeopleIcon />
-				<GroupPeopleCount>{memberCount}</GroupPeopleCount>
-			</PeopleIconBox>
+			<IconButton>
+				<PeopleIconBox onClick={handleGoToMemberList}>
+					<GroupPeopleIcon />
+					<GroupPeopleCount>{memberCount}</GroupPeopleCount>
+				</PeopleIconBox>
+			</IconButton>
+
 			{modalOpen && (
 				<ModalPortal>
 					<GroupModal groupId={groupId} title={title} color={color} isLeader={isLeader} onClose={handleCloseModal} />
@@ -103,3 +108,9 @@ const PeopleIconBox = styled.div`
 `;
 
 const GroupPeopleCount = styled.span``;
+
+const IconButton = styled.div`
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+`;

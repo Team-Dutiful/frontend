@@ -41,7 +41,9 @@ const Group = () => {
 	return (
 		<GroupContainer>
 			<AddIconBox>
-				<GroupAddIcon onClick={goToGroupAdding} />
+				<IconButton>
+					<GroupAddIcon onClick={goToGroupAdding} />
+				</IconButton>
 			</AddIconBox>
 			<Title>나의 그룹</Title>
 			{groups.map(({ group_id, leader_id, color, name, members }: GroupProps) => {
@@ -85,4 +87,10 @@ const Title = styled.h1`
 	font-weight: bold;
 
 	margin: 70px 0px 18px 0px;
+`;
+
+const IconButton = styled.div`
+	cursor: pointer;
+	background-color: white;
+	border: none;
 `;

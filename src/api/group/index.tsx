@@ -21,7 +21,7 @@ export const getMembers = (groupId: number) => {
 			withCredentials: true,
 		})
 		.then((res) => {
-			return res.data.body.group_members.members;
+			return res.data.body.group_members;
 		})
 		.catch((err) => {
 			return err;
