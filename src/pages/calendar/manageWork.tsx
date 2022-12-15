@@ -197,6 +197,7 @@ const ColorOkayButton = styled.button``;
 const ColorCancelButton = styled.button``;
 
 const WorkForm = styled.form`
+<<<<<<< HEAD
 	width: 268px;
 	display: flex;
 	flex-direction: column;
@@ -248,3 +249,10 @@ const WorkTime = styled.div`
 	margin-bottom: 30px;
 	gap: 12px;
 `;
+=======
+	div {
+		display: flex;
+		flex-direction: column;
+	}
+`;
+>>>>>>> ceca495 ([feat] 근무 생성/수정 페이지 추가)

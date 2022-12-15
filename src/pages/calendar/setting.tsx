@@ -126,6 +126,7 @@ const WorkName = styled.h5`
 
 const WorkTime = styled.p``;
 
+<<<<<<< HEAD
 const CreateIconBox = styled.div`
 	position: fixed;
 	right: 0;
@@ -133,6 +134,13 @@ const CreateIconBox = styled.div`
 
 	svg {
 		background-color: white;
+=======
+const ButtonContainer = styled.div`
+	display: flex;
+	justify-content: end;
+
+	svg {
+>>>>>>> ceca495 ([feat] 근무 생성/수정 페이지 추가)
 		margin-right: 24px;
 		cursor: pointer;
 	}
