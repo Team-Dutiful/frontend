@@ -44,7 +44,7 @@ const App = () => {
 				<Route path="find-password" element={<FindPassword />} />
 				<Route path="calendar" element={<Calendar />} />
 				<Route path="calendar/setting" element={<CalendarSetting />} />
-				<Route path="calendar/setting/manage" element={<ManageWork />} />
+				<Route path="calendar/manage" element={<ManageWork />} />
 				<Route path="group" element={<Group />} />
 				<Route path="group/add" element={<GroupAdding />} />
 				<Route path="group/edit" element={<GroupEditing />} />
