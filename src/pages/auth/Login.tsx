@@ -22,17 +22,13 @@ const Login = () => {
 		});
 	};
 
-	const handleClickLoginButton = () => {
-		login(user.id, user.password)
-			.then((res) => {
-				console.log(res);
-				if (res.status === 200) navigate("/calendar");
-				else if (res.status === 400) alert("로그인 실패!");
-			})
-			.catch((error) => {
-				console.log(error);
-				alert("로그인 실패!");
-			});
+	const handleClickLoginButton = async () => {
+		const userInfo = await login(user.id, user.password);
+		if (userInfo.identification) {
+			navigate("/calendar");
+		} else {
+			alert("로그인 실패!");
+		}
 	};
 
 	return (

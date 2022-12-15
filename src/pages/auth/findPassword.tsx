@@ -4,7 +4,7 @@ import Logo from "../../components/appLogo";
 import PreviousButton from "../../components/auth/previousButton";
 import LabelInput from "../../components/auth/labelInput";
 import { useState } from "react";
-import { sendAuthCodeAtFindPassword } from "../../api/auth";
+import { sendFindPasswordMail } from "../../api/auth";
 
 const FindPassword = () => {
 	const [user, setUser] = useState({
@@ -24,17 +24,11 @@ const FindPassword = () => {
 		});
 	};
 
-	const handleClickSendMailButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleClickSendMailButton = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
 		setIsSend(true);
-		sendAuthCodeAtFindPassword(user.email)
-			.then((res) => {
-				console.log(res);
-				setAuthCode(res.data.body.authNum);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		const authNum = await sendFindPasswordMail(user.email);
+		setAuthCode(authNum);
 	};
 
 	const handleClickCheckButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

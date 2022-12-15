@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LabelInput from "../../components/auth/labelInput";
 import { useState } from "react";
 import PreviousButton from "../../components/auth/previousButton";
-import { sendAuthCodeEmail, signUp } from "../../api/auth";
+import { sendSignUpMail, signUp } from "../../api/auth";
 
 const SignUp = () => {
 	const navigate = useNavigate();
@@ -28,16 +28,11 @@ const SignUp = () => {
 		});
 	};
 
-	const handleClickSendMailButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleClickSendMailButton = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
 		setIsSend(true);
-		sendAuthCodeEmail(user.email)
-			.then((res) => {
-				setAuthCode(res.data.body.authNum);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		const authNum = await sendSignUpMail(user.email);
+		setAuthCode(authNum);
 	};
 
 	const handleClickCheckButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -47,18 +42,16 @@ const SignUp = () => {
 		}
 	};
 
-	const handleClickSignUpButton = () => {
+	const handleClickSignUpButton = async () => {
 		if (checkCode && user.checkPassword === user.password) {
 			const { id, password, name, email } = user;
-			signUp(id, password, name, email)
-				.then((res) => {
-					console.log(res);
-					alert("가입이 완료 되었습니다.");
-					navigate("/login");
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			const userInfo = await signUp(id, password, name, email);
+			if (userInfo.identification) {
+				alert("가입이 완료되었습니다.");
+				navigate("/login");
+			} else {
+				alert("가입 실패");
+			}
 		} else {
 			alert("잘못된 입력 정보가 존재합니다.");
 		}
