@@ -6,9 +6,12 @@ import { ReactComponent as KakoIcon } from "../../assets/icons/auth_kakao.svg";
 import { ReactComponent as NaverIcon } from "../../assets/icons/auth_naver.svg";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../../recoil/user";
 
 const Login = () => {
-	const [user, setUser] = useState({
+	const setUser = useSetRecoilState(userState);
+	const [userInfo, setUserInfo] = useState({
 		id: "",
 		password: "",
 	});
@@ -16,15 +19,20 @@ const Login = () => {
 
 	const handleChangeLoginInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value } = event.target;
-		setUser({
-			...user,
+		setUserInfo({
+			...userInfo,
 			[id]: value,
 		});
 	};
 
 	const handleClickLoginButton = async () => {
-		const userInfo = await login(user.id, user.password);
-		if (userInfo.identification) {
+		const user = await login(userInfo.id, userInfo.password);
+		if (user.identification) {
+			setUser({
+				identification: user.identification,
+				name: user.name,
+				email: user.email,
+			});
 			navigate("/calendar");
 		} else {
 			alert("로그인 실패!");
