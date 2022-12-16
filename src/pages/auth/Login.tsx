@@ -29,6 +29,7 @@ const Login = () => {
 		const user = await login(userInfo.id, userInfo.password);
 		if (user.identification) {
 			setUser({
+				user_id: user.user_id,
 				identification: user.identification,
 				name: user.name,
 				email: user.email,
