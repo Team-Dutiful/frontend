@@ -58,7 +58,7 @@ export const signUp = async (identification: string, password: string, name: str
 export const findId = async (name: string, email: string) => {
 	return await axios
 		.post(`/auth/find-id`, { name, email })
-		.then((res) => res.data.body.identification)
+		.then((res) => res.data.body)
 		.catch((error) => {
 			console.error(error);
 			return error;
