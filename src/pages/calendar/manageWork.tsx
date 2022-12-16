@@ -4,13 +4,19 @@ import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_icon.svg";
 import { TextField } from "@mui/material";
+import { createWork } from "../../api/calendar";
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil/user";
 
 const ManageWork = () => {
 	const navigate = useNavigate();
+	const [userInfo, setUserInfo] = useRecoilState(userState);
 	const [isOpen, setIsOpen] = useState(false);
 	const [colorHexCode, setColorHexCode] = useState("#000000");
+	const [workName, setWorkName] = useState("");
 	const [startTime, setStartTime] = useState("09:00");
 	const [endTime, setEndTime] = useState("18:00");
+	const [workMemo, setWorkMemo] = useState("");
 
 	const handleGoBackPage = () => {
 		navigate(-1);
@@ -28,12 +34,30 @@ const ManageWork = () => {
 		setColorHexCode(e.hex);
 	};
 
+	const handleChangeWorkName = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setWorkName(e.target.value);
+	};
+
 	const handleChangeStartTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setStartTime(e.target.value);
 	};
 
 	const handleChangeEndTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setEndTime(e.target.value);
+	};
+
+	const handleChangeWorkMemo = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setWorkMemo(e.target.value);
+	};
+
+	const handleStopEvent = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+	};
+
+	const handleSubmitWorkForm = async () => {
+		if (userInfo?.user_id) {
+			await createWork(userInfo?.user_id, workName, colorHexCode, startTime, endTime, workName, workMemo);
+		}
 	};
 
 	return (
@@ -50,10 +74,10 @@ const ManageWork = () => {
 					</ColorButtonBox>
 				</>
 			)}
-			<WorkForm>
+			<WorkForm onSubmit={handleStopEvent}>
 				<div>
 					<span>근무명</span>
-					<WorkNameInput type="text" />
+					<WorkNameInput type="text" onChange={handleChangeWorkName} />
 				</div>
 				<WorkTime>
 					<span>근무시간</span>
@@ -86,9 +110,9 @@ const ManageWork = () => {
 				</WorkTime>
 				<div>
 					<span>메모</span>
-					<WorkMemoInput type="text" />
+					<WorkMemoInput type="text" onChange={handleChangeWorkMemo} />
 				</div>
-				<SubmitButton>확인</SubmitButton>
+				<SubmitButton onClick={handleSubmitWorkForm}>확인</SubmitButton>
 			</WorkForm>
 		</ManageWorkContainer>
 	);
