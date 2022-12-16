@@ -4,10 +4,14 @@ import Logo from "../../components/appLogo";
 import LabelInput from "../../components/auth/labelInput";
 import { useState } from "react";
 import { changePasswordByEmail } from "../../api/auth";
+import ModalPortal from "../../components/modalPortal";
+import Modal from "../../components/auth/modal";
+import ChangePasswordModal from "../../components/auth/changePasswordModal";
 
 const ChangePassword = () => {
 	const [password, setPassword] = useState("");
 	const [checkPassword, setCheckPassword] = useState("");
+	const [modalState, setModalState] = useState<null | "success" | "fail">("fail");
 	const navigate = useNavigate();
 	const location = useLocation();
 	const email = location.state;
@@ -23,53 +27,66 @@ const ChangePassword = () => {
 	const handleClickChangeButton = async () => {
 		const userInfo = await changePasswordByEmail(email, password);
 		if (userInfo.identification) {
-			navigate("login");
+			setModalState("success");
 		} else {
-			alert("뭔가 잘못 됐어");
+			setModalState("fail");
 		}
 	};
 
+	const handleClose = () => {
+		setModalState(null);
+	};
+
 	return (
-		<ChangePasswordContainer>
-			<Logo />
-			<ChangePasswordTypograpy>비밀번호 변경하기</ChangePasswordTypograpy>
-			<ChangePasswordTForm>
-				<>
-					<LabelInput
-						id="password"
-						type="password"
-						label="새 비밀번호"
-						value={password}
-						onChange={handleChangePassword}
-					/>
-					{password.length < 5 && password.length > 1 && (
-						<LabelInputBottomText color="#e86464">패스워드는 5자 이상 입력해주세요.</LabelInputBottomText>
-					)}
-				</>
-				<>
-					<LabelInput
-						id="check-password"
-						type="password"
-						label="새 비밀번호 확인"
-						value={checkPassword}
-						onChange={handleChangeCheckPassword}
-					/>
-					<LabelInputBottomText color={password === checkPassword ? "#74d277" : "#e86464"}>
-						{password.length < 5
-							? null
-							: password === checkPassword
-							? "비밀번호가 일치합니다."
-							: "비밀번호를 다시 확인해주세요."}
-					</LabelInputBottomText>
-				</>
-			</ChangePasswordTForm>
-			<ChangePasswordButton
-				disabled={!(password !== "" && checkPassword !== "" && password === checkPassword)}
-				onClick={handleClickChangeButton}
-			>
-				변경하기
-			</ChangePasswordButton>
-		</ChangePasswordContainer>
+		<>
+			<ChangePasswordContainer>
+				<Logo />
+				<ChangePasswordTypograpy>비밀번호 변경하기</ChangePasswordTypograpy>
+				<ChangePasswordTForm>
+					<>
+						<LabelInput
+							id="password"
+							type="password"
+							label="새 비밀번호"
+							value={password}
+							onChange={handleChangePassword}
+						/>
+						{password.length < 5 && password.length > 1 && (
+							<LabelInputBottomText color="#e86464">패스워드는 5자 이상 입력해주세요.</LabelInputBottomText>
+						)}
+					</>
+					<>
+						<LabelInput
+							id="check-password"
+							type="password"
+							label="새 비밀번호 확인"
+							value={checkPassword}
+							onChange={handleChangeCheckPassword}
+						/>
+						<LabelInputBottomText color={password === checkPassword ? "#74d277" : "#e86464"}>
+							{password.length < 5
+								? null
+								: password === checkPassword
+								? "비밀번호가 일치합니다."
+								: "비밀번호를 다시 확인해주세요."}
+						</LabelInputBottomText>
+					</>
+				</ChangePasswordTForm>
+				<ChangePasswordButton
+					disabled={!(password !== "" && checkPassword !== "" && password === checkPassword)}
+					onClick={handleClickChangeButton}
+				>
+					변경하기
+				</ChangePasswordButton>
+			</ChangePasswordContainer>
+			{modalState && (
+				<ModalPortal>
+					<Modal>
+						<ChangePasswordModal modalState={modalState} onClose={handleClose} />
+					</Modal>
+				</ModalPortal>
+			)}
+		</>
 	);
 };
 
