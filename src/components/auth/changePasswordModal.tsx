@@ -1,24 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-interface SignUpModalProps {
+interface ChangePasswordModalProps {
 	modalState: null | "success" | "fail";
 	onClose: () => void;
 }
 
-const SignUpModal = ({ modalState, onClose }: SignUpModalProps) => {
+const ChangePasswordModal = ({ modalState, onClose }: ChangePasswordModalProps) => {
 	const navigate = useNavigate();
 
 	return (
-		<SignUpModalContainer>
+		<ChangePasswordModalContainer>
 			{modalState === "success" ? (
 				<>
-					<p> 🎉 가입이 완료되었습니다! 🎉</p>
+					<p> 비밀번호가 성공적으로 변경되었습니다! </p>
 					<button onClick={() => navigate("/login")}>로그인 하러가기</button>
 				</>
 			) : (
 				<>
-					<p> 잘못된 입력 정보가 존재합니다.</p>
+					<p>네트워크 오류</p>
 					<button
 						onClick={() => {
 							onClose();
@@ -28,13 +28,13 @@ const SignUpModal = ({ modalState, onClose }: SignUpModalProps) => {
 					</button>
 				</>
 			)}
-		</SignUpModalContainer>
+		</ChangePasswordModalContainer>
 	);
 };
 
-export default SignUpModal;
+export default ChangePasswordModal;
 
-const SignUpModalContainer = styled.div`
+const ChangePasswordModalContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -46,7 +46,7 @@ const SignUpModalContainer = styled.div`
 	background-color: #fff;
 
 	p {
-		font-size: 20px;
+		font-size: 16px;
 		font-weight: 600;
 		color: #f4aeae;
 	}

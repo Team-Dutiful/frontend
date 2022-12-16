@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 interface ModalProps {
 	children: ReactElement;
+	onClose?: () => void;
 }
 
-const Modal = ({ children }: ModalProps) => {
-	return <ModalContainer>{children}</ModalContainer>;
+const Modal = ({ children, onClose }: ModalProps) => {
+	return <ModalContainer onClick={onClose}>{children}</ModalContainer>;
 };
 
 export default Modal;
