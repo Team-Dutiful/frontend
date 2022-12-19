@@ -51,3 +51,12 @@ export const updateWork = async (
 			return error;
 		});
 };
+
+export const getWorkList = async () => {
+	return await axios
+		.get(`/works`)
+		.then((res) => res.data.body.workList)
+		.catch((error) => {
+			return error;
+		});
+};
