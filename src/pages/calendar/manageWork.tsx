@@ -1,22 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_icon.svg";
 import { TextField } from "@mui/material";
-import { createWork } from "../../api/calendar";
+import { createWork, updateWork } from "../../api/calendar";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/user";
 
 const ManageWork = () => {
+	const { state } = useLocation();
 	const navigate = useNavigate();
-	const [userInfo, setUserInfo] = useRecoilState(userState);
+	const [userInfo] = useRecoilState(userState);
 	const [isOpen, setIsOpen] = useState(false);
 	const [colorHexCode, setColorHexCode] = useState("#000000");
 	const [workName, setWorkName] = useState("");
 	const [startTime, setStartTime] = useState("09:00");
 	const [endTime, setEndTime] = useState("18:00");
 	const [workMemo, setWorkMemo] = useState("");
+	const [workId, setWorkId] = useState(1);
+	const [isCreateMode, setIsCreateMode] = useState(false);
 
 	const handleGoBackPage = () => {
 		navigate(-1);
@@ -55,15 +58,24 @@ const ManageWork = () => {
 	};
 
 	const handleSubmitWorkForm = async () => {
-		if (userInfo?.user_id) {
-			await createWork(userInfo?.user_id, workName, colorHexCode, startTime, endTime, workName, workMemo);
+		if (isCreateMode) {
+			if (userInfo?.user_id) {
+				await createWork(userInfo?.user_id, workName, colorHexCode, startTime, endTime, workName, workMemo);
+			}
+		} else {
+			await updateWork(workId, workName, colorHexCode, startTime, endTime, workName, workMemo);
 		}
+		handleGoBackPage();
 	};
+
+	useEffect(() => {
+		setIsCreateMode(state);
+	}, []);
 
 	return (
 		<ManageWorkContainer>
 			<BackIcon onClick={handleGoBackPage} />
-			<Title>근무 생성</Title>
+			<Title>근무 {isCreateMode ? "생성" : "수정"}</Title>
 			<WorkColor color={colorHexCode} onClick={handleOpenColorPicker}></WorkColor>
 			{isOpen && (
 				<>

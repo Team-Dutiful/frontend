@@ -20,12 +20,12 @@ const CalendarSetting = () => {
 								{work.start_time} ~ {work.end_time}
 							</WorkTime>
 						</div>
-						<MoreIcon className="icon" />
+						<MoreIcon className="icon" onClick={() => navigate("/calendar/manage", { state: false })} />
 					</Work>
 				))}
 			</Works>
 			<ButtonContainer>
-				<CreateWorkIcon onClick={() => navigate("/calendar/manage")} />
+				<CreateWorkIcon onClick={() => navigate("/calendar/manage", { state: true })} />
 			</ButtonContainer>
 		</SettingContainer>
 	);
