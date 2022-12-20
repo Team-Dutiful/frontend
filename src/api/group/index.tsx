@@ -82,3 +82,15 @@ export const chagneGroupLeader = (groupId: number, userId: number) => {
 		}
 	);
 };
+
+export const inviteMember = (groupId: number, email: string) => {
+	return axios.post(
+		`${API_URL}/${groupId}/invite`,
+		{
+			email: email,
+		},
+		{
+			withCredentials: true,
+		}
+	);
+};

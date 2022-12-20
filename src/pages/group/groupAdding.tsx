@@ -14,6 +14,7 @@ const GroupAdding = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [colorHexCode, setColorHexCode] = useState("#000000");
+	const [toast, setToast] = useState(false);
 
 	const handleOpenColorPicker = () => {
 		setIsOpen(true);
@@ -32,7 +33,7 @@ const GroupAdding = () => {
 	};
 
 	const handleCreateGroup = (name: string, color: string) => {
-		createGroup(name, color).then(() => handleGoBackPage());
+		createGroup(name, color).then(() => setToast(true), handleGoBackPage());
 	};
 
 	return (
@@ -59,6 +60,7 @@ const GroupAdding = () => {
 
 			<GroupSettingOkayButton>
 				<GroupSettinButtonText onClick={() => handleCreateGroup(name, colorHexCode)}>확인</GroupSettinButtonText>
+				{toast && <Toast setToast={setToast} text="그룹이 생성되었습니다." />}
 			</GroupSettingOkayButton>
 		</GroupSettingContainer>
 	);

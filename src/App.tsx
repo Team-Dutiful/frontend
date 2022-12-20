@@ -20,6 +20,7 @@ import Setting from "./pages/settings/setting";
 import AccountSetting from "./pages/settings/accountSetting";
 import PasswordSetting from "./pages/settings/passwordSetting";
 import EmailSetting from "./pages/settings/emailSetting";
+import MemberInviting from "./pages/member/memberInviting";
 
 const App = () => {
 	const setScreenSize = () => {
@@ -47,6 +48,7 @@ const App = () => {
 				<Route path="group/filter" element={<GroupFilter />} />
 				<Route path="settings" element={<Settings />} />
 				<Route path="members" element={<MemberList />} />
+				<Route path="members/invite" element={<MemberInviting />} />
 				<Route path="setting" element={<Setting />}>
 					<Route path="profile" element={<ProfileSetting />} />
 					<Route path="account" element={<AccountSetting />} />
