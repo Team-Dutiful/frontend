@@ -8,15 +8,27 @@ import FullCalendar, {
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import styled from "styled-components";
+<<<<<<< HEAD
 import { EventDataType, SourceType } from "./calendar";
+=======
+import { EventDataType, SourceType, FocusDateType } from "./calendar";
+>>>>>>> 49dab79 (feat: 캘린더 focus 된 날짜에 highlight 효과 주기 구현)
 
 interface CustomCalendarProps {
 	isEditMode: boolean;
 	events: EventDataType[];
+<<<<<<< HEAD
 	setNowYear: React.Dispatch<React.SetStateAction<string>>;
 	setNowMonth: React.Dispatch<React.SetStateAction<string>>;
 	setEventDetail: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
 	changeFocusDate: (date: string) => void;
+=======
+	focusDate: FocusDateType | null;
+	setEvents: React.Dispatch<React.SetStateAction<EventDataType[]>>;
+	setEventDetail: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
+	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
+>>>>>>> 49dab79 (feat: 캘린더 focus 된 날짜에 highlight 효과 주기 구현)
 }
 
 export interface formattedEventType {
