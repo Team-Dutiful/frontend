@@ -6,9 +6,12 @@ import { ReactComponent as KakoIcon } from "../../assets/icons/auth_kakao.svg";
 import { ReactComponent as NaverIcon } from "../../assets/icons/auth_naver.svg";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../../recoil/user";
 
 const Login = () => {
-	const [user, setUser] = useState({
+	const setUser = useSetRecoilState(userState);
+	const [userInfo, setUserInfo] = useState({
 		id: "",
 		password: "",
 	});
@@ -16,12 +19,13 @@ const Login = () => {
 
 	const handleChangeLoginInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value } = event.target;
-		setUser({
-			...user,
+		setUserInfo({
+			...userInfo,
 			[id]: value,
 		});
 	};
 
+<<<<<<< HEAD
 	const handleClickLoginButton = () => {
 		login(user.id, user.password)
 			.then((res) => {
@@ -32,7 +36,21 @@ const Login = () => {
 			.catch((error) => {
 				console.log(error);
 				alert("로그인 실패!");
+=======
+	const handleClickLoginButton = async () => {
+		const user = await login(userInfo.id, userInfo.password);
+		if (user.identification) {
+			setUser({
+				user_id: user.user_id,
+				identification: user.identification,
+				name: user.name,
+				email: user.email,
+>>>>>>> 1a95f354d652a9bcfffeb867e3299d37cbcce7e3
 			});
+			navigate("/calendar");
+		} else {
+			alert("로그인 실패!");
+		}
 	};
 
 	return (
