@@ -1,9 +1,9 @@
 export const tempEvents = [
 	{
 		calendar_date_id: 0,
-		year: 2022,
-		month: 12,
-		day: 10,
+		year: "2022",
+		month: "12",
+		day: "09",
 		work: {
 			work_id: 0,
 			name: "DAY",
@@ -13,9 +13,9 @@ export const tempEvents = [
 	},
 	{
 		calendar_date_id: 1,
-		year: 2022,
-		month: 12,
-		day: 21,
+		year: "2022",
+		month: "12",
+		day: "21",
 		work: {
 			work_id: 1,
 			name: "NIGHT",
@@ -25,9 +25,9 @@ export const tempEvents = [
 	},
 	{
 		calendar_date_id: 4,
-		year: 2022,
-		month: 12,
-		day: 16,
+		year: "2022",
+		month: "12",
+		day: "16",
 		work: {
 			work_id: 1,
 			name: "NIGHT",
@@ -37,9 +37,9 @@ export const tempEvents = [
 	},
 	{
 		calendar_date_id: 2,
-		year: 2022,
-		month: 12,
-		day: 15,
+		year: "2022",
+		month: "12",
+		day: "15",
 		work: {
 			work_id: 2,
 			name: "OFF",
@@ -74,7 +74,7 @@ export const tempWorkList = [
 		color: "#63E2BC",
 		start_time: "09:00",
 		end_time: "16:00",
-		work_type: "DAY",
+		work_type: "NIGHT",
 		memo: "메모",
 	},
 	{
@@ -83,7 +83,7 @@ export const tempWorkList = [
 		color: "#9BC9FF",
 		start_time: "17:00",
 		end_time: "21:00",
-		work_type: "EVE",
+		work_type: "OFF",
 		memo: "메모",
 	},
 ];
