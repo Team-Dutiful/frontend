@@ -2,11 +2,15 @@ import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { useCallback, useState, useEffect } from "react";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { inviteMember } from "../../api/group";
 
 const MemberInviting = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const groupId = location.state.groupId;
+
 	const handleGoBackPage = () => {
 		navigate(-1);
 	};
@@ -14,6 +18,17 @@ const MemberInviting = () => {
 
 	const handleMemberEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.target.value);
+	};
+
+	const handleInviteMember = (groupId: number, email: string) => {
+		inviteMember(groupId, email)
+			.then(() => {
+				alert("멤버 초대 성공!");
+				handleGoBackPage();
+			})
+			.catch((err) => {
+				alert("멤버 초대 실패!");
+			});
 	};
 
 	return (
@@ -24,6 +39,11 @@ const MemberInviting = () => {
 				<MemberBoxTitle>초대할 회원의 이메일을 입력해주세요.</MemberBoxTitle>
 				<MemberEmailInput required value={email} onChange={handleMemberEmail}></MemberEmailInput>
 			</MemberBox>
+			<MemberInviteOkayButton>
+				<MemberInviteOkayButtonText onClick={() => handleInviteMember(groupId, email)}>
+					초대하기
+				</MemberInviteOkayButtonText>
+			</MemberInviteOkayButton>
 		</MemberInvitingContainer>
 	);
 };
@@ -62,7 +82,28 @@ const MemberBox = styled.div`
 
 const MemberBoxTitle = styled.h3`
 	font-family: sans-serif;
-	margin: 0px 0px 4px 0px;
+	margin: 0px 0px 20px 0px;
 `;
 
-// const Member;
+const MemberEmailInput = styled.input`
+	width: 240px;
+	height: 30px;
+	border: solid 0.5px #e2e2e2;
+`;
+
+const MemberInviteOkayButton = styled.button`
+	background-color: #e86464;
+	height: 56px;
+	width: 235px;
+	border: 0px;
+
+	cursor: pointer;
+	padding: 0;
+	margin: 70px 0px 0px 0px;
+	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.25);
+`;
+
+const MemberInviteOkayButtonText = styled.h5`
+	color: white;
+	font-weight: bold;
+`;
