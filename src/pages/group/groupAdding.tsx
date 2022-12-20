@@ -14,6 +14,7 @@ const GroupAdding = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [colorHexCode, setColorHexCode] = useState("#000000");
+	const [toast, setToast] = useState(false);
 
 	const handleOpenColorPicker = () => {
 		setIsOpen(true);
@@ -32,12 +33,7 @@ const GroupAdding = () => {
 	};
 
 	const handleCreateGroup = (name: string, color: string) => {
-		createGroup(name, color)
-			.then(() => {
-				alert("그룹 생성 성공!");
-				handleGoBackPage();
-			})
-			.catch((err) => alert("그룹 생성 실패!" + err));
+		createGroup(name, color).then(() => setToast(true), handleGoBackPage());
 	};
 
 	return (
@@ -64,6 +60,7 @@ const GroupAdding = () => {
 
 			<GroupSettingOkayButton>
 				<GroupSettinButtonText onClick={() => handleCreateGroup(name, colorHexCode)}>확인</GroupSettinButtonText>
+				{toast && <Toast setToast={setToast} text="그룹이 생성되었습니다." />}
 			</GroupSettingOkayButton>
 		</GroupSettingContainer>
 	);
@@ -134,9 +131,13 @@ const ColorButtonBox = styled.div`
 	}
 `;
 
-const ColorOkayButton = styled.button``;
+const ColorOkayButton = styled.button`
+	cursor: pointer;
+`;
 
-const ColorCancelButton = styled.button``;
+const ColorCancelButton = styled.button`
+	cursor: pointer;
+`;
 
 const GroupSettingOkayButton = styled.button`
 	background-color: #e86464;
@@ -144,6 +145,7 @@ const GroupSettingOkayButton = styled.button`
 	width: 235px;
 	border: 0px;
 
+	cursor: pointer;
 	padding: 0;
 	margin: 70px 0px 0px 0px;
 	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.25);

@@ -1,18 +1,28 @@
 import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { exitGroup, deleteGroup } from "../api/group/index";
 
 interface GroupModalProps {
 	groupId: number;
 	title: string;
+	color: string;
 	isLeader: boolean;
 	onClose: () => void;
 }
 
-const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
+const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProps) => {
 	const navigate = useNavigate();
+
 	const handleGoToEditing = () => {
-		navigate("/group/edit");
+		navigate("/group/edit", {
+			state: {
+				groupId: groupId,
+				color: color,
+				title: title,
+			},
+		});
 	};
 
 	const handleGoToMemberList = () => {
@@ -27,24 +37,44 @@ const GroupModal = ({ groupId, title, isLeader, onClose }: GroupModalProps) => {
 		e.stopPropagation();
 	};
 
+	const handleGroupExit = () => {
+		exitGroup(groupId)
+			.then(() => {
+				alert("그룹 수정 성공!");
+				onClose();
+				window.location.reload();
+			})
+			.catch((err) => alert("그룹 수정 실패!" + err));
+	};
+
+	const handeGroupDelete = () => {
+		deleteGroup(groupId)
+			.then(() => {
+				alert("그룹 삭제 성공.");
+				onClose();
+				window.location.reload();
+			})
+			.catch((err) => alert("그룹 삭제 실패!" + err));
+	};
+
 	return (
 		<GroupModalContainer onClick={onClose}>
 			<GroupModalContent isLeader={isLeader} onClick={handleClickModal}>
 				<CloseIcon onClick={onClose} />
 				<GroupHeaderSection>
-					<ColorBox />
+					<ColorBox color={color} />
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
 				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
-				<GroupButton onClick={handleGoToMemberList}>멤버 초대하기</GroupButton>
+				<GroupButton>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>
-						<GroupButton>리더 변경하기</GroupButton>
+						<GroupButton onClick={handleGoToMemberList}>리더 변경하기</GroupButton>
 						<ButtonBorder />
-						<GroupDeleteButton>그룹 삭제하기</GroupDeleteButton>
+						<GroupDeleteButton onClick={handeGroupDelete}>그룹 삭제하기</GroupDeleteButton>
 					</>
 				) : (
-					<GroupButton>그룹 나가기</GroupButton>
+					<GroupButton onClick={handleGroupExit}>그룹 나가기</GroupButton>
 				)}
 			</GroupModalContent>
 		</GroupModalContainer>
@@ -94,7 +124,7 @@ const GroupHeaderSection = styled.div`
 `;
 
 const GroupTitle = styled.span`
-	font-family: "Inter";
+	font-family: sans-serif;
 	font-style: normal;
 	font-weight: 700;
 	font-size: 16px;
@@ -104,8 +134,8 @@ const GroupTitle = styled.span`
 	margin-left: 7px;
 `;
 
-const ColorBox = styled.div`
-	background-color: red;
+const ColorBox = styled.div<{ color: string }>`
+	background-color: ${(props) => (props.color ? props.color : "black")};
 	height: 30px;
 	width: 30px;
 	border-radius: 50%;
@@ -114,7 +144,7 @@ const ColorBox = styled.div`
 
 const GroupButton = styled.button`
 	font-family: "Inter";
-	font-style: normal;
+	font-family: sans-serif;
 	font-weight: 500;
 	font-size: 16px;
 	line-height: 19px;

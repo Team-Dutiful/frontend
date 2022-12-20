@@ -4,6 +4,7 @@ import ModalPortal from "../components/modalPortal";
 import { ReactComponent as GroupMenuIcon } from "../assets/icons/group_menu_icon.svg";
 import { ReactComponent as GroupPeopleIcon } from "../assets/icons/group_people_icon.svg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GroupBoxProps {
 	groupId: number;
@@ -14,6 +15,8 @@ interface GroupBoxProps {
 }
 
 const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProps) => {
+	const navigate = useNavigate();
+
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const handleOpenModal = () => {
@@ -24,20 +27,33 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProp
 		setModalOpen(false);
 	};
 
+	const handleGoToMemberList = () => {
+		navigate("/members", {
+			state: {
+				groupId: groupId,
+			},
+		});
+	};
+
 	return (
 		<GroupBoxContainer isLeader={isLeader}>
 			<ColorBox color={color}></ColorBox>
 			<GroupTitle>{title}</GroupTitle>
 			<IconBox>
-				<GroupMenuIcon onClick={handleOpenModal} />
+				<IconButton>
+					<GroupMenuIcon onClick={handleOpenModal} />
+				</IconButton>
 			</IconBox>
-			<PeopleIconBox>
-				<GroupPeopleIcon />
-				<GroupPeopleCount>{memberCount}</GroupPeopleCount>
-			</PeopleIconBox>
+			<IconButton>
+				<PeopleIconBox onClick={handleGoToMemberList}>
+					<GroupPeopleIcon />
+					<GroupPeopleCount>{memberCount}</GroupPeopleCount>
+				</PeopleIconBox>
+			</IconButton>
+
 			{modalOpen && (
 				<ModalPortal>
-					<GroupModal groupId={groupId} title={title} isLeader={isLeader} onClose={handleCloseModal} />
+					<GroupModal groupId={groupId} title={title} color={color} isLeader={isLeader} onClose={handleCloseModal} />
 				</ModalPortal>
 			)}
 		</GroupBoxContainer>
@@ -92,3 +108,9 @@ const PeopleIconBox = styled.div`
 `;
 
 const GroupPeopleCount = styled.span``;
+
+const IconButton = styled.div`
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+`;
