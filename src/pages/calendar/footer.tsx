@@ -1,48 +1,140 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { SourceType } from "./calendar";
+import { EventDataType, FocusDateType, SourceType } from "./calendar";
 import { ReactComponent as PencilIcon } from "../../assets/icons/calendar_pencil_icon.svg";
 import { ReactComponent as TrashbinIcon } from "../../assets/icons/calendar_trashbin_icon.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/icons/calendar_settings_icon.svg";
-import { ActionTypeButton, WorkTypeButton } from "../../components/calendar/workTypeButtons";
+import { WorkTypeButton, DeleteButton, SkipButton } from "../../components/calendar/workTypeButtons";
+import { tempWorkList } from "./tempData";
+import { getDay, getMonth, getTomorrow, getYear } from "../../utils/getDate";
 
 interface FooterProps {
-	event?: SourceType;
 	isEditMode: boolean;
+	events: EventDataType[];
+	focusDate: FocusDateType | null;
+	eventDetail?: SourceType;
+	setEvents: React.Dispatch<React.SetStateAction<EventDataType[]>>;
+	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
 	toggleEditMode: () => void;
 }
 
-const Footer = ({ event, isEditMode, toggleEditMode }: FooterProps) => {
+export interface WorkDataType {
+	id: number;
+	name: string;
+	color: string;
+	start_time: string;
+	end_time: string;
+	work_type: string;
+	memo?: string;
+}
+
+const Footer = ({
+	isEditMode,
+	events,
+	focusDate,
+	eventDetail,
+	setEvents,
+	setFocusDate,
+	toggleEditMode,
+}: FooterProps) => {
 	const navigate = useNavigate();
+	const [workData] = useState<WorkDataType[]>(tempWorkList);
+
+	const handleClickWorkButton = (work: WorkDataType) => {
+		const now = focusDate?.start!;
+		const exist = events.find((event) => event.day === getDay(now));
+		const newEvent = {
+			year: getYear(now),
+			month: getMonth(now),
+			day: getDay(now),
+			work: {
+				work_id: work.id,
+				name: work.name,
+				color: work.color,
+				work_time: `${work.start_time} ~ ${work.end_time}`,
+			},
+		};
+
+		if (exist) setEvents([...events.filter((event) => event.day !== getDay(now)), { ...exist, ...newEvent }]);
+		else setEvents([...events, newEvent]);
+
+		handleClickSkip();
+	};
+
+	const handleClickSkip = () => {
+		const now = focusDate?.start!;
+
+		if (!isEnd(getYear(now), getMonth(now), getTomorrow(now))) {
+			const tomorrow = getYear(now) + "-" + getMonth(now) + "-" + getTomorrow(now);
+			setFocusDate({ ...focusDate, start: tomorrow, end: tomorrow });
+		}
+	};
+
+	const handleClickDelete = () => {
+		setEvents([...events.filter((event) => event.day !== getDay(focusDate?.start!))]);
+		handleClickSkip();
+	};
+
+	const isEnd = (year: string, month: string, day: string) => {
+		let end;
+
+		switch (month) {
+			case "01":
+			case "03":
+			case "05":
+			case "07":
+			case "08":
+			case "10":
+			case "12":
+				end = 31;
+				break;
+			case "04":
+			case "06":
+			case "09":
+			case "11":
+				end = 30;
+				break;
+			case "02":
+				end = (Number(year) % 4 === 0 && Number(year) % 100 !== 0) || Number(year) % 400 === 0 ? 29 : 28;
+				break;
+			default:
+				end = 31;
+		}
+
+		if (Number(day) > end) return true;
+		else return false;
+	};
 
 	return (
 		<FooterContainer>
-			{event && !isEditMode && (
+			{!isEditMode && eventDetail && (
 				<EventBox>
-					<Day color={event?.color}>{event?.day}</Day>
-					<Name>{event?.name}</Name>
-					<Time>{event?.work_time}</Time>
-					<PencilIcon onClick={toggleEditMode} />
+					<Day color={eventDetail?.color}>{eventDetail?.day}</Day>
+					<Name>{eventDetail?.name}</Name>
+					<Time>{eventDetail?.work_time}</Time>
+					<PencilIcon />
 					<TrashbinIcon />
 				</EventBox>
 			)}
-			{isEditMode && (
+			{isEditMode && focusDate && (
 				<NoEventBox>
 					<Title>근무 등록</Title>
-					<IconBox onClick={() => navigate("/calendar/setting")}>
-						<SettingsIcon />
+					<IconBox>
+						<button>저장</button>
+						<SettingsIcon onClick={() => navigate("/calendar/setting")} />
 					</IconBox>
 					<Buttons>
 						<WorkButtons>
-							<WorkTypeButton type="DAY" />
-							<WorkTypeButton type={"EVE"} />
-							<WorkTypeButton type={"NIGHT"} />
-							<WorkTypeButton type={"OFF"} />
-							<WorkTypeButton type={"ETC"} />
+							{workData?.map((work) => (
+								<div key={work.id}>
+									<WorkTypeButton work={work} onClick={handleClickWorkButton} />
+								</div>
+							))}
 						</WorkButtons>
 						<ActionButtons>
-							<ActionTypeButton type={"SKIP"} />
-							<ActionTypeButton type={"DELETE"} />
+							<DeleteButton onClick={handleClickDelete} />
+							<SkipButton onClick={handleClickSkip} />
 						</ActionButtons>
 					</Buttons>
 				</NoEventBox>
