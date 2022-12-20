@@ -2,30 +2,43 @@ import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { useCallback, useState, useEffect } from "react";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { editGroup } from "../../api/group";
 
 const GroupEditing = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const groupId = location.state.groupId;
+	const color = location.state.color;
+	const title = location.state.title;
 
 	const handleGoBackPage = () => {
 		navigate(-1);
 	};
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [colorHexCode, setColorHexCode] = useState("#000000");
-	const [name, setName] = useState("");
+	const [choiceColor, setChoiceColor] = useState(color);
+	const [prevColor, setPrevColor] = useState(color);
+	const [name, setName] = useState(title);
 
 	const handleOpenColorPicker = () => {
 		setIsOpen(true);
 	};
 
-	const handleCloseColorPicker = () => {
+	const handleAcceptColorPicker = (color: string) => {
+		setChoiceColor(color);
+		setPrevColor(color);
+		setIsOpen(false);
+	};
+
+	const handleCancleColorPicker = () => {
+		setChoiceColor(prevColor);
 		setIsOpen(false);
 	};
 
 	const handleSelectColor = (e: ColorResult) => {
-		setColorHexCode(e.hex);
+		setChoiceColor(e.hex);
 	};
 
 	const handleGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,20 +64,20 @@ const GroupEditing = () => {
 			</GroupBox>
 			<GroupBox>
 				<GroupName>그룹 색상</GroupName>
-				<ColorBox color={colorHexCode} onClick={handleOpenColorPicker}></ColorBox>
+				<ColorBox color={choiceColor} onClick={handleOpenColorPicker}></ColorBox>
 			</GroupBox>
 			{isOpen && (
 				<>
-					<SketchPicker color={colorHexCode} onChange={handleSelectColor} />
+					<SketchPicker color={choiceColor} onChange={handleSelectColor} />
 					<ColorButtonBox>
-						<ColorOkayButton onClick={handleCloseColorPicker}>확인</ColorOkayButton>
-						<ColorCancelButton onClick={handleCloseColorPicker}>취소</ColorCancelButton>
+						<ColorOkayButton onClick={() => handleAcceptColorPicker(choiceColor)}>확인</ColorOkayButton>
+						<ColorCancelButton onClick={handleCancleColorPicker}>취소</ColorCancelButton>
 					</ColorButtonBox>
 				</>
 			)}
 
 			<GroupSettingOkayButton>
-				<GroupSettinButtonText onClick={() => handleEditGroup()}>확인</GroupSettinButtonText>
+				<GroupSettinButtonText onClick={() => handleEditGroup(groupId, name, choiceColor)}>확인</GroupSettinButtonText>
 			</GroupSettingOkayButton>
 		</GroupSettingContainer>
 	);
@@ -135,9 +148,13 @@ const ColorButtonBox = styled.div`
 	}
 `;
 
-const ColorOkayButton = styled.button``;
+const ColorOkayButton = styled.button`
+	cursor: pointer;
+`;
 
-const ColorCancelButton = styled.button``;
+const ColorCancelButton = styled.button`
+	cursor: pointer;
+`;
 
 const GroupSettingOkayButton = styled.button`
 	background-color: #e86464;
@@ -145,6 +162,7 @@ const GroupSettingOkayButton = styled.button`
 	width: 235px;
 	border: 0px;
 
+	cursor: pointer;
 	padding: 0;
 	margin: 70px 0px 0px 0px;
 	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.25);

@@ -25,6 +25,18 @@ const Login = () => {
 		});
 	};
 
+<<<<<<< HEAD
+	const handleClickLoginButton = () => {
+		login(user.id, user.password)
+			.then((res) => {
+				console.log(res);
+				if (res.status === 200) navigate("/group");
+				else if (res.status === 400) alert("로그인 실패!");
+			})
+			.catch((error) => {
+				console.log(error);
+				alert("로그인 실패!");
+=======
 	const handleClickLoginButton = async () => {
 		const user = await login(userInfo.id, userInfo.password);
 		if (user.identification) {
@@ -33,6 +45,7 @@ const Login = () => {
 				identification: user.identification,
 				name: user.name,
 				email: user.email,
+>>>>>>> 1a95f354d652a9bcfffeb867e3299d37cbcce7e3
 			});
 			navigate("/calendar");
 		} else {
