@@ -3,33 +3,62 @@ import FullCalendar, { DayHeaderContentArg, EventClickArg, VerboseFormattingArg 
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import styled from "styled-components";
-import { EventType, SourceType } from "./calendar";
-import { tempEvents } from "./tempData";
+import { EventDataType, SourceType, FocusDateType } from "./calendar";
 
 interface CustomCalendarProps {
-	setEvent: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
+	isEditMode: boolean;
+	events: EventDataType[];
+	focusDate: FocusDateType | null;
+	setEvents: React.Dispatch<React.SetStateAction<EventDataType[]>>;
+	setEventDetail: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
 	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
 }
 
-const CustomCalendar = ({ setEvent, setIsEditMode }: CustomCalendarProps) => {
-	// event data를 fullCalendar event 형식에 맞춰 전처리
+export interface formattedEventType {
+	title?: string;
+	name?: string;
+	date?: string;
+	day?: string;
+	color?: string;
+	source?: object;
+}
+
+const CustomCalendar = ({
+	isEditMode,
+	events,
+	focusDate,
+	setEvents,
+	setEventDetail,
+	setIsEditMode,
+	setFocusDate,
+}: CustomCalendarProps) => {
 	const formattedEvents = () => {
-		let events: EventType[] = [];
+		let newEvents: formattedEventType[] = [];
 
-		tempEvents.forEach((data) => {
-			let event: EventType = {};
+		events.forEach((data: EventDataType) => {
+			if ("display" in data) {
+				newEvents.push(data); // editMode에서 highlight 효과를 위한 data
+			} else {
+				let event: formattedEventType = {};
 
-			// fullCalendar 필수 data
-			event.title = data.work.name[0];
-			event.date = `${data.year}-${data.month}-${data.day}`;
-			event.color = data.work.color;
+				// fullCalendar 필수 data
+				event.title = data.work?.name[0];
+				event.date = `${data.year}-${data.month}-${data.day}`;
+				event.color = data.work?.color;
 
-			// custom needed data
-			event.source = { day: data.day, ...data.work };
-			events.push(event);
+				// custom needed data
+				event.source = {
+					day: data.day,
+					work_id: data.work?.work_id,
+					name: data.work?.name,
+					work_time: data.work?.work_time,
+				};
+				newEvents.push(event);
+			}
 		});
 
-		return events;
+		return newEvents;
 	};
 
 	const dayName = (arg: DayHeaderContentArg) => {
@@ -51,21 +80,33 @@ const CustomCalendar = ({ setEvent, setIsEditMode }: CustomCalendarProps) => {
 		return formattedTitle;
 	};
 
+	const handleSetFocusDate = (date: string) => {
+		const focus = {
+			start: date,
+			end: date,
+			overlap: false,
+			display: "background",
+			isFocused: true,
+		};
+		setFocusDate({ ...focus });
+	};
+
 	const handleClickEvent = (arg: EventClickArg) => {
-		setEvent(arg.event._def.extendedProps.source);
+		setEventDetail(arg.event._def.extendedProps.source);
+		handleSetFocusDate(arg.event.startStr);
 	};
 
 	const handleClickDate = (arg: DateClickArg) => {
-		const sources = arg.view.getCurrentData().eventSources;
-		const key = Object.keys(sources)[0];
-		const events = sources[key].meta;
-		const event = events.filter((event: EventType) => event.date === arg.dateStr)[0]?.source;
-
-		if (event) {
-			setEvent(event);
-			setIsEditMode(false);
+		if (isEditMode) {
+			handleSetFocusDate(arg.dateStr);
 		} else {
-			setEvent(undefined);
+			const sources = arg.view.getCurrentData().eventSources;
+			const key = Object.keys(sources)[0];
+			const events = sources[key].meta;
+			const event = events.filter((event: formattedEventType) => event.date === arg.dateStr)[0]?.source;
+
+			if (event) setEventDetail(event);
+			else setEventDetail(undefined);
 		}
 	};
 
@@ -74,8 +115,8 @@ const CustomCalendar = ({ setEvent, setIsEditMode }: CustomCalendarProps) => {
 			<FullCalendar
 				plugins={[dayGridPlugin, interactionPlugin]} // interactionPlugin: dateClick, eventClick 사용을 위한 plugin
 				initialView="dayGridMonth"
-				events={formattedEvents()}
 				height={"100%"}
+				events={formattedEvents()} // event data를 fullCalendar event 형식에 맞춰 전처리
 				titleFormat={(arg) => headerTitleFormat(arg)}
 				headerToolbar={{ start: "", center: `prev title next`, end: "" }} // <- 2022.11 ->
 				dayHeaderContent={(arg) => dayName(arg)} // 요일을 한국어로
@@ -91,7 +132,13 @@ export default CustomCalendar;
 
 const FullCalendarContainer = styled.div`
 	width: 100%;
-	height: 100%;
+	height: 85%;
+
+	.fc-bg-event {
+		border: 1px solid #ff6a6a;
+		background-color: transparent;
+		opacity: 100;
+	}
 
 	// Header Toolbar Custom
 	.fc-toolbar-chunk {
