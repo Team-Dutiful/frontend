@@ -2,18 +2,21 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
-import { kakaoLogin } from "../../api/auth";
+import { naverLogin } from "../../api/auth";
 import { userState } from "../../recoil/user";
 
-const Kakao = () => {
+const Naver = () => {
 	const setUser = useSetRecoilState(userState);
 	const navigate = useNavigate();
-	const code = new URL(window.location.href).searchParams.get("code");
+
+	const url = new URL(window.location.href);
+	const code = url.searchParams.get("code");
+	const state = url.searchParams.get("state");
 
 	useEffect(() => {
-		if (code === null) navigate("/login");
+		if (code === null || state === null) navigate("/login");
 		else {
-			kakaoLogin(code)
+			naverLogin(code, state)
 				.then((res) => {
 					console.log(res);
 					setUser({
@@ -32,13 +35,13 @@ const Kakao = () => {
 	}, []);
 
 	return (
-		<KaKaoConatiner>
+		<NaverConatiner>
 			<Spinner />
-		</KaKaoConatiner>
+		</NaverConatiner>
 	);
 };
 
-export default Kakao;
+export default Naver;
 
 const spinner = keyframes`
   from {
@@ -48,7 +51,7 @@ const spinner = keyframes`
   }
 `;
 
-const KaKaoConatiner = styled.main`
+const NaverConatiner = styled.main`
 	height: 100vh;
 	display: flex;
 	justify-content: center;
