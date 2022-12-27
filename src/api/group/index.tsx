@@ -60,3 +60,12 @@ export const inviteMember = async (groupId: number, email: string) => {
 		.then((res) => res.data)
 		.catch((error) => error.response);
 };
+
+export const banMember = async (groupId: number, memberId: number) => {
+	return await axios
+		.post(`/groups/${groupId}/ban`, {
+			user_id: memberId,
+		})
+		.then((res) => res.data)
+		.catch((error) => error.response);
+};

@@ -55,7 +55,7 @@ const MemberList = () => {
 				<MemberListTitle>멤버 목록</MemberListTitle>
 			</MemberTitleBox>
 			{members?.map(({ member_id, name }: MemberProps) => {
-				return <MemberBox name={name} isLeader={member_id == leaderId} />;
+				return <MemberBox memberId={member_id} name={name} isLeader={member_id == leaderId} />;
 			})}
 		</MemberListContainer>
 	);
@@ -68,14 +68,14 @@ const MemberListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 100%;
+	width: 360px;
 	align-items: center;
 
-	svg {
+	/* svg {
 		position: absolute;
 		top: 4px;
 		left: 12px;
-	}
+	} */
 `;
 
 const MemberTitleBox = styled.div`
