@@ -28,7 +28,7 @@ const Group = () => {
 		navigate("/group/add");
 	};
 
-	const curUserId = 4;
+	const curUserId = 2;
 
 	const getGroupInfo = async () => {
 		const data = await getGroups();

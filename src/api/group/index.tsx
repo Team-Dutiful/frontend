@@ -43,10 +43,10 @@ export const deleteGroup = async (groupId: number) => {
 		.catch((error) => error.response);
 };
 
-export const changeGroupLeader = async (groupId: number, userId: number) => {
+export const changeGroupLeader = async (groupId: number, memberId: number) => {
 	return await axios
 		.put(`/${groupId}/change-leader`, {
-			user_id: userId,
+			user_id: memberId,
 		})
 		.then((res) => res.data)
 		.catch((error) => error.response);
