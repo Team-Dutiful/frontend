@@ -51,7 +51,7 @@ const GroupEditing = () => {
 			alert("그룹 수정 성공!");
 			handleGoBackPage();
 		} else {
-			alert(data.message);
+			alert(data.data.message);
 		}
 	};
 

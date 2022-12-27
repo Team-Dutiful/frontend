@@ -39,7 +39,7 @@ const GroupAdding = () => {
 			alert("그룹 생성 성공");
 			handleGoBackPage();
 		} else {
-			alert(data.message);
+			alert(data.data.message);
 		}
 	};
 

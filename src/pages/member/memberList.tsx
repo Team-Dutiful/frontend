@@ -22,6 +22,8 @@ const MemberList = () => {
 		if (data.status == 200) {
 			setMembers(data.body.group_members.members);
 			setLeaderId(data.body.group_members.leader_id);
+		} else {
+			alert(data.data.message);
 		}
 	};
 
