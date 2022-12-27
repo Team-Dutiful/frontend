@@ -9,7 +9,7 @@ interface GroupModalProps {
 	title: string;
 	color: string;
 	isLeader: boolean;
-	onClose: () => void;
+	onClose: (event?: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProps) => {
@@ -60,7 +60,9 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 	return (
 		<GroupModalContainer onClick={onClose}>
 			<GroupModalContent isLeader={isLeader} onClick={handleClickModal}>
-				<CloseIcon onClick={onClose} />
+				<div onClick={onClose}>
+					<CloseIcon />
+				</div>
 				<GroupHeaderSection>
 					<ColorBox color={color} />
 					<GroupTitle>{title}</GroupTitle>
@@ -84,7 +86,7 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 export default GroupModal;
 
 const GroupModalContainer = styled.div`
-	width: 360px;
+	width: 100%;
 	height: 100vh;
 	display: flex;
 	align-items: center;

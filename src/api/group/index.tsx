@@ -1,18 +1,13 @@
-import axios from "axios";
+// import axios from "axios";
+import { instance as axios } from "../config";
 
 const API_URL = "http://localhost:10101/groups";
 
-export const getGroups = () => {
-	return axios
-		.get(`${API_URL}`, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			return res.data.body.groups;
-		})
-		.catch((err) => {
-			return err;
-		});
+export const getGroups = async () => {
+	return await axios
+		.get("/groups")
+		.then((res) => res.data.body.groups)
+		.catch((error) => error);
 };
 
 export const getMembers = (groupId: number) => {

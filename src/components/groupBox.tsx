@@ -12,18 +12,21 @@ interface GroupBoxProps {
 	color: string;
 	title: string;
 	memberCount: number;
+	onClick: () => void;
 }
 
-const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProps) => {
+const GroupBox = ({ groupId, isLeader, color, title, memberCount, onClick }: GroupBoxProps) => {
 	const navigate = useNavigate();
 
 	const [modalOpen, setModalOpen] = useState(false);
 
-	const handleOpenModal = () => {
+	const handleOpenModal = (event: React.MouseEvent<HTMLDivElement>) => {
+		event.stopPropagation();
 		setModalOpen(true);
 	};
 
-	const handleCloseModal = () => {
+	const handleCloseModal = (event?: React.MouseEvent<HTMLDivElement>) => {
+		event!.stopPropagation();
 		setModalOpen(false);
 	};
 
@@ -36,12 +39,12 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount }: GroupBoxProp
 	};
 
 	return (
-		<GroupBoxContainer isLeader={isLeader}>
+		<GroupBoxContainer isLeader={isLeader} onClick={onClick}>
 			<ColorBox color={color}></ColorBox>
 			<GroupTitle>{title}</GroupTitle>
 			<IconBox>
-				<IconButton>
-					<GroupMenuIcon onClick={handleOpenModal} />
+				<IconButton onClick={handleOpenModal}>
+					<GroupMenuIcon />
 				</IconButton>
 			</IconBox>
 			<IconButton>

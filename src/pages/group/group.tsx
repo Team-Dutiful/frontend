@@ -31,7 +31,8 @@ const Group = () => {
 	const curUserId = 4;
 
 	const getGroupInfo = async () => {
-		return await getGroups().then((res) => setGroups(res));
+		const data = await getGroups();
+		setGroups(data);
 	};
 
 	useEffect(() => {
@@ -55,6 +56,7 @@ const Group = () => {
 						color={color}
 						title={name}
 						memberCount={members.length}
+						onClick={() => console.log("123")}
 					/>
 				);
 			})}
@@ -70,7 +72,7 @@ const GroupContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100%;
 	align-items: center;
 `;
 
