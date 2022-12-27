@@ -11,7 +11,9 @@ interface HeaderProps {
 const Header = ({ isEditMode, onOpenModal, toggleEditMode }: HeaderProps) => {
 	return (
 		<HeaderContainer>
-			<CalendarIcon className="calendar-icon" onClick={toggleEditMode} />
+			<CalendarIconBox isEdit={isEditMode}>
+				<CalendarIcon onClick={toggleEditMode} />
+			</CalendarIconBox>
 			<ShareIcon className="share-icon" onClick={onOpenModal} />
 		</HeaderContainer>
 	);
@@ -29,16 +31,21 @@ const HeaderContainer = styled.header`
 		cursor: pointer;
 	}
 
-	.calendar-icon {
-		width: 32px;
-		height: 32px;
-		margin-top: 20px;
-	}
-
 	.share-icon {
 		width: 17px;
 		height: 20px;
 		margin-left: 12px;
 		margin-top: 26px;
+	}
+`;
+
+const CalendarIconBox = styled.div<{ isEdit: boolean }>`
+	cursor: pointer;
+	background-color: ${(props) => (props.isEdit ? "#6cb1f2" : "transparent")};
+
+	svg {
+		width: 32px;
+		height: 32px;
+		margin-top: 20px;
 	}
 `;
