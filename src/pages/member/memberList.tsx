@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MemberBox from "../../components/memberBox";
 import { ReactComponent as InviteIcon } from "../../assets/icons/invite_button_icon.svg";
+import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
 import { useCallback, useState, useEffect } from "react";
 import { getMembers } from "../../api/group/index";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -12,6 +13,7 @@ interface MemberProps {
 
 const MemberList = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const [members, setMembers] = useState<MemberProps[]>();
 	const [groupId, setGroupId] = useState(location.state.groupId);
@@ -27,14 +29,27 @@ const MemberList = () => {
 		}
 	};
 
+	const handleGoBackPage = () => {
+		navigate(-1);
+	};
+
+	const handleGoToInviting = () => {
+		navigate("/members/invite", {
+			state: {
+				groupId: groupId,
+			},
+		});
+	};
+
 	useEffect(() => {
 		setMemberData();
 	}, []);
 
 	return (
 		<MemberListContainer>
+			<BackIcon onClick={handleGoBackPage} />
 			<InviteIconBox>
-				<InviteIcon />
+				<InviteIcon onClick={handleGoToInviting} />
 			</InviteIconBox>
 			<MemberTitleBox>
 				<MemberListTitle>멤버 목록</MemberListTitle>
@@ -53,8 +68,14 @@ const MemberListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100%;
 	align-items: center;
+
+	svg {
+		position: absolute;
+		top: 4px;
+		left: 12px;
+	}
 `;
 
 const MemberTitleBox = styled.div`
