@@ -9,6 +9,13 @@ import { login } from "../../api/auth";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../../recoil/user";
 
+const {
+	VITE_KAKAO_REST_API_KEY, //
+	VITE_KAKAO_REDIRECT_URI,
+	VITE_NAVER_CLIENT_ID,
+	VITE_NAVER_REDIRECT_URI,
+} = import.meta.env;
+
 const Login = () => {
 	const setUser = useSetRecoilState(userState);
 	const [userInfo, setUserInfo] = useState({
@@ -40,6 +47,17 @@ const Login = () => {
 		}
 	};
 
+	const handleClickKakaoLogin = () => {
+		const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${VITE_KAKAO_REST_API_KEY}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&response_type=code`;
+		window.location.href = KAKAO_AUTH_URL;
+	};
+
+	// https://nid.naver.com/oauth2.0/authorize?client_id={클라이언트 아이디}&response_type=code&redirect_uri={개발자 센터에 등록한 콜백 URL(URL 인코딩)}&state={상태 토큰}
+	const hadleClickNaverLogin = () => {
+		const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?client_id=${VITE_NAVER_CLIENT_ID}&response_type=code&redirect_uri=${VITE_NAVER_REDIRECT_URI}&state=12345`;
+		window.location.href = NAVER_AUTH_URL;
+	};
+
 	return (
 		<LoginContainer>
 			<LoginSection>
@@ -67,11 +85,11 @@ const Login = () => {
 				</LoginBox>
 				<LoginBox style={{ marginTop: "2rem" }}>
 					<LoginTypograph>간편 로그인</LoginTypograph>
-					<CustomButton backgroundColor="#f9e000">
+					<CustomButton backgroundColor="#f9e000" onClick={handleClickKakaoLogin}>
 						<KakoIcon width="14px" height="14px" />
 						카카오톡으로 로그인
 					</CustomButton>
-					<CustomButton color="#fff" backgroundColor="#00C73C">
+					<CustomButton color="#fff" backgroundColor="#00C73C" onClick={hadleClickNaverLogin}>
 						<NaverIcon width="10px" height="10px" />
 						네이버로 로그인
 					</CustomButton>

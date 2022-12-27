@@ -5,11 +5,9 @@ import { RecoilRoot } from "recoil";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<React.StrictMode>
-		<RecoilRoot>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</RecoilRoot>
-	</React.StrictMode>
+	<RecoilRoot>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</RecoilRoot>
 );
