@@ -8,11 +8,12 @@ import { EventDataType, SourceType, FocusDateType } from "./calendar";
 interface CustomCalendarProps {
 	isEditMode: boolean;
 	events: EventDataType[];
-	focusDate: FocusDateType | null;
-	setEvents: React.Dispatch<React.SetStateAction<EventDataType[]>>;
+	nowMonth: string;
+	setNowYear: React.Dispatch<React.SetStateAction<string>>;
+	setNowMonth: React.Dispatch<React.SetStateAction<string>>;
 	setEventDetail: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
-	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
+	onChangeFocusDate: (date: string) => void;
 }
 
 export interface formattedEventType {
@@ -27,16 +28,17 @@ export interface formattedEventType {
 const CustomCalendar = ({
 	isEditMode,
 	events,
-	focusDate,
-	setEvents,
+	nowMonth,
+	setNowYear,
+	setNowMonth,
 	setEventDetail,
-	setIsEditMode,
 	setFocusDate,
+	onChangeFocusDate,
 }: CustomCalendarProps) => {
 	const formattedEvents = () => {
 		let newEvents: formattedEventType[] = [];
 
-		events.forEach((data: EventDataType) => {
+		events?.forEach((data: EventDataType) => {
 			if ("display" in data) {
 				newEvents.push(data); // editMode에서 highlight 효과를 위한 data
 			} else {
@@ -67,9 +69,11 @@ const CustomCalendar = ({
 	};
 
 	const headerTitleFormat = (arg: VerboseFormattingArg) => {
-		const year = arg.date.year;
-		const month = arg.date.month + 1;
+		const year = String(arg.date.year);
+		const month = String(arg.date.month + 1);
 
+		setNowYear(year);
+		setNowMonth(month);
 		const formattedTitle = (
 			<Title>
 				<TitleYear>{year}</TitleYear>
@@ -80,25 +84,16 @@ const CustomCalendar = ({
 		return formattedTitle;
 	};
 
-	const handleSetFocusDate = (date: string) => {
-		const focus = {
-			start: date,
-			end: date,
-			overlap: false,
-			display: "background",
-			isFocused: true,
-		};
-		setFocusDate({ ...focus });
-	};
-
 	const handleClickEvent = (arg: EventClickArg) => {
 		setEventDetail(arg.event._def.extendedProps.source);
-		handleSetFocusDate(arg.event.startStr);
+		if (isEditMode) {
+			onChangeFocusDate(arg.event.startStr);
+		}
 	};
 
 	const handleClickDate = (arg: DateClickArg) => {
 		if (isEditMode) {
-			handleSetFocusDate(arg.dateStr);
+			onChangeFocusDate(arg.dateStr);
 		} else {
 			const sources = arg.view.getCurrentData().eventSources;
 			const key = Object.keys(sources)[0];
@@ -177,13 +172,14 @@ const FullCalendarContainer = styled.div`
 	.fc-daygrid-day-top {
 		display: flex;
 		justify-content: center;
-		margin-top: 1rem;
 	}
 
 	// Table Custom
 	.fc-scrollgrid-sync-inner {
+		display: flex;
+		flex-direction: column;
+		gap: 11px;
 		font-size: 18px;
-		margin-bottom: 0.5rem;
 	}
 
 	.fc-theme-standard .fc-scrollgrid {
@@ -206,14 +202,10 @@ const FullCalendarContainer = styled.div`
 	}
 
 	// Event Custom
-	.fc-daygrid-day-events {
-		height: 100%;
-	}
-
 	.fc-daygrid-event-harness {
 		display: flex;
+		align-items: center;
 		justify-content: center;
-		/* padding: auto 0; */
 
 		.fc-daygrid-event {
 			display: flex;
@@ -224,8 +216,6 @@ const FullCalendarContainer = styled.div`
 			font-size: 18px;
 			border: none;
 			border-radius: 7px;
-			margin: 10px auto;
-			padding: 0;
 		}
 
 		.fc-event-title-container {
