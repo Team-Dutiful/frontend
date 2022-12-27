@@ -3,13 +3,46 @@ import { ReactComponent as AuthorizeLeaderIcon } from "../assets/icons/authorize
 import { ReactComponent as BanMemberIcon } from "../assets/icons/ban_member_icon.svg";
 import ProfileImage from "../assets/images/profileImg.png";
 import { ReactComponent as CrownIcon } from "../assets/icons/leader_crown_icon.svg";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { banMember, changeGroupLeader } from "../api/group";
 
 interface MemberBoxProps {
+	memberId: number;
 	name: string;
 	isLeader: boolean;
 }
 
-const MemberBox = ({ name, isLeader }: MemberBoxProps) => {
+const MemberBox = ({ memberId, name, isLeader }: MemberBoxProps) => {
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	const [groupId, setGroupId] = useState(location.state.groupId);
+
+	const handleGoBackPage = () => {
+		navigate(-1);
+	};
+
+	const handleChangeLeader = async () => {
+		const data = await changeGroupLeader(groupId, memberId); // TODO
+		if (data.status == 200) {
+			alert("리더 변경 완료");
+			handleGoBackPage();
+		} else {
+			alert(data.data.message);
+		}
+	};
+
+	const handleBanMember = async () => {
+		const data = await banMember(groupId, memberId);
+		if (data.status == 200) {
+			alert("멤버 강퇴 완료");
+			handleGoBackPage();
+		} else {
+			alert(data.data.message);
+		}
+	};
+
 	return (
 		<MemberBoxContainer>
 			<MemberProfileImage src={ProfileImage} />
@@ -21,10 +54,10 @@ const MemberBox = ({ name, isLeader }: MemberBoxProps) => {
 			) : (
 				<>
 					<IconWrapper style={{ marginRight: "10px" }}>
-						<AuthorizeLeaderIcon />
+						<AuthorizeLeaderIcon onClick={handleChangeLeader} />
 					</IconWrapper>
 					<IconWrapper>
-						<BanMemberIcon />
+						<BanMemberIcon onClick={handleBanMember} />
 					</IconWrapper>
 				</>
 			)}
@@ -42,6 +75,7 @@ const MemberBoxContainer = styled.div`
 	/* justify-content: space-between; */
 	align-items: center;
 	padding: 0 10px 0 10px;
+
 	svg {
 		margin-right: 10px;
 	}
