@@ -17,14 +17,12 @@ const MemberList = () => {
 	const [groupId, setGroupId] = useState(location.state.groupId);
 	const [leaderId, setLeaderId] = useState(0);
 
-	const getMemberList = () => {
-		return getMembers(groupId);
-	};
-
 	const setMemberData = async () => {
-		const res = await getMemberList();
-		setMembers(res.members);
-		setLeaderId(res.leader_id);
+		const data = await getMembers(groupId);
+		if (data.status == 200) {
+			setMembers(data.body.group_members.members);
+			setLeaderId(data.body.group_members.leader_id);
+		}
 	};
 
 	useEffect(() => {

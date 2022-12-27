@@ -37,24 +37,26 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 		e.stopPropagation();
 	};
 
-	const handleGroupExit = () => {
-		exitGroup(groupId)
-			.then(() => {
-				alert("그룹 수정 성공!");
-				onClose();
-				window.location.reload();
-			})
-			.catch((err) => alert("그룹 수정 실패!" + err));
+	const handleGroupExit = async () => {
+		const data = await exitGroup(groupId);
+		if (data.status == 200) {
+			alert("그룹 나가기 성공!");
+			onClose();
+			window.location.reload();
+		} else {
+			alert(data.message);
+		}
 	};
 
-	const handeGroupDelete = () => {
-		deleteGroup(groupId)
-			.then(() => {
-				alert("그룹 삭제 성공.");
-				onClose();
-				window.location.reload();
-			})
-			.catch((err) => alert("그룹 삭제 실패!" + err));
+	const handeGroupDelete = async () => {
+		const data = await deleteGroup(groupId);
+		if (data.status == 200) {
+			alert("그룹 삭제 성공.");
+			onClose();
+			window.location.reload();
+		} else {
+			alert(data.message);
+		}
 	};
 
 	return (

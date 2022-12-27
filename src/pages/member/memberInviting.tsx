@@ -65,4 +65,4 @@ const MemberBoxTitle = styled.h3`
 	margin: 0px 0px 4px 0px;
 `;
 
-// const Member;
+const MemberEmailInput = styled.input``;

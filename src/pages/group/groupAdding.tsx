@@ -32,8 +32,15 @@ const GroupAdding = () => {
 		setName(e.target.value);
 	};
 
-	const handleCreateGroup = (name: string, color: string) => {
-		createGroup(name, color).then(() => setToast(true), handleGoBackPage());
+	const handleCreateGroup = async (name: string, color: string) => {
+		const data = await createGroup(name, color);
+		if (data.status == 200) {
+			// setToast(true);
+			alert("그룹 생성 성공");
+			handleGoBackPage();
+		} else {
+			alert(data.message);
+		}
 	};
 
 	return (

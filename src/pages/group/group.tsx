@@ -32,7 +32,11 @@ const Group = () => {
 
 	const getGroupInfo = async () => {
 		const data = await getGroups();
-		setGroups(data);
+		if (data.status == 200) {
+			setGroups(data.body.groups);
+		} else {
+			alert(data.message);
+		}
 	};
 
 	useEffect(() => {
