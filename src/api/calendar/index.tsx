@@ -1,5 +1,12 @@
 import { instance as axios } from "../config";
 
+export interface SaveWorkType {
+	year: string;
+	month: string;
+	day: string;
+	work_id: number;
+}
+
 export const createWork = async (
 	user_id: number,
 	name: string,
@@ -57,6 +64,25 @@ export const getWorkList = async () => {
 		.get(`/works`)
 		.then((res) => res.data.body.workList)
 		.catch((error) => {
+			return error;
+		});
+};
+
+export const getSchedule = async (year: string, month: string) => {
+	const schedule = await axios
+		.post(`/schedule`, { year, month })
+		.then((res) => res.data.body)
+		.catch((err) => err);
+
+	return schedule;
+};
+
+export const manageSchedule = async (schedules: SaveWorkType[]) => {
+	return await axios
+		.post(`/schedule/manage`, { calendarWork: schedules })
+		.then((res) => console.log(res.data.body))
+		.catch((error) => {
+			console.error(error);
 			return error;
 		});
 };
