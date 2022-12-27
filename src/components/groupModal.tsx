@@ -33,6 +33,14 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 		});
 	};
 
+	const handleGoToInviting = () => {
+		navigate("/members/invite", {
+			state: {
+				groupId: groupId,
+			},
+		});
+	};
+
 	const handleClickModal = (e: { stopPropagation: () => void }) => {
 		e.stopPropagation();
 	};
@@ -44,7 +52,7 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 			onClose();
 			window.location.reload();
 		} else {
-			alert(data.message);
+			alert(data.data.message);
 		}
 	};
 
@@ -55,7 +63,7 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 			onClose();
 			window.location.reload();
 		} else {
-			alert(data.message);
+			alert(data.data.message);
 		}
 	};
 
@@ -70,7 +78,7 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
 				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
-				<GroupButton>멤버 초대하기</GroupButton>
+				<GroupButton onClick={handleGoToInviting}>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>
 						<GroupButton onClick={handleGoToMemberList}>리더 변경하기</GroupButton>

@@ -18,7 +18,7 @@ const GroupFilter = () => {
 		if (data.status == 200) {
 			setMembers(data.body.group_members.members);
 		} else {
-			alert(data.message);
+			alert(data.data.message);
 		}
 	};
 

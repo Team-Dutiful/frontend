@@ -35,7 +35,7 @@ const Group = () => {
 		if (data.status == 200) {
 			setGroups(data.body.groups);
 		} else {
-			alert(data.message);
+			alert(data.data.message);
 		}
 	};
 
