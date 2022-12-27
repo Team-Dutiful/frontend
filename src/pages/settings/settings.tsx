@@ -48,12 +48,10 @@ export default Settings;
 const SettingsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
-	width: 360px;
+	width: 100%;
 `;
 
 const Profile = styled.div`
-	width: 360px;
 	margin-bottom: 64px;
 `;
 

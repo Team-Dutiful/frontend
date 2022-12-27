@@ -3,8 +3,7 @@ import MemberBox from "../../components/memberBox";
 import { ReactComponent as InviteIcon } from "../../assets/icons/invite_button_icon.svg";
 import { useCallback, useState, useEffect } from "react";
 import { getMembers } from "../../api/group/index";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface MemberProps {
 	member_id: number;
@@ -13,18 +12,13 @@ interface MemberProps {
 
 const MemberList = () => {
 	const location = useLocation();
-	const state = location.state as { groupId: number };
 
 	const [members, setMembers] = useState<MemberProps[]>();
-	const [groupId, setGroupId] = useState(0);
+	const [groupId, setGroupId] = useState(location.state.groupId);
 	const [leaderId, setLeaderId] = useState(0);
 
 	const getMemberList = () => {
-		return getMembers(groupId)
-			.then((res) => {
-				return res.data.body.group_members;
-			})
-			.catch((err) => console.log(err));
+		return getMembers(groupId);
 	};
 
 	const setMemberData = async () => {
@@ -35,7 +29,6 @@ const MemberList = () => {
 
 	useEffect(() => {
 		setMemberData();
-		setGroupId(state.groupId);
 	}, []);
 
 	return (

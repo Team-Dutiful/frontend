@@ -20,40 +20,33 @@ interface GroupProps {
 }
 
 const Group = () => {
-	const [groups, setGroups] = useState<GroupProps[]>();
-
 	const navigate = useNavigate();
+
+	const [groups, setGroups] = useState<any[]>([]);
 
 	const goToGroupAdding = () => {
 		navigate("/group/add");
 	};
 
-	const curUserId = 1;
+	const curUserId = 4;
 
-	const getGroupInfo = () => {
-		return getGroups()
-			.then((res) => {
-				return res.data.body.groups;
-			})
-			.catch((err) => console.log(err));
-	};
-
-	const setGroupData = async () => {
-		const res = await getGroupInfo();
-		setGroups(res);
+	const getGroupInfo = async () => {
+		return await getGroups().then((res) => setGroups(res));
 	};
 
 	useEffect(() => {
-		setGroupData();
+		getGroupInfo();
 	}, []);
 
 	return (
 		<GroupContainer>
 			<AddIconBox>
-				<GroupAddIcon onClick={goToGroupAdding} />
+				<IconButton>
+					<GroupAddIcon onClick={goToGroupAdding} />
+				</IconButton>
 			</AddIconBox>
 			<Title>나의 그룹</Title>
-			{groups?.map(({ group_id, leader_id, color, name, members }: GroupProps) => {
+			{groups.map(({ group_id, leader_id, color, name, members }: GroupProps) => {
 				return (
 					<GroupBox
 						key={group_id}
@@ -94,4 +87,10 @@ const Title = styled.h1`
 	font-weight: bold;
 
 	margin: 70px 0px 18px 0px;
+`;
+
+const IconButton = styled.div`
+	cursor: pointer;
+	background-color: white;
+	border: none;
 `;
