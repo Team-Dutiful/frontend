@@ -28,12 +28,12 @@ export default FootNavigation;
 
 const FootNavigationContainer = styled.div`
 	border: 1px solid #cfcfcf;
-	position: fixed;
+	position: absolute;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	height: 84px;
-	width: 360px;
+	width: 100%;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;

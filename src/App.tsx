@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalStyled from "./GlobalStyled";
 
-import Welcome from "./pages/Welcome";
+import Welcome from "./pages/welcome";
 import FindId from "./pages/auth/findId";
 import FindPassword from "./pages/auth/findPassword";
 import Login from "./pages/auth/Login";
@@ -10,6 +10,7 @@ import SignUp from "./pages/auth/signup";
 import Calendar from "./pages/calendar/calendar";
 import CalendarSetting from "./pages/calendar/setting";
 import Group from "./pages/group/group";
+import GroupCalendar from "./pages/group/groupCalendar";
 import GroupAdding from "./pages/group/groupAdding";
 import GroupEditing from "./pages/group/groupEditing";
 import GroupFilter from "./pages/group/groupFilter";
@@ -51,6 +52,7 @@ const App = () => {
 				<Route path="oauth/callback/naver" element={<Naver />} />
 				<Route path="calendar/setting" element={<CalendarSetting />} />
 				<Route path="group" element={<Group />} />
+				<Route path="group/calendar" element={<GroupCalendar />} />
 				<Route path="group/add" element={<GroupAdding />} />
 				<Route path="group/edit" element={<GroupEditing />} />
 				<Route path="group/filter" element={<GroupFilter />} />
