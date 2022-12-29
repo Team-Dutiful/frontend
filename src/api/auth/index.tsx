@@ -41,6 +41,16 @@ export const sendFindPasswordMail = async (email: string) => {
 		});
 };
 
+export const changeUserName = async (newUserName: string) => {
+	return await axios
+		.post(`/auth/change-name`, { newUserName })
+		.then((res) => res.data.body)
+		.catch((error) => {
+			console.error(error);
+			return error;
+		});
+};
+
 export const changePasswordByEmail = async (email: string, password: string) => {
 	return await axios
 		.post(`/auth/change-pwd-from-email`, { email, password })
