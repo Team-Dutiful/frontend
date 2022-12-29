@@ -1,45 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { EventDataType, FocusDateType, SourceType } from "./calendar";
+import { EventDataType, FocusDateType, SourceType, WorkDataType } from "./calendar";
 import { ReactComponent as PencilIcon } from "../../assets/icons/calendar_pencil_icon.svg";
 import { ReactComponent as TrashbinIcon } from "../../assets/icons/calendar_trashbin_icon.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/icons/calendar_settings_icon.svg";
 import { WorkTypeButton, DeleteButton, SkipButton } from "../../components/calendar/workTypeButtons";
-import { tempWorkList } from "./tempData";
 import { getDay, getMonth, getTomorrow, getYear } from "../../utils/getDate";
+import { manageSchedule, SaveWorkType } from "../../api/calendar";
 
 interface FooterProps {
 	isEditMode: boolean;
 	events: EventDataType[];
+	workData: WorkDataType[];
 	focusDate: FocusDateType | null;
 	eventDetail?: SourceType;
 	setEvents: React.Dispatch<React.SetStateAction<EventDataType[]>>;
 	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
-	toggleEditMode: () => void;
 }
 
-export interface WorkDataType {
-	id: number;
-	name: string;
-	color: string;
-	start_time: string;
-	end_time: string;
-	work_type: string;
-	memo?: string;
-}
-
-const Footer = ({
-	isEditMode,
-	events,
-	focusDate,
-	eventDetail,
-	setEvents,
-	setFocusDate,
-	toggleEditMode,
-}: FooterProps) => {
+const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvents, setFocusDate }: FooterProps) => {
 	const navigate = useNavigate();
-	const [workData] = useState<WorkDataType[]>(tempWorkList);
 
 	const handleClickWorkButton = (work: WorkDataType) => {
 		const now = focusDate?.start!;
@@ -49,7 +30,7 @@ const Footer = ({
 			month: getMonth(now),
 			day: getDay(now),
 			work: {
-				work_id: work.id,
+				work_id: work.work_id,
 				name: work.name,
 				color: work.color,
 				work_time: `${work.start_time} ~ ${work.end_time}`,
@@ -74,6 +55,24 @@ const Footer = ({
 	const handleClickDelete = () => {
 		setEvents([...events.filter((event) => event.day !== getDay(focusDate?.start!))]);
 		handleClickSkip();
+	};
+
+	const handleSave = () => {
+		const saveEvents: SaveWorkType[] = [];
+		const eventList = events.filter((event) => !("isFocused" in event));
+
+		eventList.forEach((item) => {
+			const event = {
+				year: item.year,
+				month: item.month,
+				day: item.day,
+				work_id: item.work?.work_id,
+			} as SaveWorkType;
+
+			saveEvents.push(event);
+		});
+
+		manageSchedule(saveEvents);
 	};
 
 	const isEnd = (year: string, month: string, day: string) => {
@@ -121,13 +120,13 @@ const Footer = ({
 				<NoEventBox>
 					<Title>근무 등록</Title>
 					<IconBox>
-						<button>저장</button>
+						<button onClick={handleSave}>저장</button>
 						<SettingsIcon onClick={() => navigate("/calendar/setting")} />
 					</IconBox>
 					<Buttons>
 						<WorkButtons>
 							{workData?.map((work) => (
-								<div key={work.id}>
+								<div key={work.work_id}>
 									<WorkTypeButton work={work} onClick={handleClickWorkButton} />
 								</div>
 							))}

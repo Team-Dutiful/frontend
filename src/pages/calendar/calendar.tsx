@@ -5,7 +5,8 @@ import CustomCalendar from "./fullCalendar";
 import Footer from "./footer";
 import ModalPortal from "../../components/modalPortal";
 import CalendarModal from "../../components/calendarModal";
-import { tempEvents } from "./tempData";
+import { getSchedule, getWorkList } from "../../api/calendar";
+import { getMonth, getYear } from "../../utils/getDate";
 
 export interface EventDataType {
 	// eventType
@@ -21,6 +22,16 @@ export interface EventDataType {
 	overlay?: boolean;
 	display?: string;
 	isFocused?: boolean;
+}
+
+export interface WorkDataType {
+	work_id: number;
+	name: string;
+	color: string;
+	start_time: string;
+	end_time: string;
+	work_type: string;
+	memo?: string;
 }
 
 export interface SourceType {
@@ -40,9 +51,14 @@ export interface FocusDateType {
 }
 
 const Calendar = () => {
-	const [events, setEvents] = useState<EventDataType[]>(tempEvents);
-	const [eventDetail, setEventDetail] = useState<SourceType>();
+	const today = new Date();
+	const [nowYear, setNowYear] = useState<string>(String(today.getFullYear()));
+	const [nowMonth, setNowMonth] = useState<string>(String(today.getMonth()) + 1);
 	const [focusDate, setFocusDate] = useState<FocusDateType | null>(null);
+
+	const [events, setEvents] = useState<EventDataType[]>([]);
+	const [eventDetail, setEventDetail] = useState<SourceType>();
+	const [workData, setWorkData] = useState<WorkDataType[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isEditMode, setIsEditMode] = useState(false);
 
@@ -55,12 +71,17 @@ const Calendar = () => {
 	};
 
 	const toggleEditMode = () => {
-		setIsEditMode(!isEditMode);
+		if (!isEditMode) {
+			handleChangeFocusDate(`${nowYear}-${nowMonth}-01`);
+			setIsEditMode(true);
+			// console.log(document.getElementsByClassName("fc-prev-button")[0].className);
+			// prev, next 버튼 disabled 구현해야함
+		} else setIsEditMode(false);
 	};
 
-	const addFocusDate = () => {
+	const addFocusDate = (focusDate: FocusDateType) => {
 		const eventList = events.filter((event) => !("isFocused" in event));
-		setEvents([...eventList, focusDate!]);
+		setEvents([...eventList, focusDate]);
 	};
 
 	const resetFocusDate = () => {
@@ -69,13 +90,39 @@ const Calendar = () => {
 		setFocusDate(null);
 	};
 
+	const handleChangeFocusDate = (date: string) => {
+		console.log(getYear(date), nowYear);
+		console.log(getMonth(date), nowMonth);
+		if (getYear(date) !== nowYear || getMonth(date) !== nowMonth) return;
+
+		const focus = {
+			start: date,
+			end: date,
+			overlap: false,
+			display: "background",
+			isFocused: true,
+		};
+		setFocusDate({ ...focus });
+	};
+
 	useEffect(() => {
-		if (focusDate) addFocusDate();
+		if (focusDate) addFocusDate(focusDate);
 	}, [focusDate]);
 
 	useEffect(() => {
 		if (!isEditMode) resetFocusDate();
 	}, [isEditMode]);
+
+	useEffect(() => {
+		async function getScheduleData() {
+			const scheduleData = await getSchedule(nowYear, nowMonth);
+			const workData = await getWorkList();
+
+			setEvents(scheduleData);
+			setWorkData(workData);
+		}
+		getScheduleData();
+	}, [nowYear, nowMonth]);
 
 	return (
 		<CalendarContainer>
@@ -83,20 +130,22 @@ const Calendar = () => {
 			<CustomCalendar
 				isEditMode={isEditMode}
 				events={events}
-				focusDate={focusDate}
-				setEvents={setEvents}
+				nowMonth={nowMonth}
+				setNowYear={setNowYear}
+				setNowMonth={setNowMonth}
 				setEventDetail={setEventDetail}
-				setIsEditMode={setIsEditMode}
 				setFocusDate={setFocusDate}
+				onChangeFocusDate={handleChangeFocusDate}
 			/>
 			<Footer
 				isEditMode={isEditMode}
 				events={events}
+				workData={workData}
 				focusDate={focusDate}
 				eventDetail={eventDetail}
 				setEvents={setEvents}
 				setFocusDate={setFocusDate}
-				toggleEditMode={toggleEditMode}
+				// toggleEditMode={toggleEditMode}
 			/>
 
 			{isModalOpen && (
