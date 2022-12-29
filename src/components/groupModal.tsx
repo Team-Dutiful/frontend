@@ -10,9 +10,10 @@ interface GroupModalProps {
 	color: string;
 	isLeader: boolean;
 	onClose: (event?: React.MouseEvent<HTMLDivElement>) => void;
+	handleDeleteGroup: (groupId: number) => void;
 }
 
-const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProps) => {
+const GroupModal = ({ groupId, title, color, isLeader, onClose, handleDeleteGroup }: GroupModalProps) => {
 	const navigate = useNavigate();
 
 	const handleGoToEditing = () => {
@@ -49,8 +50,8 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 		const data = await exitGroup(groupId);
 		if (data.status == 200) {
 			alert("그룹 나가기 성공!");
+			handleDeleteGroup(groupId);
 			onClose();
-			window.location.reload();
 		} else {
 			alert(data.data.message);
 		}
@@ -60,8 +61,8 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 		const data = await deleteGroup(groupId);
 		if (data.status == 200) {
 			alert("그룹 삭제 성공.");
+			handleDeleteGroup(groupId);
 			onClose();
-			window.location.reload();
 		} else {
 			alert(data.data.message);
 		}
