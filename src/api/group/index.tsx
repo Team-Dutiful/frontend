@@ -45,7 +45,7 @@ export const deleteGroup = async (groupId: number) => {
 
 export const changeGroupLeader = async (groupId: number, memberId: number) => {
 	return await axios
-		.put(`/${groupId}/change-leader`, {
+		.put(`/groups/${groupId}/change-leader`, {
 			user_id: memberId,
 		})
 		.then((res) => res.data)
