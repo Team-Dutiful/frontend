@@ -19,7 +19,7 @@ export interface Member {
 	calendar_dates: CalendarDate[];
 }
 
-export const data = [
+export const data: Member[] = [
 	{
 		member_id: 1,
 		name: "오예환",

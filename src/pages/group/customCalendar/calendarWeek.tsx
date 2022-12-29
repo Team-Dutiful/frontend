@@ -18,8 +18,6 @@ interface Member {
 }
 
 const CalendarWeek = ({ weekly, week, members }: CalendarWeekProps) => {
-	console.log(members);
-
 	return (
 		<Table>
 			<TableHeader>
