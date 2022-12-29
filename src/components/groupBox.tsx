@@ -9,13 +9,14 @@ import { useNavigate } from "react-router-dom";
 interface GroupBoxProps {
 	groupId: number;
 	isLeader: boolean;
+	leaderId: number;
 	color: string;
 	title: string;
 	memberCount: number;
-	onClick: () => void;
+	handleDeleteGroup: (groupId: number) => void;
 }
 
-const GroupBox = ({ groupId, isLeader, color, title, memberCount, onClick }: GroupBoxProps) => {
+const GroupBox = ({ groupId, isLeader, leaderId, color, title, memberCount, handleDeleteGroup }: GroupBoxProps) => {
 	const navigate = useNavigate();
 
 	const [modalOpen, setModalOpen] = useState(false);
@@ -25,8 +26,7 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount, onClick }: Gro
 		setModalOpen(true);
 	};
 
-	const handleCloseModal = (event?: React.MouseEvent<HTMLDivElement>) => {
-		event!.stopPropagation();
+	const handleCloseModal = () => {
 		setModalOpen(false);
 	};
 
@@ -34,12 +34,13 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount, onClick }: Gro
 		navigate("/members", {
 			state: {
 				groupId: groupId,
+				leaderId: leaderId,
 			},
 		});
 	};
 
 	return (
-		<GroupBoxContainer isLeader={isLeader} onClick={onClick}>
+		<GroupBoxContainer isLeader={isLeader}>
 			<ColorBox color={color}></ColorBox>
 			<GroupTitle>{title}</GroupTitle>
 			<IconBox>
@@ -56,7 +57,14 @@ const GroupBox = ({ groupId, isLeader, color, title, memberCount, onClick }: Gro
 
 			{modalOpen && (
 				<ModalPortal>
-					<GroupModal groupId={groupId} title={title} color={color} isLeader={isLeader} onClose={handleCloseModal} />
+					<GroupModal
+						groupId={groupId}
+						title={title}
+						color={color}
+						isLeader={isLeader}
+						onClose={handleCloseModal}
+						handleDeleteGroup={handleDeleteGroup}
+					/>
 				</ModalPortal>
 			)}
 		</GroupBoxContainer>
