@@ -7,12 +7,15 @@ import { ReactComponent as LeftIcon } from "../../assets/icons/group_left_icon.s
 
 import Filter from "./filter";
 import CustomCalendar from "./customCalendar";
+import { data } from "./members";
 
 interface GroupCalendarProps {
 	title?: string;
 }
 
 const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalendarProps) => {
+	const members = data.map((i) => i.name);
+
 	const handleClickBackButton = () => {
 		console.log("back");
 	};
@@ -43,7 +46,7 @@ const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalenda
 				<GroupCalendarBox>
 					<CustomCalendar />
 				</GroupCalendarBox>
-				<Filter />
+				<Filter members={members} />
 			</GroupCalendarPage>
 			<FootNavigation />
 		</GroupCalendarContainer>
