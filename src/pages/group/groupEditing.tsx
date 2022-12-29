@@ -91,7 +91,7 @@ const GroupSettingContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 	align-items: center;
 
 	svg {
