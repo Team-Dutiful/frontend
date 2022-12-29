@@ -50,6 +50,8 @@ const FootNavigationContainer = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	box-sizing: border-box;
+	z-index: 10;
+	background: #ffffff;
 
 	svg {
 		cursor: pointer;
