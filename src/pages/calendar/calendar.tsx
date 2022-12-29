@@ -7,6 +7,7 @@ import ModalPortal from "../../components/modalPortal";
 import CalendarModal from "../../components/calendarModal";
 import { getSchedule, getWorkList, WorkDataType } from "../../api/calendar";
 import { getMonth, getYear } from "../../utils/getDate";
+import FootNavigation from "./../../components/footNavigation";
 
 export interface EventDataType {
 	// eventType
@@ -141,6 +142,7 @@ const Calendar = () => {
 					<CalendarModal onClose={handleCloseModal} />
 				</ModalPortal>
 			)}
+			<FootNavigation />
 		</CalendarContainer>
 	);
 };
