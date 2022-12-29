@@ -45,13 +45,14 @@ const GroupEditing = () => {
 		setName(e.target.value);
 	};
 
-	const handleEditGroup = (id: number, name: string, color: string) => {
-		editGroup(id, name, color)
-			.then(() => {
-				alert("그룹 수정 성공!");
-				handleGoBackPage();
-			})
-			.catch((err) => alert("그룹 수정 실패!" + err));
+	const handleEditGroup = async (id: number, name: string, color: string) => {
+		const data = await editGroup(id, name, color);
+		if (data.status == 200) {
+			alert("그룹 수정 성공!");
+			handleGoBackPage();
+		} else {
+			alert(data.data.message);
+		}
 	};
 
 	return (
@@ -90,7 +91,7 @@ const GroupSettingContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 	align-items: center;
 
 	svg {

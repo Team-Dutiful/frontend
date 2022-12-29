@@ -14,7 +14,12 @@ const GroupFilter = () => {
 	const groupId = 17;
 
 	const getMemberInfo = async () => {
-		return await getMembers(groupId).then((res) => setMembers(res));
+		const data = await getMembers(groupId);
+		if (data.status == 200) {
+			setMembers(data.body.group_members.members);
+		} else {
+			alert(data.data.message);
+		}
 	};
 
 	useEffect(() => {
@@ -87,7 +92,7 @@ const GroupFilterContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 	align-items: center;
 `;
 
@@ -103,7 +108,7 @@ const IconBar = styled.div`
 
 const GroupFilterTitleBox = styled.div`
 	background-color: #ff9595;
-	width: 360px;
+	width: 100vw;
 	text-align: center;
 `;
 
@@ -119,7 +124,7 @@ const GroupFilterTitle = styled.title`
 const MemberBox = styled.div`
 	background-color: white;
 
-	width: 360px;
+	width: 100vw;
 	padding: 25px;
 	box-sizing: border-box;
 	flex-wrap: wrap;
@@ -159,7 +164,7 @@ const MemberTitle = styled.title`
 
 const WorkBox = styled.div`
 	background-color: white;
-	width: 360px;
+	width: 100vw;
 	padding: 25px;
 	box-sizing: border-box;
 	flex-wrap: wrap;
