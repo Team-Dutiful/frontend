@@ -48,7 +48,8 @@ export default Settings;
 const SettingsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 `;
 
 const Profile = styled.div`
