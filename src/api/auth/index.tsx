@@ -13,6 +13,14 @@ export const login = async (identification: string, password: string) => {
 		});
 };
 
+export const kakaoLogin = async (code: string) => {
+	return await axios.get(`/auth/login-kakao`, { params: { code } });
+};
+
+export const naverLogin = async (code: string, state: string) => {
+	return await axios.get(`/auth/login-naver`, { params: { code, state } });
+};
+
 export const sendSignUpMail = async (email: string) => {
 	return await axios
 		.post(`/auth/send-code`, { email })

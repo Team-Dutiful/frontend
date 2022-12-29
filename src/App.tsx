@@ -24,6 +24,8 @@ import PasswordSetting from "./pages/settings/passwordSetting";
 import EmailSetting from "./pages/settings/emailSetting";
 import MemberInviting from "./pages/member/memberInviting";
 import ChangePassword from "./pages/auth/changePassword";
+import Kakao from "./pages/auth/kakao";
+import Naver from "./pages/auth/naver";
 
 const App = () => {
 	const setScreenSize = () => {
@@ -46,6 +48,8 @@ const App = () => {
 				<Route path="find-password" element={<FindPassword />} />
 				<Route path="change-password" element={<ChangePassword />} />
 				<Route path="calendar" element={<Calendar />} />
+				<Route path="oauth/callback/kakao" element={<Kakao />} />
+				<Route path="oauth/callback/naver" element={<Naver />} />
 				<Route path="calendar/setting" element={<CalendarSetting />} />
 				<Route path="calendar/manage" element={<ManageWork />} />
 				<Route path="group" element={<Group />} />
