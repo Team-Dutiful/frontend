@@ -4,8 +4,9 @@ import FootNavigation from "../../components/footNavigation";
 import { ReactComponent as DownloadIcon } from "../../assets/icons/group_download_icon.svg";
 import { ReactComponent as ShareIcon } from "../../assets/icons/group_share_icon.svg";
 import { ReactComponent as LeftIcon } from "../../assets/icons/group_left_icon.svg";
-import CustomCalendar from "./customCalendar";
+
 import Filter from "./filter";
+import CustomCalendar from "./customCalendar";
 
 interface GroupCalendarProps {
 	title?: string;

@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { ReactComponent as LeftIcon } from "../../assets/icons/custom_calendar_left_icon.svg";
-import { ReactComponent as RightIcon } from "../../assets/icons/custom_calendar_right_icon.svg";
+import { ReactComponent as LeftIcon } from "../../../assets/icons/custom_calendar_left_icon.svg";
+import { ReactComponent as RightIcon } from "../../../assets/icons/custom_calendar_right_icon.svg";
 import CalendarTable from "./calendarTable";
 
 const CustomCalendar = () => {
 	const [year, setYear] = useState(2022);
-	const [month, setMonth] = useState(10);
+	const [month, setMonth] = useState(12);
 
 	const handleClickLeft = () => {
 		setMonth((prev) => {
@@ -45,10 +45,7 @@ const CustomCalendar = () => {
 				</CustomCalendarTitle>
 			</CustomCalendarHeader>
 			<CustomCalendarMain>
-				<CalendarTable />
-				<CalendarTable />
-				<CalendarTable />
-				<CalendarTable />
+				<CalendarTable year={year} month={month} />
 			</CustomCalendarMain>
 		</CustomCalendarCotainer>
 	);
