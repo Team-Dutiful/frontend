@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import profileImg from "../../assets/images/profileImg.png";
 import FootNavigation from "../../components/footNavigation";
+import { userState } from "../../recoil/user";
 
 const Settings = () => {
 	const navigate = useNavigate();
+	const userInfo = useRecoilValue(userState);
 
 	const handleChangeUrl = (pageUrl: string) => {
 		navigate(`/setting/${pageUrl}`);
@@ -17,8 +20,8 @@ const Settings = () => {
 					<ProfileImg src={profileImg}></ProfileImg>
 				</ProfileImgContainer>
 				<ProfileInfo>
-					<ProfileName>조용우</ProfileName>
-					<ProfileEmail>yongwoo_cho@tmax.co.kr</ProfileEmail>
+					<ProfileName>{userInfo?.name}</ProfileName>
+					<ProfileEmail>{userInfo?.email}</ProfileEmail>
 				</ProfileInfo>
 			</Profile>
 			<ButtonSection>
