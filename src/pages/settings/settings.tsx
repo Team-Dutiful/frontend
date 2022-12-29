@@ -49,11 +49,10 @@ const SettingsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 `;
 
 const Profile = styled.div`
-	width: 360px;
 	margin-bottom: 64px;
 `;
 

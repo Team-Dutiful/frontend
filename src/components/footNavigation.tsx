@@ -33,7 +33,7 @@ const FootNavigationContainer = styled.div`
 	right: 0;
 	bottom: 0;
 	height: 84px;
-	width: 360px;
+	width: 100vw;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;

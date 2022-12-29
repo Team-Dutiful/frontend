@@ -8,7 +8,7 @@ const ProfileSetting = () => {
 			<ProfileImgContainer>
 				<ProfileImg src={bigProfileImg}></ProfileImg>
 			</ProfileImgContainer>
-			<ProfileNameLabel htmlFor="name">이름</ProfileNameLabel>
+			{/* <ProfileNameLabel htmlFor="name">이름</ProfileNameLabel> */}
 			<ProfileNameInput type="text" id="name" placeholder="이름을 입력해주세요." />
 			<NameChangeButton>변경</NameChangeButton>
 			<TeamLogo>@ToStar</TeamLogo>
@@ -23,7 +23,6 @@ const ProfileSettingContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	height: 100vh;
-	width: 360px;
 `;
 
 const ProfileSpan = styled.span`
@@ -54,7 +53,7 @@ const ProfileNameLabel = styled.label`
 	position: absolute;
 	width: 124px;
 	height: 24px;
-	left: 12px;
+	left: 42px;
 	top: 432px;
 	font-family: "Inter";
 	font-style: normal;
@@ -97,7 +96,6 @@ const TeamLogo = styled.p`
 	left: 0;
 	right: 0;
 	bottom: 2rem;
-	width: 360px;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
