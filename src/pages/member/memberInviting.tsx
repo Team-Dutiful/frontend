@@ -24,7 +24,11 @@ const MemberInviting = () => {
 		const data = await inviteMember(groupId, email);
 		if (data.status == 200) {
 			alert("초대 완료");
-			handleGoBackPage();
+			navigate("/members", {
+				state: {
+					groupId: groupId,
+				},
+			});
 		} else if (data.status == 400) {
 			alert(data.data.message);
 		}
@@ -52,7 +56,7 @@ const MemberInvitingContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 	align-items: center;
 
 	svg {

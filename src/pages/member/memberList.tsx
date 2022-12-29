@@ -22,15 +22,36 @@ const MemberList = () => {
 	const setMemberData = async () => {
 		const data = await getMembers(groupId);
 		if (data.status == 200) {
-			setMembers(data.body.group_members.members);
+			const allMember = data.body.group_members.members;
+			const leaderMember = allMember.filter((member: any) => member.member_id === data.body.group_members.leader_id);
+			const normalMember = allMember.filter((member: any) => member.member_id !== data.body.group_members.leader_id);
+
+			setMembers([...leaderMember, ...normalMember]);
 			setLeaderId(data.body.group_members.leader_id);
 		} else {
 			alert(data.data.message);
 		}
 	};
 
-	const handleGoBackPage = () => {
-		navigate(-1);
+	const handleChangeMemberData = (type: string, memberId: number) => {
+		if (type === "change") {
+			// 리더 변경
+			const leaderMember = members?.filter((member: any) => member.member_id === memberId);
+			const normalMember = members?.filter((member: any) => member.member_id !== memberId);
+			if (leaderMember && normalMember) {
+				setMembers([...leaderMember, ...normalMember]);
+				setLeaderId(memberId);
+			}
+		}
+
+		if (type === "delete") {
+			// 멤버 강퇴
+			setMembers(members?.filter((member) => member.member_id !== memberId));
+		}
+	};
+
+	const handleGoGroupPage = () => {
+		navigate("/group");
 	};
 
 	const handleGoToInviting = () => {
@@ -43,19 +64,29 @@ const MemberList = () => {
 
 	useEffect(() => {
 		setMemberData();
+		console.log("render");
 	}, []);
 
 	return (
 		<MemberListContainer>
-			<BackIcon onClick={handleGoBackPage} />
-			<InviteIconBox>
-				<InviteIcon onClick={handleGoToInviting} />
-			</InviteIconBox>
+			<IconBox>
+				<BackIcon onClick={handleGoGroupPage} className="back" />
+				<InviteIcon onClick={handleGoToInviting} className="invite" />
+			</IconBox>
 			<MemberTitleBox>
 				<MemberListTitle>멤버 목록</MemberListTitle>
 			</MemberTitleBox>
 			{members?.map(({ member_id, name }: MemberProps) => {
-				return <MemberBox memberId={member_id} name={name} isLeader={member_id == leaderId} />;
+				return (
+					<MemberBox
+						key={member_id}
+						memberId={member_id}
+						name={name}
+						isLeader={member_id == leaderId}
+						leaderId={leaderId}
+						handleChangeMemberData={handleChangeMemberData}
+					/>
+				);
 			})}
 		</MemberListContainer>
 	);
@@ -68,7 +99,7 @@ const MemberListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 	align-items: center;
 
 	/* svg {
@@ -79,7 +110,7 @@ const MemberListContainer = styled.div`
 `;
 
 const MemberTitleBox = styled.div`
-	height: 100px;
+	height: 70px;
 	width: 300px;
 	text-align: center;
 
@@ -88,14 +119,24 @@ const MemberTitleBox = styled.div`
 
 const MemberListTitle = styled.title`
 	display: block;
-	padding-top: 70px;
+	padding-top: 40px;
 
 	font-weight: bold;
 	font-family: sans-serif;
 `;
 
-const InviteIconBox = styled.div`
-	position: absolute;
-	top: 15px;
-	right: 18px;
+const IconBox = styled.div`
+	width: 100vw;
+	display: flex;
+	justify-content: space-between;
+
+	.back {
+		margin-left: 20px;
+		margin-top: 4px;
+	}
+
+	.invite {
+		margin-right: 20px;
+		margin-top: 15px;
+	}
 `;
