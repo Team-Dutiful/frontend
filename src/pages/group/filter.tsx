@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { ReactComponent as SearchIcon } from "../../assets/icons/filter_search_icon.svg";
 
-const Filter = () => {
+interface FilterProps {
+	members: string[];
+}
+
+const Filter = ({ members }: FilterProps) => {
 	return (
 		<FilterContainer>
 			<FilterHeader>
@@ -13,30 +17,13 @@ const Filter = () => {
 					<p>멤버</p>
 					<FilterList>
 						<Tmp>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								김다인
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
-							<FilterChip fontColor="#000" bgColor="#E4E4E4">
-								박나영
-							</FilterChip>
+							{members.map((member, idx) => {
+								return (
+									<FilterChip key={idx} fontColor="#000" bgColor="#E4E4E4">
+										{member}
+									</FilterChip>
+								);
+							})}
 						</Tmp>
 					</FilterList>
 				</FilterRow>
