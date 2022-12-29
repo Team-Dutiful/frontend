@@ -1,5 +1,10 @@
 import "@fullcalendar/react/dist/vdom";
-import FullCalendar, { DayHeaderContentArg, EventClickArg, VerboseFormattingArg } from "@fullcalendar/react";
+import FullCalendar, {
+	DateSelectArg,
+	DayHeaderContentArg,
+	EventClickArg,
+	VerboseFormattingArg,
+} from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import styled from "styled-components";
@@ -8,12 +13,10 @@ import { EventDataType, SourceType, FocusDateType } from "./calendar";
 interface CustomCalendarProps {
 	isEditMode: boolean;
 	events: EventDataType[];
-	nowMonth: string;
 	setNowYear: React.Dispatch<React.SetStateAction<string>>;
 	setNowMonth: React.Dispatch<React.SetStateAction<string>>;
 	setEventDetail: React.Dispatch<React.SetStateAction<SourceType | undefined>>;
-	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
-	onChangeFocusDate: (date: string) => void;
+	changeFocusDate: (date: string) => void;
 }
 
 export interface formattedEventType {
@@ -28,12 +31,10 @@ export interface formattedEventType {
 const CustomCalendar = ({
 	isEditMode,
 	events,
-	nowMonth,
 	setNowYear,
 	setNowMonth,
 	setEventDetail,
-	setFocusDate,
-	onChangeFocusDate,
+	changeFocusDate,
 }: CustomCalendarProps) => {
 	const formattedEvents = () => {
 		let newEvents: formattedEventType[] = [];
@@ -54,7 +55,8 @@ const CustomCalendar = ({
 					day: data.day,
 					work_id: data.work?.work_id,
 					name: data.work?.name,
-					work_time: data.work?.work_time,
+					start_time: data.work?.start_time,
+					end_time: data.work?.end_time,
 				};
 				newEvents.push(event);
 			}
@@ -68,7 +70,7 @@ const CustomCalendar = ({
 		return weekList[arg.dow];
 	};
 
-	const headerTitleFormat = (arg: VerboseFormattingArg) => {
+	const titleFormat = (arg: VerboseFormattingArg) => {
 		const year = String(arg.date.year);
 		const month = String(arg.date.month + 1);
 
@@ -84,17 +86,14 @@ const CustomCalendar = ({
 		return formattedTitle;
 	};
 
-	const handleClickEvent = (arg: EventClickArg) => {
-		setEventDetail(arg.event._def.extendedProps.source);
-		if (isEditMode) {
-			onChangeFocusDate(arg.event.startStr);
-		}
+	const eventClick = (arg: EventClickArg) => {
+		changeFocusDate(arg.event.startStr);
+		if (!isEditMode) setEventDetail(arg.event._def.extendedProps.source);
 	};
 
-	const handleClickDate = (arg: DateClickArg) => {
-		if (isEditMode) {
-			onChangeFocusDate(arg.dateStr);
-		} else {
+	const dateClick = (arg: DateClickArg) => {
+		changeFocusDate(arg.dateStr);
+		if (!isEditMode) {
 			const sources = arg.view.getCurrentData().eventSources;
 			const key = Object.keys(sources)[0];
 			const events = sources[key].meta;
@@ -111,13 +110,13 @@ const CustomCalendar = ({
 				plugins={[dayGridPlugin, interactionPlugin]} // interactionPlugin: dateClick, eventClick 사용을 위한 plugin
 				initialView="dayGridMonth"
 				height={"100%"}
-				events={formattedEvents()} // event data를 fullCalendar event 형식에 맞춰 전처리
-				titleFormat={(arg) => headerTitleFormat(arg)}
 				headerToolbar={{ start: "", center: `prev title next`, end: "" }} // <- 2022.11 ->
-				dayHeaderContent={(arg) => dayName(arg)} // 요일을 한국어로
+				titleFormat={titleFormat}
+				dayHeaderContent={dayName} // 요일을 한국어로
 				fixedWeekCount={false} // true일 경우 항상 6줄
-				eventClick={(arg) => handleClickEvent(arg)}
-				dateClick={(arg) => handleClickDate(arg)}
+				events={formattedEvents()} // event data를 fullCalendar event 형식에 맞춰 전처리
+				eventClick={eventClick}
+				dateClick={dateClick}
 			/>
 		</FullCalendarContainer>
 	);
@@ -128,12 +127,6 @@ export default CustomCalendar;
 const FullCalendarContainer = styled.div<{ isEditMode: boolean }>`
 	width: 100%;
 	height: 85%;
-
-	.fc-bg-event {
-		border: 1px solid #ff6a6a;
-		background-color: transparent;
-		opacity: 100;
-	}
 
 	// Header Toolbar Custom
 	.fc-toolbar-chunk {
@@ -231,6 +224,13 @@ const FullCalendarContainer = styled.div<{ isEditMode: boolean }>`
 	// Today Custom
 	.fc .fc-daygrid-day.fc-day-today {
 		background-color: #ffb0b0;
+	}
+
+	// Focus date Custom
+	.fc-bg-event {
+		border: ${(props) => (props.isEditMode ? "1px solid #ff6a6a" : "transparent")};
+		background-color: ${(props) => (props.isEditMode ? "transparent" : "#e9e9e989")};
+		opacity: 100;
 	}
 `;
 

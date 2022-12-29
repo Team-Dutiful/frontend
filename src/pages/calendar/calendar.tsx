@@ -38,8 +38,10 @@ export interface SourceType {
 	day?: string;
 	color?: string;
 	name: string;
+	type: string;
 	work_id?: number;
-	work_time?: string;
+	start_time: string;
+	end_time: string;
 }
 
 export interface FocusDateType {
@@ -72,10 +74,8 @@ const Calendar = () => {
 
 	const toggleEditMode = () => {
 		if (!isEditMode) {
-			handleChangeFocusDate(`${nowYear}-${nowMonth}-01`);
+			changeFocusDate(`${nowYear}-${nowMonth}-01`);
 			setIsEditMode(true);
-			// console.log(document.getElementsByClassName("fc-prev-button")[0].className);
-			// prev, next 버튼 disabled 구현해야함
 		} else setIsEditMode(false);
 	};
 
@@ -85,14 +85,12 @@ const Calendar = () => {
 	};
 
 	const resetFocusDate = () => {
-		const eventList = events.filter((event) => !("isFocused" in event));
+		const eventList = events.filter((event) => !("isFocused" in event || "isTemp" in event));
 		setEvents([...eventList]);
 		setFocusDate(null);
 	};
 
-	const handleChangeFocusDate = (date: string) => {
-		console.log(getYear(date), nowYear);
-		console.log(getMonth(date), nowMonth);
+	const changeFocusDate = (date: string) => {
 		if (getYear(date) !== nowYear || getMonth(date) !== nowMonth) return;
 
 		const focus = {
@@ -102,7 +100,7 @@ const Calendar = () => {
 			display: "background",
 			isFocused: true,
 		};
-		setFocusDate({ ...focus });
+		setFocusDate(focus);
 	};
 
 	useEffect(() => {
@@ -130,12 +128,10 @@ const Calendar = () => {
 			<CustomCalendar
 				isEditMode={isEditMode}
 				events={events}
-				nowMonth={nowMonth}
 				setNowYear={setNowYear}
 				setNowMonth={setNowMonth}
 				setEventDetail={setEventDetail}
-				setFocusDate={setFocusDate}
-				onChangeFocusDate={handleChangeFocusDate}
+				changeFocusDate={changeFocusDate}
 			/>
 			<Footer
 				isEditMode={isEditMode}
@@ -145,7 +141,7 @@ const Calendar = () => {
 				eventDetail={eventDetail}
 				setEvents={setEvents}
 				setFocusDate={setFocusDate}
-				// toggleEditMode={toggleEditMode}
+				toggleEditMode={toggleEditMode}
 			/>
 
 			{isModalOpen && (
