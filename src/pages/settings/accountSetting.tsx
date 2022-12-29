@@ -40,7 +40,6 @@ const AccountSettingContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	height: 100vh;
-	width: 360px;
 `;
 
 const AccountSpan = styled.span`
