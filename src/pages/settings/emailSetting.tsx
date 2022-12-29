@@ -96,7 +96,7 @@ const TeamLogo = styled.p`
 	left: 0;
 	right: 0;
 	bottom: 2rem;
-	width: 360px;
+	width: 100vw;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;

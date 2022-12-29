@@ -220,7 +220,7 @@ const IconBar = styled.div`
 
 const GroupFilterTitleBox = styled.div`
 	background-color: #ff9595;
-	width: 100%;
+	width: 360px;
 	text-align: center;
 `;
 
@@ -237,7 +237,7 @@ const MemberBox = styled.div`
 	background-color: white;
 
 	width: 360px;
-	padding: 0 25px;
+	padding: 25px;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 `;
@@ -277,7 +277,7 @@ const MemberTitle = styled.title`
 const WorkBox = styled.div`
 	background-color: white;
 	width: 360px;
-	padding: 0 25px;
+	padding: 25px;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 `;
