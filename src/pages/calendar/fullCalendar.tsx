@@ -106,7 +106,7 @@ const CustomCalendar = ({
 	};
 
 	return (
-		<FullCalendarContainer>
+		<FullCalendarContainer isEditMode={isEditMode}>
 			<FullCalendar
 				plugins={[dayGridPlugin, interactionPlugin]} // interactionPlugin: dateClick, eventClick 사용을 위한 plugin
 				initialView="dayGridMonth"
@@ -125,7 +125,7 @@ const CustomCalendar = ({
 
 export default CustomCalendar;
 
-const FullCalendarContainer = styled.div`
+const FullCalendarContainer = styled.div<{ isEditMode: boolean }>`
 	width: 100%;
 	height: 85%;
 
@@ -150,6 +150,7 @@ const FullCalendarContainer = styled.div`
 			border: none;
 			background-color: white;
 			padding: 0.5rem;
+			display: ${(props) => (props.isEditMode ? "none" : "")};
 
 			.fc-icon {
 				color: #d9d9d9;
@@ -161,6 +162,7 @@ const FullCalendarContainer = styled.div`
 			background-color: white;
 			padding: 0.5rem;
 			margin: 0;
+			display: ${(props) => (props.isEditMode ? "none" : "")};
 
 			.fc-icon {
 				color: #d9d9d9;
