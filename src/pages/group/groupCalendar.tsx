@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import FootNavigation from "../../components/footNavigation";
 import { ReactComponent as DownloadIcon } from "../../assets/icons/group_download_icon.svg";
@@ -7,14 +7,20 @@ import { ReactComponent as LeftIcon } from "../../assets/icons/group_left_icon.s
 
 import Filter from "./filter";
 import CustomCalendar from "./customCalendar";
-import { data } from "./members";
+import { data, Member } from "./members";
+import GroupFilter from "./groupFilter";
 
 interface GroupCalendarProps {
 	title?: string;
 }
 
 const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalendarProps) => {
-	const members = data.map((i) => i.name);
+	const [filterModal, setFilterModal] = useState(false);
+	const [selected, setSelected] = useState<string[]>([]);
+	const [works, setWorks] = useState<string[]>(["DAY", "EVE", "OFF", "NIGHT", "ETC"]);
+	const [filteredData, setFilteredData] = useState<Member[]>([]);
+
+	// const filteredData = data.map((i) => i);
 
 	const handleClickBackButton = () => {
 		console.log("back");
@@ -28,28 +34,67 @@ const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalenda
 		console.log("share");
 	};
 
+	const handleClickOpenFilter = () => {
+		setFilterModal(true);
+	};
+
+	const handleClickCloseFilter = () => {
+		setFilterModal(false);
+	};
+
+	const saveFilteredMember = (members: string[]) => {
+		setSelected(members);
+	};
+
+	const saveFilteredWork = (works: string[]) => {
+		setWorks(works);
+	};
+
+	useEffect(() => {
+		setFilteredData(data.map((i) => i));
+		setSelected(data.map((i) => i.name));
+	}, []);
+
+	useEffect(() => {
+		const filtered = data.filter((i) => {
+			return selected.includes(i.name);
+		});
+		setFilteredData(filtered);
+	}, [selected]);
+
 	return (
-		<GroupCalendarContainer>
-			<GroupCalendarPage>
-				<GroupCalendarHeader>
-					<GroupCalendarIconButton onClick={handleClickBackButton}>
-						<LeftIcon />
-					</GroupCalendarIconButton>
-					<GroupCalendarTitle>{title}</GroupCalendarTitle>
-					<GroupCalendarIconButton onClick={handleClickDownloadButton}>
-						<DownloadIcon />
-					</GroupCalendarIconButton>
-					<GroupCalendarIconButton onClick={handleClickShareButton}>
-						<ShareIcon />
-					</GroupCalendarIconButton>
-				</GroupCalendarHeader>
-				<GroupCalendarBox>
-					<CustomCalendar />
-				</GroupCalendarBox>
-				<Filter members={members} />
-			</GroupCalendarPage>
-			<FootNavigation />
-		</GroupCalendarContainer>
+		<>
+			<GroupCalendarContainer>
+				<GroupCalendarPage>
+					<GroupCalendarHeader>
+						<GroupCalendarIconButton onClick={handleClickBackButton}>
+							<LeftIcon />
+						</GroupCalendarIconButton>
+						<GroupCalendarTitle>{title}</GroupCalendarTitle>
+						<GroupCalendarIconButton onClick={handleClickDownloadButton}>
+							<DownloadIcon />
+						</GroupCalendarIconButton>
+						<GroupCalendarIconButton onClick={handleClickShareButton}>
+							<ShareIcon />
+						</GroupCalendarIconButton>
+					</GroupCalendarHeader>
+					<GroupCalendarBox>
+						<CustomCalendar data={filteredData} />
+					</GroupCalendarBox>
+					<Filter members={filteredData.map((i) => i.name)} works={works} onClick={handleClickOpenFilter} />
+				</GroupCalendarPage>
+				<FootNavigation />
+			</GroupCalendarContainer>
+			{filterModal && (
+				<GroupFilter
+					members={data.map((i) => i.name)}
+					selected={selected}
+					onClose={handleClickCloseFilter}
+					saveFilteredMember={saveFilteredMember}
+					saveFilteredWork={saveFilteredWork}
+				/>
+			)}
+		</>
 	);
 };
 

@@ -4,23 +4,8 @@ interface CalendarDayProps {
 	work: { work_id: number; name: string } | null;
 }
 
-const printText = (work?: string | null) => {
-	switch (work) {
-		case "OFF":
-			return "OFF";
-		case "DAY":
-			return "DAY";
-		case "EVE":
-			return "EVE";
-		case "휴가":
-			return "휴가";
-		default:
-			return null;
-	}
-};
-
 const CanlendarDay = ({ work }: CalendarDayProps) => {
-	return <CanlendarDayContainer work={work?.name}>{printText(work?.name)}</CanlendarDayContainer>;
+	return <CanlendarDayContainer work={work?.name}>{work?.name}</CanlendarDayContainer>;
 };
 
 export default CanlendarDay;

@@ -3,14 +3,33 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/filter_search_i
 
 interface FilterProps {
 	members: string[];
+	works: string[];
+	onClick: () => void;
 }
 
-const Filter = ({ members }: FilterProps) => {
+const selectColor = (work: string) => {
+	switch (work) {
+		case "DAY":
+			return "#FFD9D9";
+		case "EVE":
+			return "#FFB9B9";
+		case "OFF":
+			return "#B3FFE8";
+		case "NIGHT":
+			return "#D4FFB2";
+		case "ETC":
+			return "#D5CEFF";
+		default:
+			return "#000";
+	}
+};
+
+const Filter = ({ members, works, onClick }: FilterProps) => {
 	return (
 		<FilterContainer>
 			<FilterHeader>
 				<p>필터</p>
-				<SearchIcon />
+				<SearchIcon onClick={onClick} />
 			</FilterHeader>
 			<FilterBox>
 				<FilterRow>
@@ -31,18 +50,13 @@ const Filter = ({ members }: FilterProps) => {
 					<p>근무</p>
 					<FilterList>
 						<Tmp>
-							<FilterChip fontColor="#393939" bgColor="#FFD9D9">
-								DAY
-							</FilterChip>
-							<FilterChip fontColor="#393939" bgColor="#FFB9B9">
-								EVENING
-							</FilterChip>
-							<FilterChip fontColor="#393939" bgColor="#B3FFE8">
-								OFF
-							</FilterChip>
-							<FilterChip fontColor="#393939" bgColor="#D5CEFF">
-								휴가
-							</FilterChip>
+							{works.map((work, idx) => {
+								return (
+									<FilterChip key={idx} fontColor="#393939" bgColor={selectColor(work)}>
+										{work}
+									</FilterChip>
+								);
+							})}
 						</Tmp>
 					</FilterList>
 				</FilterRow>
