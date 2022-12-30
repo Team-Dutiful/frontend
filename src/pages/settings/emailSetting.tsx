@@ -22,7 +22,6 @@ const EmailSettingContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	height: 100vh;
-	width: 360px;
 `;
 
 const EmailChangeForm = styled.form`
@@ -97,7 +96,7 @@ const TeamLogo = styled.p`
 	left: 0;
 	right: 0;
 	bottom: 2rem;
-	width: 360px;
+	width: 100vw;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;

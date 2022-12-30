@@ -5,6 +5,8 @@ import { ReactComponent as GroupAddIcon } from "../../assets/icons/group_add_ico
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getGroups } from "../../api/group/index";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../recoil/user";
 
 interface MemberProps {
 	member_id: number;
@@ -21,6 +23,7 @@ interface GroupProps {
 
 const Group = () => {
 	const navigate = useNavigate();
+	const userInfo = useRecoilValue(userState);
 
 	const [groups, setGroups] = useState<any[]>([]);
 
@@ -28,10 +31,19 @@ const Group = () => {
 		navigate("/group/add");
 	};
 
-	const curUserId = 4;
+	const curUserId = userInfo?.user_id;
 
 	const getGroupInfo = async () => {
-		return await getGroups().then((res) => setGroups(res));
+		const data = await getGroups();
+		if (data.status == 200) {
+			setGroups(data.body.groups);
+		} else {
+			alert(data.data.message);
+		}
+	};
+
+	const handleDeleteGroup = (groupId: number) => {
+		setGroups(groups.filter((group) => group.group_id !== groupId));
 	};
 
 	useEffect(() => {
@@ -52,9 +64,11 @@ const Group = () => {
 						key={group_id}
 						groupId={group_id}
 						isLeader={curUserId === leader_id}
+						leaderId={leader_id}
 						color={color}
 						title={name}
 						memberCount={members.length}
+						handleDeleteGroup={handleDeleteGroup}
 					/>
 				);
 			})}
@@ -70,7 +84,7 @@ const GroupContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 360px;
+	width: 100%;
 	align-items: center;
 `;
 

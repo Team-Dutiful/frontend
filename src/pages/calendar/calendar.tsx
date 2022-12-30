@@ -7,6 +7,7 @@ import ModalPortal from "../../components/modalPortal";
 import CalendarModal from "../../components/calendarModal";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/user";
+import FootNavigation from "./../../components/footNavigation";
 
 export interface EventType {
 	title?: string;
@@ -53,6 +54,7 @@ const Calendar = () => {
 					<CalendarModal onClose={handleCloseModal} />
 				</ModalPortal>
 			)}
+			<FootNavigation />
 		</CalendarContainer>
 	);
 };

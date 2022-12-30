@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ReactComponent as RefreshIcon } from "../../assets/icons/refresh_button_icon.svg";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface GroupFilterProps {
 	members: string[];

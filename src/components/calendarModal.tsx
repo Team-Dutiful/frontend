@@ -30,7 +30,7 @@ const CalendarModal = ({ onClose }: CalendarModalProps) => {
 export default CalendarModal;
 
 const CalendarModalContainer = styled.div`
-	width: 360px;
+	width: 100vw;
 	height: 100vh;
 	display: flex;
 	align-items: center;

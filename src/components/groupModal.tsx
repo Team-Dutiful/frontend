@@ -9,10 +9,11 @@ interface GroupModalProps {
 	title: string;
 	color: string;
 	isLeader: boolean;
-	onClose: () => void;
+	onClose: (event?: React.MouseEvent<HTMLDivElement>) => void;
+	handleDeleteGroup: (groupId: number) => void;
 }
 
-const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProps) => {
+const GroupModal = ({ groupId, title, color, isLeader, onClose, handleDeleteGroup }: GroupModalProps) => {
 	const navigate = useNavigate();
 
 	const handleGoToEditing = () => {
@@ -33,40 +34,52 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 		});
 	};
 
+	const handleGoToInviting = () => {
+		navigate("/members/invite", {
+			state: {
+				groupId: groupId,
+			},
+		});
+	};
+
 	const handleClickModal = (e: { stopPropagation: () => void }) => {
 		e.stopPropagation();
 	};
 
-	const handleGroupExit = () => {
-		exitGroup(groupId)
-			.then(() => {
-				alert("그룹 수정 성공!");
-				onClose();
-				window.location.reload();
-			})
-			.catch((err) => alert("그룹 수정 실패!" + err));
+	const handleGroupExit = async () => {
+		const data = await exitGroup(groupId);
+		if (data.status == 200) {
+			alert("그룹 나가기 성공!");
+			handleDeleteGroup(groupId);
+			onClose();
+		} else {
+			alert(data.data.message);
+		}
 	};
 
-	const handeGroupDelete = () => {
-		deleteGroup(groupId)
-			.then(() => {
-				alert("그룹 삭제 성공.");
-				onClose();
-				window.location.reload();
-			})
-			.catch((err) => alert("그룹 삭제 실패!" + err));
+	const handeGroupDelete = async () => {
+		const data = await deleteGroup(groupId);
+		if (data.status == 200) {
+			alert("그룹 삭제 성공.");
+			handleDeleteGroup(groupId);
+			onClose();
+		} else {
+			alert(data.data.message);
+		}
 	};
 
 	return (
 		<GroupModalContainer onClick={onClose}>
 			<GroupModalContent isLeader={isLeader} onClick={handleClickModal}>
-				<CloseIcon onClick={onClose} />
+				<div onClick={onClose}>
+					<CloseIcon />
+				</div>
 				<GroupHeaderSection>
 					<ColorBox color={color} />
 					<GroupTitle>{title}</GroupTitle>
 				</GroupHeaderSection>
 				<GroupButton onClick={handleGoToEditing}>그룹 편집하기</GroupButton>
-				<GroupButton>멤버 초대하기</GroupButton>
+				<GroupButton onClick={handleGoToInviting}>멤버 초대하기</GroupButton>
 				{isLeader ? (
 					<>
 						<GroupButton onClick={handleGoToMemberList}>리더 변경하기</GroupButton>
@@ -84,7 +97,7 @@ const GroupModal = ({ groupId, title, color, isLeader, onClose }: GroupModalProp
 export default GroupModal;
 
 const GroupModalContainer = styled.div`
-	width: 360px;
+	width: 100%;
 	height: 100vh;
 	display: flex;
 	align-items: center;

@@ -1,16 +1,45 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import bigProfileImg from "../../assets/images/bigProfileImg.png";
+import { changeUserName } from "../../api/auth";
+import { userState } from "../../recoil/user";
 
 const ProfileSetting = () => {
+	const navigate = useNavigate();
+	const userInfo = useRecoilValue(userState);
+	const setUser = useSetRecoilState(userState);
+	const [newUserName, setNewUserName] = useState("");
+
+	const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setNewUserName(e.target.value);
+	};
+
+	const handleSubmitUserName = async () => {
+		try {
+			await changeUserName(newUserName);
+			if (userInfo) {
+				setUser({
+					...userInfo,
+					name: newUserName,
+				});
+			}
+			navigate(`/settings`);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<ProfileSettingContainer>
 			<ProfileSpan>프로필 설정</ProfileSpan>
 			<ProfileImgContainer>
 				<ProfileImg src={bigProfileImg}></ProfileImg>
 			</ProfileImgContainer>
-			<ProfileNameLabel htmlFor="name">이름</ProfileNameLabel>
-			<ProfileNameInput type="text" id="name" placeholder="이름을 입력해주세요." />
-			<NameChangeButton>변경</NameChangeButton>
+			{/* <ProfileNameLabel htmlFor="name">이름</ProfileNameLabel> */}
+			<ProfileNameInput type="text" id="name" placeholder="이름을 입력해주세요." onChange={handleChangeUserName} />
+			<NameChangeButton onClick={handleSubmitUserName}>변경</NameChangeButton>
 			<TeamLogo>@ToStar</TeamLogo>
 		</ProfileSettingContainer>
 	);
@@ -23,7 +52,6 @@ const ProfileSettingContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	height: 100vh;
-	width: 360px;
 `;
 
 const ProfileSpan = styled.span`
@@ -54,7 +82,7 @@ const ProfileNameLabel = styled.label`
 	position: absolute;
 	width: 124px;
 	height: 24px;
-	left: 12px;
+	left: 42px;
 	top: 432px;
 	font-family: "Inter";
 	font-style: normal;
@@ -97,7 +125,6 @@ const TeamLogo = styled.p`
 	left: 0;
 	right: 0;
 	bottom: 2rem;
-	width: 360px;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;

@@ -25,7 +25,7 @@ const SettingContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	height: 100vh;
-	width: 360px;
+	width: 100vw;
 
 	> svg {
 		cursor: pointer;
