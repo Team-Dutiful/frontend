@@ -1,15 +1,86 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { sendSignUpMail } from "../../api/auth";
+import { changeUserEmail } from "../../api/auth";
+import LabelInput from "../../components/auth/labelInput";
+import { userState } from "../../recoil/user";
 
 const EmailSetting = () => {
+	const navigate = useNavigate();
+	const userInfo = useRecoilValue(userState);
+	const setUser = useSetRecoilState(userState);
+	const [isSend, setIsSend] = useState(false);
+	const [authCode, setAuthCode] = useState("");
+	const [newEmail, setNewEmail] = useState("");
+	const [checkCode, setCheckCode] = useState(false);
+	const [code, setCode] = useState("");
+
+	const handleClickSendMailButton = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		setIsSend(true);
+		const authNum = await sendSignUpMail(newEmail);
+		setAuthCode(authNum);
+	};
+
+	const handleClickCheckButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		if (code === String(authCode)) {
+			setCheckCode(true);
+		}
+	};
+
+	const handleChangeNewEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setNewEmail(e.target.value);
+	};
+
+	const handleChangeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCode(e.target.value);
+	};
+
+	const handleSubmitEmail = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		try {
+			await changeUserEmail(newEmail);
+			if (userInfo) {
+				setUser({
+					...userInfo,
+					email: newEmail,
+				});
+			}
+			navigate("/settings");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<EmailSettingContainer>
 			<EmailChangeForm>
 				<InputLabel htmlFor="newEmail">새 이메일 입력</InputLabel>
-				<EmailInput type="email" id="newEmail" placeholder="새 이메일을 입력해주세요."></EmailInput>
-				<SubmitButton>전송</SubmitButton>
-				<AuthCheckText>이메일 인증이 완료되었습니다.</AuthCheckText>
+				<EmailInput
+					type="email"
+					id="newEmail"
+					placeholder="새 이메일을 입력해주세요."
+					onChange={handleChangeNewEmail}
+				/>
+				<SubmitButton onClick={handleClickSendMailButton}>전송</SubmitButton>
+				{isSend && (
+					<>
+						<LabelInput
+							id="code"
+							label="인증코드"
+							buttonLabel="확인"
+							onChange={handleChangeCode}
+							onClick={handleClickCheckButton}
+							checkCode={checkCode}
+						/>
+						{checkCode ? <AuthCheckText>이메일 인증이 완료되었습니다.</AuthCheckText> : null}
+					</>
+				)}
+				<EmailConfirmButton onClick={handleSubmitEmail}>확인</EmailConfirmButton>
 			</EmailChangeForm>
-			<EmailConfirmButton>확인</EmailConfirmButton>
 			<TeamLogo>@ToStar</TeamLogo>
 		</EmailSettingContainer>
 	);
@@ -51,7 +122,7 @@ const SubmitButton = styled.button`
 	position: absolute;
 	width: 44px;
 	height: 24px;
-	left: 248px;
+	left: 68vw;
 	top: 214px;
 
 	background: #f4f3f3;
@@ -86,6 +157,7 @@ const EmailConfirmButton = styled.button`
 	text-align: center;
 	color: #ffffff;
 	margin-top: 53px;
+	align-self: center;
 `;
 
 const TeamLogo = styled.p`
