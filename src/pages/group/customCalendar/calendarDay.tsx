@@ -1,16 +1,17 @@
 import styled from "styled-components";
+import { Work } from "../members";
 
 interface CalendarDayProps {
-	work: { work_id: number; name: string } | null;
+	work: Work | null;
 }
 
 const CanlendarDay = ({ work }: CalendarDayProps) => {
-	return <CanlendarDayContainer work={work?.name}>{work?.name}</CanlendarDayContainer>;
+	return <CanlendarDayContainer bgColor={work?.color}>{work?.name}</CanlendarDayContainer>;
 };
 
 export default CanlendarDay;
 
-const CanlendarDayContainer = styled.div<{ work?: string }>`
+const CanlendarDayContainer = styled.div<{ bgColor?: string }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -18,19 +19,6 @@ const CanlendarDayContainer = styled.div<{ work?: string }>`
 	font-size: 14px;
 	padding-top: 3px;
 
-	background-color: ${(props) => {
-		switch (props.work) {
-			case "OFF":
-				return "#bdffeb";
-			case "DAY":
-				return "#FFD9D9";
-			case "EVE":
-				return "#FFB9B9";
-			case "휴가":
-				return "#D5CEFF";
-			default:
-				return "transparent";
-		}
-	}};
+	background-color: ${(props) => props.bgColor};
 	color: #646464;
 `;

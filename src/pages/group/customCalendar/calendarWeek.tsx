@@ -1,15 +1,11 @@
 import styled from "styled-components";
+import { Work } from "../members";
 import CalendarDay from "./calendarDay";
 
 interface CalendarWeekProps {
 	weekly: number;
 	week: number[];
 	members: any;
-}
-
-interface Work {
-	work_id: number;
-	name: string;
 }
 
 interface Member {
