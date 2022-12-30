@@ -20,8 +20,6 @@ const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalenda
 	const [works, setWorks] = useState<string[]>(["DAY", "EVE", "OFF", "NIGHT", "ETC"]);
 	const [filteredData, setFilteredData] = useState<Member[]>([]);
 
-	// const filteredData = data.map((i) => i);
-
 	const handleClickBackButton = () => {
 		console.log("back");
 	};
@@ -56,11 +54,23 @@ const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalenda
 	}, []);
 
 	useEffect(() => {
-		const filtered = data.filter((i) => {
+		const filteredMember = data.filter((i) => {
 			return selected.includes(i.name);
 		});
-		setFilteredData(filtered);
-	}, [selected]);
+
+		const filteredWork = filteredMember.map((member) => {
+			const newDates = member.calendar_dates.filter((date) => {
+				return works.includes(date.work.work_type);
+			});
+
+			return {
+				...member,
+				calendar_dates: newDates,
+			};
+		});
+
+		setFilteredData(filteredWork);
+	}, [selected, works]);
 
 	return (
 		<>
@@ -89,6 +99,7 @@ const GroupCalendar = ({ title = "신생아실 간호사 모임" }: GroupCalenda
 				<GroupFilter
 					members={data.map((i) => i.name)}
 					selected={selected}
+					works={works}
 					onClose={handleClickCloseFilter}
 					saveFilteredMember={saveFilteredMember}
 					saveFilteredWork={saveFilteredWork}

@@ -5,19 +5,17 @@ import { useState, useEffect } from "react";
 
 interface GroupFilterProps {
 	members: string[];
-
 	selected: string[];
+	works: string[];
 	onClose: () => void;
 	saveFilteredMember: (members: string[]) => void;
 	saveFilteredWork: (works: string[]) => void;
 }
 
-const GroupFilter = ({ members, selected, onClose, saveFilteredMember, saveFilteredWork }: GroupFilterProps) => {
+const GroupFilter = ({ members, selected, works, onClose, saveFilteredMember, saveFilteredWork }: GroupFilterProps) => {
 	const WORKS = ["DAY", "EVE", "OFF", "NIGHT", "ETC"];
 	const [selecedtMembers, setSelectedMembers] = useState<string[]>(selected);
-	const [selectedWorks, setSelectedWorks] = useState<string[]>([]);
-
-	console.log(selectedWorks);
+	const [selectedWorks, setSelectedWorks] = useState<string[]>(works);
 
 	const handleClickMember = (member: string) => {
 		setSelectedMembers((prev) => {
