@@ -1,17 +1,47 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { changePasswordByPassword } from "../../api/auth";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { userState } from "../../recoil/user";
 
 const PasswordSetting = () => {
+	const navigate = useNavigate();
+	const userInfo = useRecoilValue(userState);
+	const [curPwd, setCurPwd] = useState("");
+	const [newPwd, setNewPwd] = useState("");
+
+	const handleChangeCurPwd = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCurPwd(e.target.value);
+	};
+
+	const handleChangeNewPwd = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setNewPwd(e.target.value);
+	};
+
+	const handleSubmitNewPwd = async () => {
+		if (userInfo) {
+			await changePasswordByPassword(userInfo.identification, curPwd, newPwd);
+			navigate(`/settings`);
+		}
+	};
+
 	return (
 		<PasswordSettingContainer>
 			<PasswordChangeForm>
 				<InputLabel htmlFor="curPwd">현재 비밀번호</InputLabel>
-				<PwdInput type="password" id="curPwd" placeholder="현재 비밀번호를 입력해주세요."></PwdInput>
-				<InputLabel htmlFor="newPwd">현재 비밀번호</InputLabel>
-				<PwdInput type="password" id="newPwd" placeholder="새 비밀번호를 입력해주세요."></PwdInput>
-				<InputLabel htmlFor="checkNewPwd">현재 비밀번호</InputLabel>
-				<PwdInput type="password" id="checkNewPwd" placeholder="다시한번 입력해주세요."></PwdInput>
+				<PwdInput
+					type="password"
+					id="curPwd"
+					placeholder="현재 비밀번호를 입력해주세요."
+					onChange={handleChangeCurPwd}
+				/>
+				<InputLabel htmlFor="newPwd">새 비밀번호</InputLabel>
+				<PwdInput type="password" id="newPwd" placeholder="새 비밀번호를 입력해주세요." onChange={handleChangeNewPwd} />
+				<InputLabel htmlFor="checkNewPwd">새 비밀번호 확인</InputLabel>
+				<PwdInput type="password" id="checkNewPwd" placeholder="다시한번 입력해주세요." />
 			</PasswordChangeForm>
-			<PwdChangeButton>변경</PwdChangeButton>
+			<PwdChangeButton onClick={handleSubmitNewPwd}>변경</PwdChangeButton>
 			<TeamLogo>@ToStar</TeamLogo>
 		</PasswordSettingContainer>
 	);
@@ -93,7 +123,7 @@ const TeamLogo = styled.p`
 	left: 0;
 	right: 0;
 	bottom: 2rem;
-	width: 100vw;
+	width: 360px;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
