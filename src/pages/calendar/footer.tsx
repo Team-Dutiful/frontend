@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { EventDataType, FocusDateType, SourceType, WorkDataType } from "./calendar";
+import { EventDataType, FocusDateType, SourceType } from "./calendar";
 import { ReactComponent as PencilIcon } from "../../assets/icons/calendar_pencil_icon.svg";
 import { ReactComponent as TrashbinIcon } from "../../assets/icons/calendar_trashbin_icon.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/icons/calendar_settings_icon.svg";
-import { WorkTypeButton, DeleteButton, SkipButton } from "../../components/calendar/workTypeButtons";
+import { WorkTypeButton, DeleteButton, SkipButton, SaveButton } from "../../components/calendar/workTypeButtons";
 import { getDay, getMonth, getTomorrow, getYear } from "../../utils/getDate";
-import { manageSchedule, SaveWorkType } from "../../api/calendar";
+import { manageSchedule, SaveWorkType, WorkDataType } from "../../api/calendar";
 
 interface FooterProps {
 	isEditMode: boolean;
@@ -17,10 +16,26 @@ interface FooterProps {
 	eventDetail?: SourceType;
 	setEvents: React.Dispatch<React.SetStateAction<EventDataType[]>>;
 	setFocusDate: React.Dispatch<React.SetStateAction<FocusDateType | null>>;
+	toggleEditMode: () => void;
 }
 
-const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvents, setFocusDate }: FooterProps) => {
+const Footer = ({
+	isEditMode,
+	events,
+	workData,
+	focusDate,
+	eventDetail,
+	setEvents,
+	setFocusDate,
+	toggleEditMode,
+}: FooterProps) => {
 	const navigate = useNavigate();
+
+	const isDefaultType = () => {
+		const type = eventDetail?.name;
+		if (type === "DAY" || type === "EVE" || type === "NIGHT" || type === "OFF") return true;
+		else return false;
+	};
 
 	const handleClickWorkButton = (work: WorkDataType) => {
 		const now = focusDate?.start!;
@@ -31,9 +46,11 @@ const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvent
 			day: getDay(now),
 			work: {
 				work_id: work.work_id,
+				work_type: work.work_type,
 				name: work.name,
 				color: work.color,
-				work_time: `${work.start_time} ~ ${work.end_time}`,
+				start_time: work.start_time,
+				end_time: work.end_time,
 			},
 		};
 
@@ -57,7 +74,7 @@ const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvent
 		handleClickSkip();
 	};
 
-	const handleSave = () => {
+	const handleSave = async () => {
 		const saveEvents: SaveWorkType[] = [];
 		const eventList = events.filter((event) => !("isFocused" in event));
 
@@ -72,7 +89,16 @@ const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvent
 			saveEvents.push(event);
 		});
 
-		manageSchedule(saveEvents);
+		const res = await manageSchedule(saveEvents);
+
+		if (res) {
+			setFocusDate(null);
+			toggleEditMode();
+		}
+	};
+
+	const handleMoveManagePage = () => {
+		navigate("/calendar/manage");
 	};
 
 	const isEnd = (year: string, month: string, day: string) => {
@@ -111,16 +137,21 @@ const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvent
 				<EventBox>
 					<Day color={eventDetail?.color}>{eventDetail?.day}</Day>
 					<Name>{eventDetail?.name}</Name>
-					<Time>{eventDetail?.work_time}</Time>
-					<PencilIcon />
-					<TrashbinIcon />
+					<Time>
+						{eventDetail?.start_time} ~ {eventDetail.end_time}
+					</Time>
+					{!isDefaultType() && (
+						<>
+							<PencilIcon onClick={handleMoveManagePage} />
+							<TrashbinIcon />
+						</>
+					)}
 				</EventBox>
 			)}
 			{isEditMode && focusDate && (
 				<NoEventBox>
 					<Title>근무 등록</Title>
 					<IconBox>
-						<button onClick={handleSave}>저장</button>
 						<SettingsIcon onClick={() => navigate("/calendar/setting")} />
 					</IconBox>
 					<Buttons>
@@ -134,6 +165,7 @@ const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvent
 						<ActionButtons>
 							<DeleteButton onClick={handleClickDelete} />
 							<SkipButton onClick={handleClickSkip} />
+							<SaveButton onClick={handleSave} />
 						</ActionButtons>
 					</Buttons>
 				</NoEventBox>
@@ -145,7 +177,7 @@ const Footer = ({ isEditMode, events, workData, focusDate, eventDetail, setEvent
 export default Footer;
 
 const FooterContainer = styled.div`
-	height: 15%;
+	height: 18%;
 `;
 
 const EventBox = styled.div`
@@ -192,19 +224,23 @@ const Time = styled.p`
 
 const Buttons = styled.div`
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
+	flex-direction: column;
+	gap: 1rem;
 `;
 
 const WorkButtons = styled.div`
 	display: flex;
-	flex-wrap: wrap;
+	overflow-x: scroll;
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+	::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera*/
+	}
 	gap: 1rem;
 `;
 
 const ActionButtons = styled.div`
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	gap: 1rem;
 `;
