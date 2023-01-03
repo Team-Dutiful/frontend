@@ -22,20 +22,18 @@ const Header = ({ isEditMode, onOpenModal, toggleEditMode }: HeaderProps) => {
 export default Header;
 
 const HeaderContainer = styled.header`
-	height: 60px;
+	height: 6%;
 	display: flex;
+	align-items: center;
 	justify-content: end;
-	padding-right: 32px;
-
-	svg {
-		cursor: pointer;
-	}
+	gap: 8px;
+	padding: 8px 8px 0 0;
+	box-sizing: border-box;
 
 	.share-icon {
-		width: 17px;
-		height: 20px;
-		margin-left: 12px;
-		margin-top: 26px;
+		cursor: pointer;
+		width: 21px;
+		height: 21px;
 	}
 `;
 
@@ -46,6 +44,5 @@ const CalendarIconBox = styled.div<{ isEdit: boolean }>`
 	svg {
 		width: 32px;
 		height: 32px;
-		margin-top: 20px;
 	}
 `;

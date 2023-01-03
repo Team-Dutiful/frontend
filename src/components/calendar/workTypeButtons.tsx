@@ -48,7 +48,7 @@ const Button = styled.button`
 	align-items: center;
 	background-color: ${(props) => (props.color ? props.color : "DFDFDF")};
 	color: white;
-	width: 75px;
+	min-width: 40px;
 	height: 32px;
 	padding: 8px;
 	border-radius: 5px;
