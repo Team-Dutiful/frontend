@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const SEVER_PORT = 10101;
-axios.defaults.baseURL = `http://localhost:${SEVER_PORT}`;
+const { VITE_SERVER_PORT } = import.meta.env;
+
+axios.defaults.baseURL = `http://localhost:${VITE_SERVER_PORT}`;
 axios.defaults.withCredentials = true;
 
 export const instance = axios.create();
