@@ -1,10 +1,12 @@
-import styled from "styled-components";
 import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_icon.svg";
 import { ReactComponent as MoreIcon } from "../../assets/icons/calendar_more_icon.svg";
 import { ReactComponent as CreateWorkIcon } from "../../assets/icons/create_work_icon.svg";
 import { getWorkList } from "../../api/calendar";
+import { workIdState } from "../../recoil/work";
 
 interface workListProps {
 	name: string;
@@ -21,14 +23,18 @@ interface workListProps {
 const CalendarSetting = () => {
 	const navigate = useNavigate();
 	const [workList, setWorkList] = useState<workListProps[]>([]);
+	const setWorkId = useSetRecoilState(workIdState);
 
 	const handleGoBackPage = () => {
 		navigate(-1);
 	};
 
-	const handleMoveManagePage = (type: string) => {
+	const handleMoveManagePage = (id: number, type: string) => {
 		if (type !== "ETC") return;
-		else navigate("/calendar/manage");
+		else {
+			setWorkId(id);
+			navigate("/calendar/manage");
+		}
 	};
 
 	useEffect(() => {
@@ -54,7 +60,9 @@ const CalendarSetting = () => {
 								{start_time} ~ {end_time}
 							</WorkTime>
 						</div>
-						{work_type === "ETC" && <MoreIcon className="icon" onClick={() => handleMoveManagePage(work_type)} />}{" "}
+						{work_type === "ETC" && (
+							<MoreIcon className="icon" onClick={() => handleMoveManagePage(work_id, work_type)} />
+						)}
 					</Work>
 				))}
 			</Works>
