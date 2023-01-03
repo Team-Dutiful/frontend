@@ -24,6 +24,16 @@ const SignUp = () => {
 	const [authCode, setAuthCode] = useState("");
 	const [modalState, setModalState] = useState<null | "success" | "fail">(null);
 
+	const funcCheckEmail = (str: string) => {
+		var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+
+		if (!reg_email.test(str)) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+
 	const handleChangeUserInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value } = event.target;
 		setUser({
@@ -34,9 +44,16 @@ const SignUp = () => {
 
 	const handleClickSendMailButton = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
-		setIsSend(true);
+
 		const authNum = await sendSignUpMail(user.email);
-		setAuthCode(authNum);
+		if (authNum === "exist") {
+			setAuthCode(authNum);
+		} else if (authNum === "error") {
+			setAuthCode(authNum);
+		} else {
+			setIsSend(true);
+			setAuthCode(authNum);
+		}
 	};
 
 	const handleClickCheckButton = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -117,11 +134,15 @@ const SignUp = () => {
 								onClick={handleClickSendMailButton}
 								value={user.email}
 								onChange={handleChangeUserInfo}
-								checkCode={false}
+								inputDisabled={false}
+								buttonDisabled={!funcCheckEmail(user.email)}
 							/>
 							{isSend ? (
 								<SignUpInputBottomText color="#848484">인증코드가 전송되었습니다.</SignUpInputBottomText>
 							) : null}
+							{authCode === "exist" && (
+								<SignUpInputBottomText color="#fe5c5c">이미 존재하는 이메일 입니다.</SignUpInputBottomText>
+							)}
 						</>
 						{isSend && (
 							<>
@@ -132,7 +153,8 @@ const SignUp = () => {
 									onClick={handleClickCheckButton}
 									value={user.code}
 									onChange={handleChangeUserInfo}
-									checkCode={checkCode}
+									inputDisabled={checkCode}
+									buttonDisabled={checkCode}
 								/>
 								{checkCode ? (
 									<SignUpInputBottomText color="#848484">이메일 인증이 완료되었습니다.</SignUpInputBottomText>

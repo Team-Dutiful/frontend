@@ -26,8 +26,13 @@ export const sendSignUpMail = async (email: string) => {
 		.post(`/auth/send-code`, { email })
 		.then((res) => res.data.body.authNum)
 		.catch((error) => {
-			console.error(error);
-			return error;
+			if (error.response && error.response.status === 409) {
+				console.log("이미 존재하는 이메일");
+				return "exist";
+			} else {
+				console.log("그 외");
+				return "error";
+			}
 		});
 };
 

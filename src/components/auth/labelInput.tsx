@@ -9,7 +9,8 @@ interface LabelInputtProps {
 	buttonLabel?: string;
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
-	checkCode?: boolean;
+	inputDisabled?: boolean;
+	buttonDisabled?: boolean;
 }
 
 const LabelInput = ({
@@ -21,23 +22,24 @@ const LabelInput = ({
 	buttonLabel,
 	onClick,
 	onChange,
-	checkCode,
+	inputDisabled,
+	buttonDisabled,
 }: LabelInputtProps) => {
 	return (
 		<LabelInputContainer>
 			<Label>{label}</Label>
 			<div style={{ display: "flex", gap: "3px" }}>
 				<Input
-					checkCode={checkCode}
 					id={id}
 					type={type}
 					autoComplete={autoComplete}
 					value={value}
 					onChange={onChange}
-					disabled={checkCode}
+					inputDisabled={inputDisabled}
+					disabled={inputDisabled}
 				/>
 				{buttonLabel === undefined ? null : (
-					<Button onClick={onClick} checkCode={checkCode} disabled={checkCode}>
+					<Button onClick={onClick} buttonDisabled={buttonDisabled} disabled={buttonDisabled}>
 						{buttonLabel}
 					</Button>
 				)}
@@ -59,20 +61,20 @@ const Label = styled.p`
 	color: #7a7a7a;
 `;
 
-const Input = styled.input<{ checkCode?: boolean }>`
+const Input = styled.input<{ inputDisabled?: boolean }>`
 	padding: 0px 4px 0px 4px;
 	width: 100%;
 	height: 2rem;
 	background: ${(props) => {
-		return props.checkCode === true ? "#ebebeb" : "#fff";
+		return props.inputDisabled === true ? "#ebebeb" : "#fff";
 	}};
 	color: ${(props) => {
-		return props.checkCode ? "#a9a8a8" : "#000";
+		return props.inputDisabled ? "#a9a8a8" : "#000";
 	}};
 	border: 0.8px solid #a6a6a6;
 `;
 
-const Button = styled.button<{ checkCode?: boolean }>`
+const Button = styled.button<{ buttonDisabled?: boolean }>`
 	width: 50px;
 	font-size: 12px;
 `;
