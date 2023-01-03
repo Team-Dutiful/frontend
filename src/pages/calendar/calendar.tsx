@@ -25,16 +25,6 @@ export interface EventDataType {
 	isFocused?: boolean;
 }
 
-export interface WorkDataType {
-	work_id: number;
-	name: string;
-	color: string;
-	start_time: string;
-	end_time: string;
-	work_type: string;
-	memo?: string;
-}
-
 export interface SourceType {
 	day?: string;
 	color?: string;
