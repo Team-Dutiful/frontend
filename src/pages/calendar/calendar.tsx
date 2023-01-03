@@ -28,7 +28,7 @@ export interface SourceType {
 	day?: string;
 	color?: string;
 	name: string;
-	type: string;
+	work_type: string;
 	work_id?: number;
 	start_time: string;
 	end_time: string;

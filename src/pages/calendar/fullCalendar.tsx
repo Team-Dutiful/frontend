@@ -8,7 +8,7 @@ import FullCalendar, {
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import styled from "styled-components";
-import { EventDataType, SourceType, FocusDateType } from "./calendar";
+import { EventDataType, SourceType } from "./calendar";
 
 interface CustomCalendarProps {
 	isEditMode: boolean;
@@ -54,6 +54,8 @@ const CustomCalendar = ({
 				event.source = {
 					day: data.day,
 					work_id: data.work?.work_id,
+					type: data.work?.work_type,
+					color: data.work?.color,
 					name: data.work?.name,
 					start_time: data.work?.start_time,
 					end_time: data.work?.end_time,
@@ -72,17 +74,17 @@ const CustomCalendar = ({
 
 	const titleFormat = (arg: VerboseFormattingArg) => {
 		const year = String(arg.date.year);
-		const month = String(arg.date.month + 1);
+		const month = arg.date.month < 10 ? `0${arg.date.month + 1}` : String(arg.date.month + 1);
 
-		setNowYear(year);
-		setNowMonth(month);
 		const formattedTitle = (
 			<Title>
-				<TitleYear>{year}</TitleYear>
-				<TitleMonth>{month}</TitleMonth>
+				<TitleYear>{arg.date.year}</TitleYear>
+				<TitleMonth>{arg.date.month + 1}</TitleMonth>
 			</Title>
 		);
 
+		setNowYear(year);
+		setNowMonth(month);
 		return formattedTitle;
 	};
 
@@ -126,7 +128,7 @@ export default CustomCalendar;
 
 const FullCalendarContainer = styled.div<{ isEditMode: boolean }>`
 	width: 100%;
-	height: 85%;
+	height: 75%;
 
 	// Header Toolbar Custom
 	.fc-toolbar-chunk {
@@ -231,6 +233,13 @@ const FullCalendarContainer = styled.div<{ isEditMode: boolean }>`
 		border: ${(props) => (props.isEditMode ? "1px solid #ff6a6a" : "transparent")};
 		background-color: ${(props) => (props.isEditMode ? "transparent" : "#e9e9e989")};
 		opacity: 100;
+	}
+
+	// no scroll
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+	div::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera*/
 	}
 `;
 
