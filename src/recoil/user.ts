@@ -1,4 +1,7 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export type userType = {
 	user_id: number;
@@ -10,4 +13,5 @@ export type userType = {
 export const userState = atom<userType | null>({
 	key: "userState",
 	default: null,
+	effects_UNSTABLE: [persistAtom],
 });
