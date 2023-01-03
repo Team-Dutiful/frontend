@@ -102,3 +102,13 @@ export const findId = async (name: string, email: string) => {
 			return error;
 		});
 };
+
+export const logout = async () => {
+	return await axios
+		.post(`/auth/logout`)
+		.then((res) => res.data.body)
+		.catch((error) => {
+			console.error(error);
+			return error;
+		});
+};
