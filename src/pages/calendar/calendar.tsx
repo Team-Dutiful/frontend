@@ -5,7 +5,7 @@ import CustomCalendar from "./fullCalendar";
 import Footer from "./footer";
 import ModalPortal from "../../components/modalPortal";
 import CalendarModal from "../../components/calendarModal";
-import { getSchedule, getWorkList } from "../../api/calendar";
+import { getSchedule, getWorkList, WorkDataType } from "../../api/calendar";
 import { getMonth, getYear } from "../../utils/getDate";
 
 export interface EventDataType {
@@ -22,16 +22,6 @@ export interface EventDataType {
 	overlay?: boolean;
 	display?: string;
 	isFocused?: boolean;
-}
-
-export interface WorkDataType {
-	work_id: number;
-	name: string;
-	color: string;
-	start_time: string;
-	end_time: string;
-	work_type: string;
-	memo?: string;
 }
 
 export interface SourceType {
@@ -55,7 +45,9 @@ export interface FocusDateType {
 const Calendar = () => {
 	const today = new Date();
 	const [nowYear, setNowYear] = useState<string>(String(today.getFullYear()));
-	const [nowMonth, setNowMonth] = useState<string>(String(today.getMonth()) + 1);
+	const [nowMonth, setNowMonth] = useState<string>(
+		today.getMonth() < 10 ? `0${today.getMonth()}` : String(today.getMonth() + 1)
+	);
 	const [focusDate, setFocusDate] = useState<FocusDateType | null>(null);
 
 	const [events, setEvents] = useState<EventDataType[]>([]);
@@ -157,5 +149,5 @@ export default Calendar;
 
 const CalendarContainer = styled.div`
 	position: relative;
-	height: calc(var(--vh, 1vh) * 100);
+	height: 100vh;
 `;
