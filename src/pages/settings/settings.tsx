@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import profileImg from "../../assets/images/profileImg.png";
 import FootNavigation from "../../components/footNavigation";
 import { userState } from "../../recoil/user";
+import { logout } from "../../api/auth";
 
 const Settings = () => {
 	const navigate = useNavigate();
@@ -11,6 +12,11 @@ const Settings = () => {
 
 	const handleChangeUrl = (pageUrl: string) => {
 		navigate(`/setting/${pageUrl}`);
+	};
+
+	const handleLogout = async () => {
+		await logout();
+		navigate(`/`);
 	};
 
 	return (
@@ -39,7 +45,7 @@ const Settings = () => {
 				>
 					계정 설정
 				</SettingButton>
-				<LogoutButton>로그아웃</LogoutButton>
+				<LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
 			</ButtonSection>
 			<FootNavigation />
 		</SettingsContainer>
