@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { ReactComponent as RefreshIcon } from "../../assets/icons/refresh_button_icon.svg";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_button_icon.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
 
 interface GroupFilterProps {
 	members: string[];
@@ -220,7 +221,7 @@ const IconBar = styled.div`
 
 const GroupFilterTitleBox = styled.div`
 	background-color: #ff9595;
-	width: 360px;
+	width: 100%;
 	text-align: center;
 `;
 
@@ -237,7 +238,7 @@ const MemberBox = styled.div`
 	background-color: white;
 
 	width: 360px;
-	padding: 25px;
+	padding: 0 25px;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 `;
@@ -277,7 +278,7 @@ const MemberTitle = styled.title`
 const WorkBox = styled.div`
 	background-color: white;
 	width: 360px;
-	padding: 25px;
+	padding: 0 25px;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 `;
