@@ -4,24 +4,16 @@ import styled from "styled-components";
 import { ColorResult, SketchPicker } from "react-color";
 import { ReactComponent as BackIcon } from "../../assets/icons/back_icon.svg";
 import { TextField } from "@mui/material";
-<<<<<<< HEAD
 import { createWork, getWork, updateWork, WorkDataType } from "../../api/calendar";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../../recoil/user";
 import { workIdState } from "../../recoil/work";
-=======
-import { createWork } from "../../api/calendar";
-import { useRecoilState } from "recoil";
-import { userState } from "../../recoil/user";
->>>>>>> 9342397 ([feat] 근무 생성 api 연동)
 
 const ManageWork = () => {
 	const { state } = useLocation();
 	const navigate = useNavigate();
-<<<<<<< HEAD
 	const [userInfo] = useRecoilState(userState);
 	const workId = useRecoilValue(workIdState);
-	const [colorHexCode, setColorHexCode] = useState("#000000");
 
 	const [workData, setWorkData] = useState<WorkDataType>({
 		work_id: 1,
@@ -35,15 +27,6 @@ const ManageWork = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [isCreateMode, setIsCreateMode] = useState(false);
-=======
-	const [userInfo, setUserInfo] = useRecoilState(userState);
-	const [isOpen, setIsOpen] = useState(false);
-	const [colorHexCode, setColorHexCode] = useState("#000000");
-	const [workName, setWorkName] = useState("");
-	const [startTime, setStartTime] = useState("09:00");
-	const [endTime, setEndTime] = useState("18:00");
-	const [workMemo, setWorkMemo] = useState("");
->>>>>>> 9342397 ([feat] 근무 생성 api 연동)
 
 	const handleGoBackPage = () => {
 		navigate(-1);
@@ -63,17 +46,8 @@ const ManageWork = () => {
 		setWorkData(work);
 	};
 
-<<<<<<< HEAD
 	const handleStopEvent = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-=======
-	const handleChangeWorkName = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setWorkName(e.target.value);
-	};
-
-	const handleChangeStartTime = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setStartTime(e.target.value);
->>>>>>> 9342397 ([feat] 근무 생성 api 연동)
 	};
 
 	const handleChangeInput = (
@@ -85,7 +59,6 @@ const ManageWork = () => {
 		setWorkData(work);
 	};
 
-<<<<<<< HEAD
 	const handleSubmitWorkForm = async () => {
 		if (isCreateMode) {
 			if (userInfo?.user_id) {
@@ -110,21 +83,6 @@ const ManageWork = () => {
 			getWorkData(workId);
 		}
 	}, [workId]);
-=======
-	const handleChangeWorkMemo = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setWorkMemo(e.target.value);
-	};
-
-	const handleStopEvent = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-	};
-
-	const handleSubmitWorkForm = async () => {
-		if (userInfo?.user_id) {
-			await createWork(userInfo?.user_id, workName, colorHexCode, startTime, endTime, workName, workMemo);
-		}
-	};
->>>>>>> 9342397 ([feat] 근무 생성 api 연동)
 
 	return (
 		<ManageWorkContainer>
@@ -238,7 +196,6 @@ const ColorOkayButton = styled.button``;
 const ColorCancelButton = styled.button``;
 
 const WorkForm = styled.form`
-<<<<<<< HEAD
 	width: 268px;
 	display: flex;
 	flex-direction: column;
@@ -290,10 +247,3 @@ const WorkTime = styled.div`
 	margin-bottom: 30px;
 	gap: 12px;
 `;
-=======
-	div {
-		display: flex;
-		flex-direction: column;
-	}
-`;
->>>>>>> ceca495 ([feat] 근무 생성/수정 페이지 추가)
