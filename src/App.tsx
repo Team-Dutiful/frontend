@@ -9,6 +9,7 @@ import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/signup";
 import Calendar from "./pages/calendar/calendar";
 import CalendarSetting from "./pages/calendar/setting";
+import ManageWork from "./pages/calendar/manageWork";
 import Group from "./pages/group/group";
 import GroupCalendar from "./pages/group/groupCalendar";
 import GroupAdding from "./pages/group/groupAdding";
@@ -50,6 +51,7 @@ const App = () => {
 				<Route path="oauth/callback/kakao" element={<Kakao />} />
 				<Route path="oauth/callback/naver" element={<Naver />} />
 				<Route path="calendar/setting" element={<CalendarSetting />} />
+				<Route path="calendar/manage" element={<ManageWork />} />
 				<Route path="group" element={<Group />} />
 				<Route path="group/calendar" element={<GroupCalendar />} />
 				<Route path="group/add" element={<GroupAdding />} />

@@ -1,25 +1,45 @@
 import styled from "styled-components";
+import { WorkDataType } from "../../pages/calendar/calendar";
 
-const data = {
-	DAY: { name: "DAY", color: "#FF9F9F" },
-	EVE: { name: "EVE", color: "#FFDF8D" },
-	NIGHT: { name: "NIGHT", color: "#63E2BC" },
-	OFF: { name: "OFF", color: "#9BC9FF" },
-	ETC: { name: "ETC", color: "#9BC9FF" },
-	SKIP: { name: "SKIP", color: "#DFDFDF" },
-	DELETE: { name: "DELETE", color: "#E33333" },
-};
-
-interface TypeButtonProps {
-	type: "DAY" | "EVE" | "NIGHT" | "OFF" | "ETC" | "SKIP" | "DELETE";
+interface WorkTypeButtonProps {
+	work: WorkDataType;
+	onClick: (work: WorkDataType) => void;
 }
 
-export const WorkTypeButton = ({ type }: TypeButtonProps) => {
-	return <Button color={data[type].color}>{data[type].name}</Button>;
+interface ActionTypeButtonProps {
+	onClick: () => void;
+}
+
+export const WorkTypeButton = ({ work, onClick }: WorkTypeButtonProps) => {
+	return (
+		<Button color={work.color} onClick={() => onClick(work)}>
+			{work.name}
+		</Button>
+	);
 };
 
-export const ActionTypeButton = ({ type }: TypeButtonProps) => {
-	return <Button color={data[type].color}>{data[type].name}</Button>;
+export const SaveButton = ({ onClick }: ActionTypeButtonProps) => {
+	return (
+		<Button color="#ac99db" onClick={onClick}>
+			저장
+		</Button>
+	);
+};
+
+export const DeleteButton = ({ onClick }: ActionTypeButtonProps) => {
+	return (
+		<Button color="#E33333" onClick={onClick}>
+			삭제
+		</Button>
+	);
+};
+
+export const SkipButton = ({ onClick }: ActionTypeButtonProps) => {
+	return (
+		<Button color="#cfcfcf" onClick={onClick}>
+			스킵
+		</Button>
+	);
 };
 
 const Button = styled.button`
@@ -28,7 +48,7 @@ const Button = styled.button`
 	align-items: center;
 	background-color: ${(props) => (props.color ? props.color : "DFDFDF")};
 	color: white;
-	width: 72px;
+	min-width: 40px;
 	height: 32px;
 	padding: 8px;
 	border-radius: 5px;

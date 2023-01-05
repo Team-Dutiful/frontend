@@ -1,18 +1,33 @@
 import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../assets/icons/close_icon.svg";
-import { useNavigate } from "react-router-dom";
+import KakaoShareButton from "./KaKaoShare";
+import { useEffect, useState } from "react";
 
 interface CalendarModalProps {
 	onClose: () => void;
 }
 
 const CalendarModal = ({ onClose }: CalendarModalProps) => {
-	const navigate = useNavigate();
-
+	const [shareButton, setShareButton] = useState(false);
 	const handleClickModal = (e: { stopPropagation: () => void }) => {
 		e.stopPropagation();
 	};
 
+	useEffect(() => {
+		const script = document.createElement("script");
+		script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+		script.async = true;
+		document.body.appendChild(script);
+
+		// 스크립트가 로드 된 후 쉐어버튼 렌더링
+		script.onload = () => {
+			setShareButton(true);
+		};
+
+		return () => {
+			document.body.removeChild(script);
+		};
+	}, []);
 	return (
 		<CalendarModalContainer onClick={onClose}>
 			<GroupModalContent onClick={handleClickModal}>
@@ -22,6 +37,7 @@ const CalendarModal = ({ onClose }: CalendarModalProps) => {
 				</GroupHeaderSection>
 				<GroupButton>링크</GroupButton>
 				<GroupButton>이미지</GroupButton>
+				{shareButton && <KakaoShareButton></KakaoShareButton>}
 			</GroupModalContent>
 		</CalendarModalContainer>
 	);
