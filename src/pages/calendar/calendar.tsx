@@ -134,7 +134,7 @@ const Calendar = () => {
 				eventDetail={eventDetail}
 				setEvents={setEvents}
 				setFocusDate={setFocusDate}
-				// toggleEditMode={toggleEditMode}
+				toggleEditMode={toggleEditMode}
 			/>
 
 			{isModalOpen && (
